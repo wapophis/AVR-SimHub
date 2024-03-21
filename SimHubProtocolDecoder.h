@@ -3,6 +3,7 @@
 
 typedef void(*SHButtonChangedEventCallBack) (int, byte);                        //function pointer prototype
 typedef void(*SHRotaryEncoderPositionChangedEventCallBack) (int, int, byte);  //function pointer prototype
+typedef void(*SHAnalogAxisChangedEventCallBack) (int, int);  //function pointer prototype
 /***
  * | PACKET HEADER  | SIZE | DSCRIPTION                     | 
  * | 0x01           |  3   | ENCODER  SIZE 3
@@ -17,7 +18,7 @@ byte packetsPayloadLength[]={3,2,2,3};
 class EventCallBackManager{
      SHButtonChangedEventCallBack shButtonChangedCallback;
      SHRotaryEncoderPositionChangedEventCallBack SHRotaryEncoderPositionChangedCallback;
-
+     SHAnalogAxisChangedEventCallBack analogStickPosChangedCallback;
     public:
         void setButtonCallBack(SHButtonChangedEventCallBack callback){
             shButtonChangedCallback=callback;
@@ -32,6 +33,14 @@ class EventCallBackManager{
          SHRotaryEncoderPositionChangedEventCallBack getEncoderPositionChangedCallback(){
            return SHRotaryEncoderPositionChangedCallback;
         }
+
+        void setAnalogAxisChangedEventCallback(SHAnalogAxisChangedEventCallBack callback){
+                analogStickPosChangedCallback=callback;
+        }
+        SHAnalogAxisChangedEventCallBack getAnalogStickPosChangedCallback(){
+            return analogStickPosChangedCallback;
+        }
+
 };
 
 
@@ -97,6 +106,12 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
                     // TODO: FIXME
                     //callbacker->getButtonCallback()((stream->read())*8+stream->read(),stream->read());
                     break;
+                case 0x13:
+                    int axisId;
+                    axisId=stream->read();
+                    int mappedValue;
+                    mappedValue=stream->read();
+                    callbacker->getAnalogStickPosChangedCallback()(axisId,mappedValue);
                 default:
                     break;
             }
