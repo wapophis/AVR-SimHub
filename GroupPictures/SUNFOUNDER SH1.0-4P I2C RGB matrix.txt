@@ -1,0 +1,1 @@
+https://github.com/SHWotever/SimHub/wiki/Arduino-RGB-Matrix#sunfounder-sh10-4p-i2c
