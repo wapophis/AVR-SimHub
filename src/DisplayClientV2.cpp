@@ -1,4 +1,7 @@
 // J revision sketch
+#include <Arduino.h>
+//#include <avr8-stub.h>
+//#include <app_api.h> // only needed with flash breakpoints
 #define VERSION 'j'
 
 
@@ -938,7 +941,9 @@ void RS_6c595_SetChar(char c) {
 }
 #endif //INCLUDE_6c595_GEAR_DISPLAY
 
-//#ifdef INCLUDE_GAMEPAD
+#ifdef INCLUDE_GAMEPAD
+
+void UpdateGamepadState();
 
 //initialize an Joystick with 34 buttons;
 Joystick_ Joystick(JOYSTICK_DEFAULT_REPORT_ID,
@@ -951,7 +956,7 @@ Joystick_ Joystick(JOYSTICK_DEFAULT_REPORT_ID,
 	JOYSTICK_TYPE_JOYSTICK, 128, 0,
 	true, true, false, true, true, false,
 	false, GAMEPAD_AXIS_01_ENABLED, GAMEPAD_AXIS_02_ENABLED, GAMEPAD_AXIS_03_ENABLED, false);*/
-//#endif
+#endif
 
 #include "SHCustomProtocol.h"
 SHCustomProtocol shCustomProtocol;
@@ -962,7 +967,7 @@ unsigned long lastMatrixRefresh = 0;
 void idle(bool critical) {
 
 #if(GAMEPAD_AXIS_01_ENABLED == 1)
-	SHGAMEPADAXIS01.read();
+	SHGAMEPADAXIS01.read(random(1024));
 #endif
 #if(GAMEPAD_AXIS_02_ENABLED == 1)
 	SHGAMEPADAXIS02.read();
@@ -1168,6 +1173,8 @@ void receiveData(int howMany) {
 
 void setup()
 {
+	  // initialize GDB stub
+  
 	//#ifdef INCLUDE_TEMPGAUGE
 	//	shTEMPPIN.SetValue((int)80);
 	//#endif
@@ -1178,6 +1185,7 @@ FlowSerialDebugPrintLn("Setting up");
  //SHGAMEPADAXIS01.read(512);
  callbacker.setButtonCallBack(buttonStatusChanged);
  callbacker.setAnalogAxisChangedEventCallback(analogAxisChangedEventCallback);
+ 
 // #ifdef  INCLUDE_ENCODERS
 // callbacker->setEncoderPositionChangedCallback(EncoderPositionChanged);
  #endif
@@ -1308,6 +1316,7 @@ FlowSerialDebugPrintLn("Setting up");
 #endif
 
 #ifdef INCLUDE_NOKIALCD
+
 	shNOKIA.Init();
 #endif
 
@@ -1390,9 +1399,10 @@ void InitEncoders() {
 
 #ifdef INCLUDE_GAMEPAD
 void UpdateGamepadState() {
-	int btnidx = 0;
+	
 
 #ifdef INCLUDE_TM1638
+	int btnidx = 0;
 	for (int i = 0; i < TM1638_ENABLEDMODULES; i++) {
 		byte buttonsState = TM1638_screens[i]->Buttons;
 

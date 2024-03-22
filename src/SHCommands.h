@@ -379,7 +379,9 @@ void Command_MatrixData() {
 }
 
 void Command_GearData() {
+#if defined(INCLUDE_74HC595_GEAR_DISPLAY) || defined(INCLUDE_6c595_GEAR_DISPLAY)
 	char gear = FlowSerialTimedRead();
+#endif
 
 #ifdef INCLUDE_74HC595_GEAR_DISPLAY
 	if (ENABLE_74HC595_GEAR_DISPLAY == 1) {

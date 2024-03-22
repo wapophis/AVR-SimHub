@@ -82,6 +82,7 @@ public:
 			mapped2 = mapped2 * 1024;
 			setAxis(axisIdx, mapped2);
 		}
+		return true;
 	}
 
 	bool read(int pot) {
@@ -99,6 +100,8 @@ public:
 			mapped2 = mapped2 * 1024;
 			setAxis(axisIdx, mapped2);
 		}
+
+		return true;
 	}
 };
 
