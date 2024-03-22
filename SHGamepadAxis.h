@@ -83,6 +83,23 @@ public:
 			setAxis(axisIdx, mapped2);
 		}
 	}
+
+	bool read(int pot) {
+
+		if (lastAxisValue != pot) {
+			lastAxisValue = pot;
+
+			int mapped = map(pot, minimumInputValue, maximumInputValue, 0, 1024);
+			float mapped2 = min(1, max(0, (float)mapped / (float)1024));
+
+			if (exponentialFactor != 1) {
+				mapped2 = pow(mapped2, 1.0 / (float)exponentialFactor);
+			}
+
+			mapped2 = mapped2 * 1024;
+			setAxis(axisIdx, mapped2);
+		}
+	}
 };
 
 #endif

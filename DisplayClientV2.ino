@@ -56,7 +56,7 @@
 
 #if IC2_SERIAL_BYPASS
 #include <LoopbackStream.h>
-	# define IC2_SERIAL_BYPASS_DEBUG true
+	# define IC2_SERIAL_BYPASS_DEBUG false
 #endif
 
 
@@ -491,6 +491,7 @@ SHPWMPin shCONSPIN(CONS_PIN, 40);
 #define GAMEPAD_AXIS_03_EXPONENTIALFACTOR 1 //{"Name":"GAMEPAD_AXIS_03_EXPONENTIALFACTOR","Title":"Brake axis exponential correction","DefaultValue":"1","Type":"double","Condition":"GAMEPAD_AXIS_03_ENABLED>0","dMin":0.1,"dMax":1.9}
 
 #if(GAMEPAD_AXIS_01_ENABLED == 1)
+
 SHGamepadAxis SHGAMEPADAXIS01(GAMEPAD_AXIS_01_PIN, 0, GAMEPAD_AXIS_01_MINVALUE, GAMEPAD_AXIS_01_MAXVALUE, GAMEPAD_AXIS_01_SAMPLING, GAMEPAD_AXIS_01_EXPONENTIALFACTOR);
 #endif
 
@@ -501,7 +502,7 @@ SHGamepadAxis SHGAMEPADAXIS02(GAMEPAD_AXIS_02_PIN, 1, GAMEPAD_AXIS_02_MINVALUE, 
 #if(GAMEPAD_AXIS_03_ENABLED == 1)
 SHGamepadAxis SHGAMEPADAXIS03(GAMEPAD_AXIS_03_PIN, 2, GAMEPAD_AXIS_03_MINVALUE, GAMEPAD_AXIS_03_MAXVALUE, GAMEPAD_AXIS_03_SAMPLING, GAMEPAD_AXIS_03_EXPONENTIALFACTOR);
 #endif
-
+//SHGamepadAxis analogAxis[3]={SHGAMEPADAXIS01,SHGAMEPADAXIS02,SHGAMEPADAXIS03};
 #endif // INCLUDE_GAMEPAD
 
 
@@ -512,6 +513,7 @@ SHGamepadAxis SHGAMEPADAXIS03(GAMEPAD_AXIS_03_PIN, 2, GAMEPAD_AXIS_03_MINVALUE, 
 #define ENABLED_BUTTONS_COUNT 1 //{"Group":"Additional Buttons","Name":"ENABLED_BUTTONS_COUNT","Title":"Additional buttons (directly connected to the arduino, 12 max) buttons count","DefaultValue":"0","Type":"int","Max":12}
 #ifdef  INCLUDE_BUTTONS
 
+// PLACE BUTTONS IN MASTER DEVICE OVER THE 100 TO PREVENT CONFLICT WITH SLAVE PINS
 #define BUTTON_PIN_1 101        //{"Name":"BUTTON_PIN_1","Title":"1'st Additional button digital pin","DefaultValue":"3","Type":"pin;Button 1","Condition":"ENABLED_BUTTONS_COUNT>=1"}
 #define BUTTON_WIRINGMODE_1 0   //{"Name":"BUTTON_WIRINGMODE_1","Title":"1'st Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_1 0    //{"Name":"BUTTON_LOGICMODE_1","Title":"1'st Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Normal;1,Reversed"}
@@ -936,7 +938,7 @@ void RS_6c595_SetChar(char c) {
 }
 #endif //INCLUDE_6c595_GEAR_DISPLAY
 
-#ifdef INCLUDE_GAMEPAD
+//#ifdef INCLUDE_GAMEPAD
 
 //initialize an Joystick with 34 buttons;
 Joystick_ Joystick(JOYSTICK_DEFAULT_REPORT_ID,
@@ -949,7 +951,7 @@ Joystick_ Joystick(JOYSTICK_DEFAULT_REPORT_ID,
 	JOYSTICK_TYPE_JOYSTICK, 128, 0,
 	true, true, false, true, true, false,
 	false, GAMEPAD_AXIS_01_ENABLED, GAMEPAD_AXIS_02_ENABLED, GAMEPAD_AXIS_03_ENABLED, false);*/
-#endif
+//#endif
 
 #include "SHCustomProtocol.h"
 SHCustomProtocol shCustomProtocol;
@@ -1063,6 +1065,32 @@ void buttonStatusChanged(int buttonId, byte Status) {
 #endif
 }
 
+/// @brief / TESTING
+
+void analogAxisChangedEventCallback(int axisId,int value){
+
+		switch (axisId)
+		{
+		case 0:
+			Serial.println("via 0");
+			SHGAMEPADAXIS01.read(value); break;
+		case 1:
+			Serial.println("via 1");
+			Serial.flush();
+			SHGAMEPADAXIS01.read(512); break;
+		case 2:
+			Serial.println("via 2");
+			SHGAMEPADAXIS01.read(value); break;
+		case 3:
+		Serial.println("via 3");
+			SHGAMEPADAXIS01.read(value); break;
+		default:
+			break;
+		}
+
+
+}
+
 #ifdef  INCLUDE_BUTTONMATRIX
 void buttonMatrixStatusChanged(int buttonId, byte Status) {
 #ifdef INCLUDE_GAMEPAD
@@ -1147,8 +1175,9 @@ FlowSerialDebugPrintLn("Setting up");
 
 /*** CONFIGURACION DE LOS EVENTOS DE CALLBACK PARA EL PROCESAMIENTO DEL BUS SERIE*/
  #if IC2_SERIAL_BYPASS
-
+ //SHGAMEPADAXIS01.read(512);
  callbacker.setButtonCallBack(buttonStatusChanged);
+ callbacker.setAnalogAxisChangedEventCallback(analogAxisChangedEventCallback);
 // #ifdef  INCLUDE_ENCODERS
 // callbacker->setEncoderPositionChangedCallback(EncoderPositionChanged);
  #endif

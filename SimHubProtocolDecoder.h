@@ -110,8 +110,19 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
                     int axisId;
                     axisId=stream->read();
                     int mappedValue;
-                    mappedValue=stream->read();
+                    mappedValue= stream->read();
+                    mappedValue = mappedValue << 8;
+                    mappedValue+=stream->read();
+                     #if IC2_SERIAL_BYPASS_DEBUG
+                    Serial.print("\n Analog Stick state changed ");
+                    Serial.println(axisId);
+                    Serial.print(mappedValue);
+                    Serial.print(" ");
+                    Serial.flush();   
+                    #endif
+
                     callbacker->getAnalogStickPosChangedCallback()(axisId,mappedValue);
+                    break;
                 default:
                     break;
             }
