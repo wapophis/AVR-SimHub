@@ -499,6 +499,35 @@ SHPWMPin shCONSPIN(CONS_PIN, 40);
 #define GAMEPAD_AXIS_03_SAMPLING 10         //{"Name":"GAMEPAD_AXIS_03_SAMPLING","Title":"Brake axis analog sampling precision","DefaultValue":"10","Type":"list","Condition":"GAMEPAD_AXIS_03_ENABLED>0","ListValues":"10,10 bits(default 0->1024);11,11 bits oversampling (slower 0->2048)"}
 #define GAMEPAD_AXIS_03_EXPONENTIALFACTOR 1 //{"Name":"GAMEPAD_AXIS_03_EXPONENTIALFACTOR","Title":"Brake axis exponential correction","DefaultValue":"1","Type":"double","Condition":"GAMEPAD_AXIS_03_ENABLED>0","dMin":0.1,"dMax":1.9}
 
+
+#define GAMEPAD_AXIS_04_ENABLED 0           //{"Group":"Gamepad classic analog axis","Name":"GAMEPAD_AXIS_04_ENABLED","Title":"EJE X","DefaultValue":"0","Type":"bool"}
+#define GAMEPAD_AXIS_04_PIN 0               //{"Name":"GAMEPAD_AXIS_04_PIN","Title":"X axis analog pin","DefaultValue":"0","Type":"pin;Brake input","Condition":"GAMEPAD_AXIS_04_ENABLED>0"}
+#define GAMEPAD_AXIS_04_MINVALUE 0          //{"Name":"GAMEPAD_AXIS_04_MINVALUE","Title":"X axis analog minimum value","DefaultValue":"0","Type":"int","Condition":"GAMEPAD_AXIS_04_ENABLED>0"}
+#define GAMEPAD_AXIS_04_MAXVALUE 1024       //{"Name":"GAMEPAD_AXIS_04_MAXVALUE","Title":"X axis analog maximum value","DefaultValue":"1024","Type":"int","Condition":"GAMEPAD_AXIS_04_ENABLED>0"}
+#define GAMEPAD_AXIS_04_SAMPLING 10         //{"Name":"GAMEPAD_AXIS_04_SAMPLING","Title":"X axis analog sampling precision","DefaultValue":"10","Type":"list","Condition":"GAMEPAD_AXIS_04_ENABLED>0","ListValues":"10,10 bits(default 0->1024);11,11 bits oversampling (slower 0->2048)"}
+#define GAMEPAD_AXIS_04_EXPONENTIALFACTOR 1 //{"Name":"GAMEPAD_AXIS_04_EXPONENTIALFACTOR","Title":"X axis exponential correction","DefaultValue":"1","Type":"double","Condition":"GAMEPAD_AXIS_04_ENABLED>0","dMin":0.1,"dMax":1.9}
+
+#define GAMEPAD_AXIS_05_ENABLED 0           //{"Name":"GAMEPAD_AXIS_05_ENABLED","Title":"EJE Y","DefaultValue":"0","Type":"bool"}
+#define GAMEPAD_AXIS_05_PIN 0               //{"Name":"GAMEPAD_AXIS_05_PIN","Title":"Y axis analog pin","DefaultValue":"0","Type":"pin;Brake input","Condition":"GAMEPAD_AXIS_05_ENABLED>0"}
+#define GAMEPAD_AXIS_05_MINVALUE 0          //{"Name":"GAMEPAD_AXIS_05_MINVALUE","Title":"Y axis analog minimum value","DefaultValue":"0","Type":"int","Condition":"GAMEPAD_AXIS_05_ENABLED>0"}
+#define GAMEPAD_AXIS_05_MAXVALUE 1024       //{"Name":"GAMEPAD_AXIS_05_MAXVALUE","Title":"Y axis analog maximum value","DefaultValue":"1024","Type":"int","Condition":"GAMEPAD_AXIS_05_ENABLED>0"}
+#define GAMEPAD_AXIS_05_SAMPLING 10         //{"Name":"GAMEPAD_AXIS_05_SAMPLING","Title":"Y axis analog sampling precision","DefaultValue":"10","Type":"list","Condition":"GAMEPAD_AXIS_05_ENABLED>0","ListValues":"10,10 bits(default 0->1024);11,11 bits oversampling (slower 0->2048)"}
+#define GAMEPAD_AXIS_05_EXPONENTIALFACTOR 1 //{"Name":"GAMEPAD_AXIS_05_EXPONENTIALFACTOR","Title":"Y axis exponential correction","DefaultValue":"1","Type":"double","Condition":"GAMEPAD_AXIS_05_ENABLED>0","dMin":0.1,"dMax":1.9}
+
+#define GAMEPAD_AXIS_06_ENABLED 0           //{"Name":"GAMEPAD_AXIS_06_ENABLED","Title":"EJE RX","DefaultValue":"0","Type":"bool"}
+#define GAMEPAD_AXIS_06_PIN 0               //{"Name":"GAMEPAD_AXIS_06_PIN","Title":"RX axis analog pin","DefaultValue":"0","Type":"pin;Brake input","Condition":"GAMEPAD_AXIS_06_ENABLED>0"}
+#define GAMEPAD_AXIS_06_MINVALUE 0          //{"Name":"GAMEPAD_AXIS_06_MINVALUE","Title":"RX axis analog minimum value","DefaultValue":"0","Type":"int","Condition":"GAMEPAD_AXIS_06_ENABLED>0"}
+#define GAMEPAD_AXIS_06_MAXVALUE 1024       //{"Name":"GAMEPAD_AXIS_06_MAXVALUE","Title":"RX axis analog maximum value","DefaultValue":"1024","Type":"int","Condition":"GAMEPAD_AXIS_06_ENABLED>0"}
+#define GAMEPAD_AXIS_06_SAMPLING 10         //{"Name":"GAMEPAD_AXIS_06_SAMPLING","Title":"RX axis analog sampling precision","DefaultValue":"10","Type":"list","Condition":"GAMEPAD_AXIS_06_ENABLED>0","ListValues":"10,10 bits(default 0->1024);11,11 bits oversampling (slower 0->2048)"}
+#define GAMEPAD_AXIS_06_EXPONENTIALFACTOR 1 //{"Name":"GAMEPAD_AXIS_06_EXPONENTIALFACTOR","Title":"RX axis exponential correction","DefaultValue":"1","Type":"double","Condition":"GAMEPAD_AXIS_06_ENABLED>0","dMin":0.1,"dMax":1.9}
+
+#define GAMEPAD_AXIS_07_ENABLED 0           //{"Name":"GAMEPAD_AXIS_07_ENABLED","Title":"EJE RY","DefaultValue":"0","Type":"bool"}
+#define GAMEPAD_AXIS_07_PIN 0               //{"Name":"GAMEPAD_AXIS_07_PIN","Title":"RY axis analog pin","DefaultValue":"0","Type":"pin;Brake input","Condition":"GAMEPAD_AXIS_07_ENABLED>0"}
+#define GAMEPAD_AXIS_07_MINVALUE 0          //{"Name":"GAMEPAD_AXIS_07_MINVALUE","Title":"RY axis analog minimum value","DefaultValue":"0","Type":"int","Condition":"GAMEPAD_AXIS_07_ENABLED>0"}
+#define GAMEPAD_AXIS_07_MAXVALUE 1024       //{"Name":"GAMEPAD_AXIS_07_MAXVALUE","Title":"RY axis analog maximum value","DefaultValue":"1024","Type":"int","Condition":"GAMEPAD_AXIS_07_ENABLED>0"}
+#define GAMEPAD_AXIS_07_SAMPLING 10         //{"Name":"GAMEPAD_AXIS_07_SAMPLING","Title":"RY axis analog sampling precision","DefaultValue":"10","Type":"list","Condition":"GAMEPAD_AXIS_07_ENABLED>0","ListValues":"10,10 bits(default 0->1024);11,11 bits oversampling (slower 0->2048)"}
+#define GAMEPAD_AXIS_07_EXPONENTIALFACTOR 1 //{"Name":"GAMEPAD_AXIS_07_EXPONENTIALFACTOR","Title":"RY axis exponential correction","DefaultValue":"1","Type":"double","Condition":"GAMEPAD_AXIS_07_ENABLED>0","dMin":0.1,"dMax":1.9}
+
 #if(GAMEPAD_AXIS_01_ENABLED == 1)
 
 SHGamepadAxis SHGAMEPADAXIS01(GAMEPAD_AXIS_01_PIN, 0, GAMEPAD_AXIS_01_MINVALUE, GAMEPAD_AXIS_01_MAXVALUE, GAMEPAD_AXIS_01_SAMPLING, GAMEPAD_AXIS_01_EXPONENTIALFACTOR);
@@ -510,6 +539,22 @@ SHGamepadAxis SHGAMEPADAXIS02(GAMEPAD_AXIS_02_PIN, 1, GAMEPAD_AXIS_02_MINVALUE, 
 
 #if(GAMEPAD_AXIS_03_ENABLED == 1)
 SHGamepadAxis SHGAMEPADAXIS03(GAMEPAD_AXIS_03_PIN, 2, GAMEPAD_AXIS_03_MINVALUE, GAMEPAD_AXIS_03_MAXVALUE, GAMEPAD_AXIS_03_SAMPLING, GAMEPAD_AXIS_03_EXPONENTIALFACTOR);
+#endif
+
+#if(GAMEPAD_AXIS_04_ENABLED == 1)
+SHGamepadAxis SHGAMEPADAXIS04(GAMEPAD_AXIS_04_PIN, 2, GAMEPAD_AXIS_04_MINVALUE, GAMEPAD_AXIS_04_MAXVALUE, GAMEPAD_AXIS_04_SAMPLING, GAMEPAD_AXIS_04_EXPONENTIALFACTOR);
+#endif
+
+#if(GAMEPAD_AXIS_05_ENABLED == 1)
+SHGamepadAxis SHGAMEPADAXIS05(GAMEPAD_AXIS_05_PIN, 2, GAMEPAD_AXIS_05_MINVALUE, GAMEPAD_AXIS_05_MAXVALUE, GAMEPAD_AXIS_05_SAMPLING, GAMEPAD_AXIS_05_EXPONENTIALFACTOR);
+#endif
+
+#if(GAMEPAD_AXIS_06_ENABLED == 1)
+SHGamepadAxis SHGAMEPADAXIS06(GAMEPAD_AXIS_06_PIN, 2, GAMEPAD_AXIS_06_MINVALUE, GAMEPAD_AXIS_06_MAXVALUE, GAMEPAD_AXIS_06_SAMPLING, GAMEPAD_AXIS_06_EXPONENTIALFACTOR);
+#endif
+
+#if(GAMEPAD_AXIS_07_ENABLED == 1)
+SHGamepadAxis SHGAMEPADAXIS07(GAMEPAD_AXIS_07_PIN, 2, GAMEPAD_AXIS_07_MINVALUE, GAMEPAD_AXIS_07_MAXVALUE, GAMEPAD_AXIS_07_SAMPLING, GAMEPAD_AXIS_07_EXPONENTIALFACTOR);
 #endif
 //SHGamepadAxis analogAxis[3]={SHGAMEPADAXIS01,SHGAMEPADAXIS02,SHGAMEPADAXIS03};
 #endif // INCLUDE_GAMEPAD
@@ -973,7 +1018,7 @@ unsigned long lastMatrixRefresh = 0;
 void idle(bool critical) {
 
 #if(GAMEPAD_AXIS_01_ENABLED == 1)
-	SHGAMEPADAXIS01.read(random(1024));
+	SHGAMEPADAXIS01.read();
 #endif
 #if(GAMEPAD_AXIS_02_ENABLED == 1)
 	SHGAMEPADAXIS02.read();
@@ -981,6 +1026,20 @@ void idle(bool critical) {
 #if(GAMEPAD_AXIS_03_ENABLED == 1)
 	SHGAMEPADAXIS03.read();
 #endif
+#if(GAMEPAD_AXIS_04_ENABLED == 1)
+	SHGAMEPADAXIS04.read();
+#endif
+#if(GAMEPAD_AXIS_05_ENABLED == 1)
+	SHGAMEPADAXIS05.read();
+#endif
+#if(GAMEPAD_AXIS_06_ENABLED == 1)
+	SHGAMEPADAXIS06.read();
+#endif
+#if(GAMEPAD_AXIS_07_ENABLED == 1)
+	SHGAMEPADAXIS07.read();
+#endif
+
+
 #ifdef  INCLUDE_ENCODERS
 	for (int i = 0; i < ENABLED_ENCODERS_COUNT; i++) {
 		SHRotaryEncoders[i]->read();
@@ -1083,18 +1142,31 @@ void analogAxisChangedEventCallback(int axisId,int value){
 		switch (axisId)
 		{
 		case 0:
-			Serial.println("via 0");
+			//Serial.println("via 0");
 			SHGAMEPADAXIS01.read(value); break;
 		case 1:
-			Serial.println("via 1");
-			Serial.flush();
-			SHGAMEPADAXIS01.read(512); break;
+			//Serial.println("via 1");
+			//Serial.flush();
+			SHGAMEPADAXIS01.read(value); break;
 		case 2:
-			Serial.println("via 2");
-			SHGAMEPADAXIS01.read(value); break;
+			//Serial.println("via 2");
+			SHGAMEPADAXIS02.read(value); break;
 		case 3:
-		Serial.println("via 3");
-			SHGAMEPADAXIS01.read(value); break;
+			//Serial.println("via 3");
+			SHGAMEPADAXIS03.read(value); break;
+		case 4:
+			//Serial.println("via 0");
+			SHGAMEPADAXIS04.read(value); break;
+		case 5:
+			//Serial.println("via 1");
+			//Serial.flush();
+			SHGAMEPADAXIS05.read(512); break;
+		case 6:
+			//Serial.println("via 2");
+			SHGAMEPADAXIS06.read(value); break;
+		case 7:
+			//Serial.println("via 3");
+			SHGAMEPADAXIS07.read(value); break;
 		default:
 			break;
 		}
