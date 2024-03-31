@@ -54,12 +54,18 @@
 #endif
 #define INCLUDE_GAMEPADAXIS                 //{"Name":"INCLUDE_GAMEPADAXIS","Type":"autodefine","Condition":"[GAMEPAD_AXIS_01_ENABLED]>0 || [GAMEPAD_AXIS_02_ENABLED]>0 || [GAMEPAD_AXIS_03_ENABLED]>0"}
 
-#define IC2_BYPASS_SLAVE true
-#define IC2_SERIAL_BYPASS true
 
-#if IC2_SERIAL_BYPASS
-#include <LoopbackStream.h>
-	# define IC2_SERIAL_BYPASS_DEBUG false
+/* IC2 ARDUINO SIMHUB EXTENSION, ACTING AS SLAVE*/
+#define I2C_BYPASS_SLAVE true
+#define I2C_SERIAL_BYPASS true
+
+#if I2C_SERIAL_BYPASS
+	#define I2C_BYPASS_SLAVE true
+	#define I2C_BYPASS_SLAVE_ADRESS 8
+	#define I2C_BYPASS_MASTER false
+	
+	#include <LoopbackStream.h>
+	# define I2C_SERIAL_BYPASS_DEBUG false
 #endif
 
 
@@ -1194,10 +1200,14 @@ FlowSerialDebugPrintLn("Setting up");
 
 
 #if IC2_BYPASS_SLAVE
-	Wire.begin(8);                /* join i2c bus with address 8 */
+	Wire.begin(IC2_BYPASS_SLAVE_ADRESS);                /* join i2c bus with address 8 */
 	Wire.setWireTimeout(1000);
 //	Wire.onReceive(receiveData); /* register receive event */
 	Wire.onReceive(receiveSerialProtocolViaI2c);
+#endif
+
+#if IC2_BYPASS_MASTER
+// TODO: I2C MASTER INITIALIZATION
 #endif
 
 #ifdef INCLUDE_FUELGAUGE
