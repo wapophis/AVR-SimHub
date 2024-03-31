@@ -55,7 +55,7 @@
 #define INCLUDE_GAMEPADAXIS                 //{"Name":"INCLUDE_GAMEPADAXIS","Type":"autodefine","Condition":"[GAMEPAD_AXIS_01_ENABLED]>0 || [GAMEPAD_AXIS_02_ENABLED]>0 || [GAMEPAD_AXIS_03_ENABLED]>0"}
 
 
-/* IC2 ARDUINO SIMHUB EXTENSION, ACTING AS SLAVE*/
+/* I2C ARDUINO SIMHUB EXTENSION, ACTING AS SLAVE*/
 #define I2C_BYPASS_SLAVE true
 #define I2C_SERIAL_BYPASS true
 
@@ -1057,7 +1057,7 @@ void EncoderPositionChanged(int encoderId, int position, byte direction) {
 
 void buttonStatusChanged(int buttonId, byte Status) {
 #ifdef INCLUDE_GAMEPAD
-	#if IC2_SERIAL_BYPASS_DEBUG
+	#if I2C_SERIAL_BYPASS_DEBUG
 	Serial.println();
 	Serial.print("MODO GAMEPAD");
 	Serial.print("BUttonId");
@@ -1116,13 +1116,13 @@ void buttonMatrixStatusChanged(int buttonId, byte Status) {
 }
 #endif
 
- #if IC2_SERIAL_BYPASS
+ #if I2C_SERIAL_BYPASS
  #include "SimHubProtocolDecoder.h"
 // #include <LoopbackStream.h>
  #endif
  EventCallBackManager callbacker;
  void receiveSerialProtocolViaI2c(int howMany){
-	#if IC2_SERIAL_BYPASS_DEBUG
+	#if I2C_SERIAL_BYPASS_DEBUG
  		Serial.print("Received data via I2C with");
  		Serial.print(howMany);
  		Serial.print(" Bytes");
@@ -1132,13 +1132,13 @@ void buttonMatrixStatusChanged(int buttonId, byte Status) {
  }
 
 /****
- * IC2 RECEPTOR INICIAL QUE ACTIVA BOTON EN JOYSTIN
+ * I2C RECEPTOR INICIAL QUE ACTIVA BOTON EN JOYSTIN
 */
 void receiveData(int howMany) {
 
-#ifdef IC2_SERIAL_BYPASS_DEBUG
+#ifdef I2C_SERIAL_BYPASS_DEBUG
   //FlowSerialDebugPrintLn("Received data");
-#if IC2_SERIAL_BYPASS_DEBUG
+#if I2C_SERIAL_BYPASS_DEBUG
  Serial.print("Received data via I2C with");
  Serial.print(howMany);
  Serial.print(" Bytes");
@@ -1187,7 +1187,7 @@ void setup()
 FlowSerialDebugPrintLn("Setting up");
 
 /*** CONFIGURACION DE LOS EVENTOS DE CALLBACK PARA EL PROCESAMIENTO DEL BUS SERIE*/
- #if IC2_SERIAL_BYPASS
+ #if I2C_SERIAL_BYPASS
  //SHGAMEPADAXIS01.read(512);
  callbacker.setButtonCallBack(buttonStatusChanged);
  callbacker.setAnalogAxisChangedEventCallback(analogAxisChangedEventCallback);
@@ -1199,14 +1199,14 @@ FlowSerialDebugPrintLn("Setting up");
 
 
 
-#if IC2_BYPASS_SLAVE
-	Wire.begin(IC2_BYPASS_SLAVE_ADRESS);                /* join i2c bus with address 8 */
+#if I2C_BYPASS_SLAVE
+	Wire.begin(I2C_BYPASS_SLAVE_ADRESS);                /* join i2c bus with address 8 */
 	Wire.setWireTimeout(1000);
 //	Wire.onReceive(receiveData); /* register receive event */
 	Wire.onReceive(receiveSerialProtocolViaI2c);
 #endif
 
-#if IC2_BYPASS_MASTER
+#if I2C_BYPASS_MASTER
 // TODO: I2C MASTER INITIALIZATION
 #endif
 
