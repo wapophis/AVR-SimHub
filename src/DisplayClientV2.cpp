@@ -1183,11 +1183,14 @@ void buttonMatrixStatusChanged(int buttonId, byte Status) {
 }
 #endif
 
- #if I2C_SERIAL_BYPASS
+
+ #if I2C_BYPASS_SLAVE
  #include "SimHubProtocolDecoder.h"
-// #include <LoopbackStream.h>
- #endif
+
+ /*** ATTACH BEHAVIOURS WHEN IS IN SLAVE MODE*/
  EventCallBackManager callbacker;
+
+
  void receiveSerialProtocolViaI2c(int howMany){
 	#if I2C_SERIAL_BYPASS_DEBUG
  		Serial.print("Received data via I2C with");
@@ -1197,52 +1200,9 @@ void buttonMatrixStatusChanged(int buttonId, byte Status) {
 	#endif
  	decodeBuffer(&callbacker,&Wire);
  }
-
-/****
- * I2C RECEPTOR INICIAL QUE ACTIVA BOTON EN JOYSTIN
-*/
-void receiveData(int howMany) {
-
-#ifdef I2C_SERIAL_BYPASS_DEBUG
-  //FlowSerialDebugPrintLn("Received data");
-#if I2C_SERIAL_BYPASS_DEBUG
- Serial.print("Received data via I2C with");
- Serial.print(howMany);
- Serial.print(" Bytes");
- Serial.flush();
-#endif
+ 
  #endif
- int recvBytes=0;
 
-
- int buttonId=-1;
- byte buttonStatus=0;
-
- while (0 <Wire.available()) {
-    char c = Wire.read();      /* receive byte as a character */
-	if(recvBytes==3){
-		buttonId=c;
-	}
-	if(recvBytes==4){
-		buttonStatus=c;
-	}
-	recvBytes++;
-	#ifndef INCLUDE_GAMEPAD
-		if(Serial){
-			Serial.write(c);
-		}
-	#endif
-  }
-  	#ifdef INCLUDE_GAMEPAD
-		buttonStatusChanged(buttonId,buttonStatus);
-
-	#else
-		if(Serial){
-			Serial.flush();
-		}
-	#endif
-
-}
 
 void InitEncoders() ;
 
@@ -1255,30 +1215,26 @@ void setup()
 	//#endif
 FlowSerialDebugPrintLn("Setting up");
 
-/*** CONFIGURACION DE LOS EVENTOS DE CALLBACK PARA EL PROCESAMIENTO DEL BUS SERIE*/
- #if I2C_SERIAL_BYPASS
- //SHGAMEPADAXIS01.read(512);
- callbacker.setButtonCallBack(buttonStatusChanged);
- callbacker.setAnalogAxisChangedEventCallback(analogAxisChangedEventCallback);
- 
-// #ifdef  INCLUDE_ENCODERS
-// callbacker->setEncoderPositionChangedCallback(EncoderPositionChanged);
- #endif
-// #endif
 
+ #if I2C_BYPASS_SLAVE 
+  	callbacker.setButtonCallBack(buttonStatusChanged);
+ 	callbacker.setAnalogAxisChangedEventCallback(analogAxisChangedEventCallback);
+	Wire.begin(I2C_BYPASS_SLAVE_ADRESS);                /* join i2c bus with address 8 */
+	Wire.setWireTimeout(1000);
+	Wire.onReceive(receiveSerialProtocolViaI2c);
+ 
+	// TODO: IN ENCODERS BRANCH
+	// #ifdef  INCLUDE_ENCODERS
+	// callbacker->setEncoderPositionChangedCallback(EncoderPositionChanged);
+	// #endif
+
+ #endif
 
 #if I2C_BYPASS_MASTER
 	Serial.begin(115200);
 	Serial.println("MAIN - SETUP - I2C_SERIAL_BYPASS");
 	I2CTransportManager::setup(&outgoingStream);
 	//axis1.setCallBack(axisStatusChanged);
-#endif
-
-#if I2C_BYPASS_SLAVE
-	Wire.begin(I2C_BYPASS_SLAVE_ADRESS);                /* join i2c bus with address 8 */
-	Wire.setWireTimeout(1000);
-//	Wire.onReceive(receiveData); /* register receive event */
-	Wire.onReceive(receiveSerialProtocolViaI2c);
 #endif
 
 #ifdef INCLUDE_FUELGAUGE
