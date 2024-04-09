@@ -60,14 +60,23 @@
 #define I2C_SERIAL_BYPASS true
 
 #if I2C_SERIAL_BYPASS
+	#define WIRE Wire
+	
 	#define I2C_BYPASS_SLAVE true
+	#define I2C_ADDRESS 0x08
 	#define I2C_BYPASS_SLAVE_ADRESS 8
-	#define I2C_BYPASS_MASTER false
+	#define I2C_BYPASS_MASTER 	false
+	# define I2C_SERIAL_BYPASS_DEBUG false
 	
 	#include <LoopbackStream.h>
-	# define I2C_SERIAL_BYPASS_DEBUG false
+	#include <I2CManager.h>
+	#include <AnalogAxis.h>
+
+	FullLoopbackStream outgoingStream;
+	
 #endif
 
+#define I2C_SERIAL_BYPASS true
 
 #ifdef INCLUDE_GAMEPADAXIS
 #ifndef  INCLUDE_GAMEPAD
@@ -1121,16 +1130,8 @@ void EncoderPositionChanged(int encoderId, int position, byte direction) {
 #endif
 
 void buttonStatusChanged(int buttonId, byte Status) {
-#ifdef INCLUDE_GAMEPAD
-	#if I2C_SERIAL_BYPASS_DEBUG
-	Serial.println();
-	Serial.print("MODO GAMEPAD");
-	Serial.print("BUttonId");
-	Serial.print(buttonId);
-	Serial.print("Status");
-	Serial.print(Status);
-	Serial.flush();
-	#endif
+#ifdef INCLUDE_GAMEPAD && !I2C_BYPASS_MASTER
+
 	Joystick.setButton(TM1638_ENABLEDMODULES * 8 + buttonId - 1, Status);
 	Joystick.sendState();
 #else
@@ -1265,16 +1266,18 @@ FlowSerialDebugPrintLn("Setting up");
 // #endif
 
 
+#if I2C_BYPASS_MASTER
+	Serial.begin(115200);
+	Serial.println("MAIN - SETUP - I2C_SERIAL_BYPASS");
+	I2CTransportManager::setup(&outgoingStream);
+	//axis1.setCallBack(axisStatusChanged);
+#endif
 
 #if I2C_BYPASS_SLAVE
 	Wire.begin(I2C_BYPASS_SLAVE_ADRESS);                /* join i2c bus with address 8 */
 	Wire.setWireTimeout(1000);
 //	Wire.onReceive(receiveData); /* register receive event */
 	Wire.onReceive(receiveSerialProtocolViaI2c);
-#endif
-
-#if I2C_BYPASS_MASTER
-// TODO: I2C MASTER INITIALIZATION
 #endif
 
 #ifdef INCLUDE_FUELGAUGE
@@ -1329,7 +1332,7 @@ FlowSerialDebugPrintLn("Setting up");
 	}
 #endif
 #ifdef INCLUDE_WS2801
-	shRGBLedsWS2801.begin(&WS2801_strip, WS2801_RGBLEDCOUNT, WS2801_RIGHTTOLEFT, WS2801_TESTMODE);
+	shFUELPIN.SetValue((int)80); WS2801_TESTMODE);
 #endif
 
 #ifdef INCLUDE_MAX7221_MODULES

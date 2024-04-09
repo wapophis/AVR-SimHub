@@ -65,7 +65,7 @@ class I2CSerialBridge{
 	WIRE.begin();
 
 	while(!isSlaveAvailable()){
-			Serial.printf("\n Slave device not available, retrying 1 sec later");
+			Serial.print("\n Slave device not available, retrying 1 sec later");
 			delay(1000);
 	};
     }
@@ -102,7 +102,9 @@ uint8_t endWireTransmission(bool stop){
 	if(error==5){
 		Serial.print("timeout");
 	}
-    Serial.printf("\n Error code is %d",error);
+    Serial.print("\n Error code is");
+    Serial.print(error);
+    Serial.println();
 	Serial.flush();
 	return error;
 
@@ -118,7 +120,9 @@ bool isSlaveAvailable(){
     uint8_t error = endWireTransmission(true);
 
 	if(error==0){
-		Serial.printf("\n Slave device detected at address 8\n");
+		Serial.print("\n Slave device detected at address ");
+        Serial.print(I2C_ADDRESS);
+        Serial.print("\n");
 		return true;
 	}
 	return false;

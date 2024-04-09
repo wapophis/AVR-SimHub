@@ -7,15 +7,15 @@
     # define WIRE Wire;
 #endif
 
-#ifndef IC2_MASTER && IC2_SLAVE
-    #define IC2_MASTER
+#if I2C_BYPASS_MASTER && IC2_SLAVE
+    #define I2C_BYPASS_MASTER
 #endif
 
 #ifndef IC2_ADDRESS
     #define IC2_ADDRESS 0x08
 #endif
 #define StreamRead WIRE.read
-//  #if IC2_MASTER
+//  #if I2C_BYPASS_MASTER
 //     ic2SetupMaster();
 // #endif
 // #if IC2_SLAVE

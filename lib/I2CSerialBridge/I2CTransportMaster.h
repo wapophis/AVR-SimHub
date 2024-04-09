@@ -7,7 +7,7 @@
 #error WIRE must be settled to have a correct custom wire config in your MASTER config.
 #endif
 
-#if I2C_MASTER
+#if I2C_BYPASS_MASTER
 I2CSerialBridge instance(I2C_ADDRESS);
 
 class I2CTransportMaster : public I2CTransport {
@@ -32,7 +32,7 @@ class I2CTransportMaster : public I2CTransport {
             Serial.print(I2C_ADDRESS);
             Serial.println("\n");
         #endif
-			#if I2C_MASTER
+			#if I2C_BYPASS_MASTER
 				instance.i2cSetupMaster();
 			#endif
 		
