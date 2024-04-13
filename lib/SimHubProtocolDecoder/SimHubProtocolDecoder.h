@@ -3,7 +3,6 @@
 
 typedef void(*SHButtonChangedEventCallBack) (int, byte);                        //function pointer prototype
 typedef void(*SHRotaryEncoderPositionChangedEventCallBack) (int, int, byte);  //function pointer prototype
-typedef void(*SHAnalogAxisChangedEventCallBack) (int, int);  //function pointer prototype
 /***
  * | PACKET HEADER  | SIZE | DSCRIPTION                     | 
  * | 0x01           |  3   | ENCODER  SIZE 3
@@ -18,7 +17,7 @@ byte packetsPayloadLength[]={3,2,2,3};
 class EventCallBackManager{
      SHButtonChangedEventCallBack shButtonChangedCallback;
      SHRotaryEncoderPositionChangedEventCallBack SHRotaryEncoderPositionChangedCallback;
-     SHAnalogAxisChangedEventCallBack analogStickPosChangedCallback;
+
     public:
         void setButtonCallBack(SHButtonChangedEventCallBack callback){
             shButtonChangedCallback=callback;
@@ -33,21 +32,13 @@ class EventCallBackManager{
          SHRotaryEncoderPositionChangedEventCallBack getEncoderPositionChangedCallback(){
            return SHRotaryEncoderPositionChangedCallback;
         }
-
-        void setAnalogAxisChangedEventCallback(SHAnalogAxisChangedEventCallBack callback){
-                analogStickPosChangedCallback=callback;
-        }
-        SHAnalogAxisChangedEventCallBack getAnalogStickPosChangedCallback(){
-            return analogStickPosChangedCallback;
-        }
-
 };
 
 
 static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
     byte packetType=0x0;
     int size=-1;
-    #if I2C_SERIAL_BYPASS_DEBUG
+    #if IC2_SERIAL_BYPASS_DEBUG
         Serial.print("\n Disponible en buffer ");
         Serial.print(stream->available());
         Serial.print("\n");
@@ -55,17 +46,19 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
     #endif
     if(stream->available()){
        packetType=stream->read();
-        #if I2C_SERIAL_BYPASS_DEBUG
+        #if IC2_SERIAL_BYPASS_DEBUG
         Serial.print("\n packetType ");
         Serial.print(packetType);
         Serial.print("\n");
         Serial.flush();
         #endif
     }
+
+    // CUSTOM PACKETS
     if(packetType==0x09){
         packetType=stream->read();
 
-         #if I2C_SERIAL_BYPASS_DEBUG
+         #if IC2_SERIAL_BYPASS_DEBUG
         Serial.print("\n packetType ");
         Serial.print(packetType);
         Serial.print("\n");
@@ -74,7 +67,7 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
 
         size=stream->read();
 
-        #if I2C_SERIAL_BYPASS_DEBUG
+        #if IC2_SERIAL_BYPASS_DEBUG
         Serial.print("\n Payload Size is ");
         Serial.print(size);
         Serial.print("\n");
@@ -94,7 +87,7 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
                     buttonId=stream->read();
                     byte status;
                     status=stream->read();
-                    #if I2C_SERIAL_BYPASS_DEBUG
+                    #if IC2_SERIAL_BYPASS_DEBUG
                         Serial.print("\n BUtton state changed ");
                         Serial.println(buttonId);
                         Serial.println(status);
@@ -105,23 +98,6 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
                 case 0x04:
                     // TODO: FIXME
                     //callbacker->getButtonCallback()((stream->read())*8+stream->read(),stream->read());
-                    break;
-                case 0x13:
-                    int axisId;
-                    axisId=stream->read();
-                    int mappedValue;
-                    mappedValue= stream->read();
-                    mappedValue = mappedValue << 8;
-                    mappedValue+=stream->read();
-                     #if I2C_SERIAL_BYPASS_DEBUG
-                    Serial.print("\n Analog Stick state changed ");
-                    Serial.println(axisId);
-                    Serial.print(mappedValue);
-                    Serial.print(" ");
-                    Serial.flush();   
-                    #endif
-
-                    callbacker->getAnalogStickPosChangedCallback()(axisId,mappedValue);
                     break;
                 default:
                     break;
