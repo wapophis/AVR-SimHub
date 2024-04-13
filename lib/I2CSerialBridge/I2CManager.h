@@ -58,11 +58,11 @@ class I2CTransportManager  {
 /** SETUP SERIAL BYPASS I2C SLAVE, USE WHEN THIS DEVICE IS CONNECTED TO SIMHUB*/
 #define FlowSerialBegin [](unsigned long baud) { Serial.printf("Hola mundo");}
 #endif
-// #if IC_SLAVE
-// #define StreamRead Serial.read
-// #define StreamFlush Serial.flush
-// #define StreamWrite Serial.write
-// #define StreamPrint Serial.print
-// #define StreamAvailable Serial.available
-// #define FlowSerialBegin [](unsigned long baud) { Serial.begin(baud);}
-// #endif
+ #if I2C_BYPASS_SLAVE
+ #define StreamRead Serial.read
+ #define StreamFlush Serial.flush
+ #define StreamWrite Serial.write
+ #define StreamPrint Serial.print
+ #define StreamAvailable Serial.available
+ #define FlowSerialBegin [](unsigned long baud) { Serial.begin(baud);}
+ #endif
