@@ -664,58 +664,74 @@ SHDebouncer ButtonsDebouncer(10);
 #define ENCODER1_CLK_PIN 7           //{"Name":"ENCODER1_CLK_PIN","Title":"Encoder 1 output A (CLK) pin","DefaultValue":"7","Type":"pin;Encoder 1 CLK","Condition":"ENABLED_ENCODERS_COUNT>0"}
 #define ENCODER1_DT_PIN 8            //{"Name":"ENCODER1_DT_PIN","Title":"Encoder 1 output B (DT) pin","DefaultValue":"8","Type":"pin;Encoder 1 DT","Condition":"ENABLED_ENCODERS_COUNT>0"}
 #define ENCODER1_BUTTON_PIN 9        //{"Name":"ENCODER1_BUTTON_PIN","Title":"Encoder 1 button (SW) pin","DefaultValue":"9","Type":"pin;Encoder 1 SWITCH","Condition":"ENABLED_ENCODERS_COUNT>0","Min":-1}
+#define ENCODER1_BUTTON_TYPE 0		 //{"Name":"ENCODER1_BUTTON_TYPE","Title":"Is virtual button encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>0","ListValues":"0,Physically Connected;1,Serialized"}
 #define ENCODER1_ENABLE_PULLUP 0     //{"Name":"ENCODER1_ENABLE_PULLUP","Title":"Encoder 1 enable pullup resistor","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>0"}
 #define ENCODER1_REVERSE_DIRECTION 0 //{"Name":"ENCODER1_REVERSE_DIRECTION","Title":"Encoder 1 reverse direction","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>0"}
 #define ENCODER1_ENABLE_HALFSTEPS 0  //{"Name":"ENCODER1_ENABLE_HALFSTEPS","Title":"Encoder 1 steps mode","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=1","ListValues":"0,Full steps;1,Half steps"}
+#define ENCODER1_TYPE 0			 	 //{"Name":"ENCODER1_TYPE","Title":"Is virtual encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>0","ListValues":"0,Physically Connected;1,Serialized"}
 
 #define ENCODER2_CLK_PIN 11          //{"Name":"ENCODER2_CLK_PIN","Title":"Encoder 2 output A (CLK) pin","DefaultValue":"11","Type":"pin;Encoder 2 CLK","Condition":"ENABLED_ENCODERS_COUNT>1"}
 #define ENCODER2_DT_PIN 12           //{"Name":"ENCODER2_DT_PIN","Title":"Encoder 2 output B (DT) pin","DefaultValue":"12","Type":"pin;Encoder 2 DT","Condition":"ENABLED_ENCODERS_COUNT>1"}
 #define ENCODER2_BUTTON_PIN 13       //{"Name":"ENCODER2_BUTTON_PIN","Title":"Encoder 2 button (SW) pin","DefaultValue":"13","Type":"pin;Encoder 2 SWITCH","Condition":"ENABLED_ENCODERS_COUNT>1","Min":-1}
+#define ENCODER2_BUTTON_TYPE 0		 //{"Name":"ENCODER2_BUTTON_TYPE","Title":"Is virtual button encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>1","ListValues":"0,Physically Connected;1,Serialized"}
 #define ENCODER2_ENABLE_PULLUP 0     //{"Name":"ENCODER2_ENABLE_PULLUP","Title":"Encoder 2 enable pullup resistor","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>1"}
 #define ENCODER2_REVERSE_DIRECTION 0 //{"Name":"ENCODER2_REVERSE_DIRECTION","Title":"Encoder 2 reverse direction","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>1"}
 #define ENCODER2_ENABLE_HALFSTEPS 0  //{"Name":"ENCODER2_ENABLE_HALFSTEPS","Title":"Encoder 2 steps mode","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=2","ListValues":"0,Full steps;1,Half steps"}
+#define ENCODER2_TYPE 0			 	 //{"Name":"ENCODER1_TYPE","Title":"Is virtual encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>1","ListValues":"0,Physically Connected;1,Serialized"}
 
 #define ENCODER3_CLK_PIN 7           //{"Name":"ENCODER3_CLK_PIN","Title":"Encoder 3 output A (CLK) pin","DefaultValue":"7","Type":"pin;Encoder 3 CLK","Condition":"ENABLED_ENCODERS_COUNT>2"}
 #define ENCODER3_DT_PIN 8            //{"Name":"ENCODER3_DT_PIN","Title":"Encoder 3 output B (DT) pin","DefaultValue":"8","Type":"pin;Encoder 3 DT","Condition":"ENABLED_ENCODERS_COUNT>2"}
 #define ENCODER3_BUTTON_PIN 9        //{"Name":"ENCODER3_BUTTON_PIN","Title":"Encoder 3 button (SW) pin","DefaultValue":"9","Type":"pin;Encoder 3 SWITCH","Condition":"ENABLED_ENCODERS_COUNT>2","Min":-1}
+#define ENCODER3_BUTTON_TYPE 0		 //{"Name":"ENCODER3_BUTTON_TYPE","Title":"Is virtual button encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=3","ListValues":"0,Physically Connected;1,Serialized"}
 #define ENCODER3_ENABLE_PULLUP 0     //{"Name":"ENCODER3_ENABLE_PULLUP","Title":"Encoder 3 enable pullup resistor","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>2"}
 #define ENCODER3_REVERSE_DIRECTION 0 //{"Name":"ENCODER3_REVERSE_DIRECTION","Title":"Encoder 3 reverse direction","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>2"}
 #define ENCODER3_ENABLE_HALFSTEPS 0  //{"Name":"ENCODER3_ENABLE_HALFSTEPS","Title":"Encoder 3 steps mode","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=3","ListValues":"0,Full steps;1,Half steps"}
+#define ENCODER3_TYPE 0			 	 //{"Name":"ENCODER3_TYPE","Title":"Is virtual encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=3","ListValues":"0,Physically Connected;1,Serialized"}
 
 #define ENCODER4_CLK_PIN 7           //{"Name":"ENCODER4_CLK_PIN","Title":"Encoder 4 output A (CLK) pin","DefaultValue":"7","Type":"pin;Encoder 4 CLK","Condition":"ENABLED_ENCODERS_COUNT>3"}
 #define ENCODER4_DT_PIN 8            //{"Name":"ENCODER4_DT_PIN","Title":"Encoder 4 output B (DT) pin","DefaultValue":"8","Type":"pin;Encoder 4 DT","Condition":"ENABLED_ENCODERS_COUNT>3"}
 #define ENCODER4_BUTTON_PIN 9        //{"Name":"ENCODER4_BUTTON_PIN","Title":"Encoder 4 button (SW) pin","DefaultValue":"9","Type":"pin;Encoder 4 SWITCH","Condition":"ENABLED_ENCODERS_COUNT>3","Min":-1}
+#define ENCODER4_BUTTON_TYPE 0		 //{"Name":"ENCODER4_BUTTON_TYPE","Title":"Is virtual button encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>3","ListValues":"0,Physically Connected;1,Serialized"}
 #define ENCODER4_ENABLE_PULLUP 0     //{"Name":"ENCODER4_ENABLE_PULLUP","Title":"Encoder 4 enable pullup resistor","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>3"}
 #define ENCODER4_REVERSE_DIRECTION 0 //{"Name":"ENCODER4_REVERSE_DIRECTION","Title":"Encoder 4 reverse direction","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>3"}
 #define ENCODER4_ENABLE_HALFSTEPS 0  //{"Name":"ENCODER4_ENABLE_HALFSTEPS","Title":"Encoder 4 steps mode","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=4","ListValues":"0,Full steps;1,Half steps"}
+#define ENCODER4_TYPE 0			 	 //{"Name":"ENCODER4_TYPE","Title":"Is virtual encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=4","ListValues":"0,Physically Connected;1,Serialized"}
 
 #define ENCODER5_CLK_PIN 7           //{"Name":"ENCODER5_CLK_PIN","Title":"Encoder 5 output A (CLK) pin","DefaultValue":"7","Type":"pin;Encoder 5 CLK","Condition":"ENABLED_ENCODERS_COUNT>4"}
 #define ENCODER5_DT_PIN 8            //{"Name":"ENCODER5_DT_PIN","Title":"Encoder 5 output B (DT) pin","DefaultValue":"8","Type":"pin;Encoder 5 DT","Condition":"ENABLED_ENCODERS_COUNT>4"}
 #define ENCODER5_BUTTON_PIN 9        //{"Name":"ENCODER5_BUTTON_PIN","Title":"Encoder 5 button (SW) pin","DefaultValue":"9","Type":"pin;Encoder 5 SWITCH","Condition":"ENABLED_ENCODERS_COUNT>4","Min":-1}
+#define ENCODER5_BUTTON_TYPE 0		 //{"Name":"ENCODER5_BUTTON_TYPE","Title":"Is virtual button encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=4","ListValues":"0,Physically Connected;1,Serialized"}
 #define ENCODER5_ENABLE_PULLUP 0     //{"Name":"ENCODER5_ENABLE_PULLUP","Title":"Encoder 5 enable pullup resistor","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>4"}
 #define ENCODER5_REVERSE_DIRECTION 0 //{"Name":"ENCODER5_REVERSE_DIRECTION","Title":"Encoder 5 reverse direction","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>4"}
 #define ENCODER5_ENABLE_HALFSTEPS 0  //{"Name":"ENCODER5_ENABLE_HALFSTEPS","Title":"Encoder 5 steps mode","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=5","ListValues":"0,Full steps;1,Half steps"}
+#define ENCODER5_TYPE 0			 	 //{"Name":"ENCODER5_TYPE","Title":"Is virtual encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=5","ListValues":"0,Physically Connected;1,Serialized"}
 
 #define ENCODER6_CLK_PIN 7           //{"Name":"ENCODER6_CLK_PIN","Title":"Encoder 6 output A (CLK) pin","DefaultValue":"7","Type":"pin;Encoder 6 CLK","Condition":"ENABLED_ENCODERS_COUNT>5"}
 #define ENCODER6_DT_PIN 8            //{"Name":"ENCODER6_DT_PIN","Title":"Encoder 6 output B (DT) pin","DefaultValue":"8","Type":"pin;Encoder 6 DT","Condition":"ENABLED_ENCODERS_COUNT>5"}
 #define ENCODER6_BUTTON_PIN 9        //{"Name":"ENCODER6_BUTTON_PIN","Title":"Encoder 6 button (SW) pin","DefaultValue":"9","Type":"pin;Encoder 6 SWITCH","Condition":"ENABLED_ENCODERS_COUNT>5","Min":-1}
+#define ENCODER6_BUTTON_TYPE 0		 //{"Name":"ENCODER6_BUTTON_TYPE","Title":"Is virtual button encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=5","ListValues":"0,Physically Connected;1,Serialized"}
 #define ENCODER6_ENABLE_PULLUP 0     //{"Name":"ENCODER6_ENABLE_PULLUP","Title":"Encoder 6 enable pullup resistor","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>5"}
 #define ENCODER6_REVERSE_DIRECTION 0 //{"Name":"ENCODER6_REVERSE_DIRECTION","Title":"Encoder 6 reverse direction","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>5"}
 #define ENCODER6_ENABLE_HALFSTEPS 0  //{"Name":"ENCODER6_ENABLE_HALFSTEPS","Title":"Encoder 6 steps mode","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=6","ListValues":"0,Full steps;1,Half steps"}
+#define ENCODER6_TYPE 0			 	 //{"Name":"ENCODER6_TYPE","Title":"Is virtual encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=6","ListValues":"0,Physically Connected;1,Serialized"}
 
 #define ENCODER7_CLK_PIN 7           //{"Name":"ENCODER7_CLK_PIN","Title":"Encoder 7 output A (CLK) pin","DefaultValue":"7","Type":"pin;Encoder 7 CLK","Condition":"ENABLED_ENCODERS_COUNT>6"}
 #define ENCODER7_DT_PIN 8            //{"Name":"ENCODER7_DT_PIN","Title":"Encoder 7 output B (DT) pin","DefaultValue":"8","Type":"pin;Encoder 7 DT","Condition":"ENABLED_ENCODERS_COUNT>6"}
 #define ENCODER7_BUTTON_PIN 9        //{"Name":"ENCODER7_BUTTON_PIN","Title":"Encoder 7 button (SW) pin","DefaultValue":"9","Type":"pin;Encoder 7 SWITCH","Condition":"ENABLED_ENCODERS_COUNT>6","Min":-1}
+#define ENCODER7_BUTTON_TYPE 0		 //{"Name":"ENCODER7_BUTTON_TYPE","Title":"Is virtual button encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=7","ListValues":"0,Physically Connected;1,Serialized"}
 #define ENCODER7_ENABLE_PULLUP 0     //{"Name":"ENCODER7_ENABLE_PULLUP","Title":"Encoder 7 enable pullup resistor","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>6"}
 #define ENCODER7_REVERSE_DIRECTION 0 //{"Name":"ENCODER7_REVERSE_DIRECTION","Title":"Encoder 7 reverse direction","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>6"}
 #define ENCODER7_ENABLE_HALFSTEPS 0  //{"Name":"ENCODER7_ENABLE_HALFSTEPS","Title":"Encoder 7 steps mode","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=7","ListValues":"0,Full steps;1,Half steps"}
+#define ENCODER7_TYPE 0			 	 //{"Name":"ENCODER7_TYPE","Title":"Is virtual encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=7","ListValues":"0,Physically Connected;1,Serialized"}
 
 #define ENCODER8_CLK_PIN 7           //{"Name":"ENCODER8_CLK_PIN","Title":"Encoder 8 output A (CLK) pin","DefaultValue":"7","Type":"pin;Encoder 8 CLK","Condition":"ENABLED_ENCODERS_COUNT>7"}
 #define ENCODER8_DT_PIN 8            //{"Name":"ENCODER8_DT_PIN","Title":"Encoder 8 output B (DT) pin","DefaultValue":"8","Type":"pin;Encoder 8 DT","Condition":"ENABLED_ENCODERS_COUNT>7"}
 #define ENCODER8_BUTTON_PIN 9        //{"Name":"ENCODER8_BUTTON_PIN","Title":"Encoder 8 button (SW) pin","DefaultValue":"9","Type":"pin;Encoder 8 SWITCH","Condition":"ENABLED_ENCODERS_COUNT>7","Min":-1}
+#define ENCODER8_BUTTON_TYPE 0		 //{"Name":"ENCODER8_BUTTON_TYPE","Title":"Is virtual button encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>7","ListValues":"0,Physically Connected;1,Serialized"}
 #define ENCODER8_ENABLE_PULLUP 0     //{"Name":"ENCODER8_ENABLE_PULLUP","Title":"Encoder 8 enable pullup resistor","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>7"}
 #define ENCODER8_REVERSE_DIRECTION 0 //{"Name":"ENCODER8_REVERSE_DIRECTION","Title":"Encoder 8 reverse direction","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>7"}
 #define ENCODER8_ENABLE_HALFSTEPS 0  //{"Name":"ENCODER8_ENABLE_HALFSTEPS","Title":"Encoder 8 steps mode","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=8","ListValues":"0,Full steps;1,Half steps"}
+#define ENCODER8_TYPE 0			 	 //{"Name":"ENCODER8_TYPE","Title":"Is virtual encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>7","ListValues":"0,Physically Connected;1,Serialized"}
 
 SHRotaryEncoder encoder1, encoder2, encoder3, encoder4, encoder5, encoder6, encoder7, encoder8;
 SHRotaryEncoder* SHRotaryEncoders[] = { &encoder1, &encoder2, &encoder3, &encoder4, &encoder5, &encoder6, &encoder7, &encoder8 };
