@@ -1213,32 +1213,48 @@ void analogAxisChangedEventCallback(int axisId,int value){
 
 		switch (axisId)
 		{
+		#if(GAMEPAD_AXIS_01_ENABLED == 1)
 		case 0:
 			//Serial.println("via 0");
 			SHGAMEPADAXIS01.read(value); break;
+		#endif
+		#if(GAMEPAD_AXIS_02_ENABLED == 1)
 		case 1:
 			//Serial.println("via 1");
 			//Serial.flush();
-			SHGAMEPADAXIS01.read(value); break;
+			SHGAMEPADAXIS02.read(value); break;
+		#endif
+		#if(GAMEPAD_AXIS_03_ENABLED == 1)
 		case 2:
 			//Serial.println("via 2");
-			SHGAMEPADAXIS02.read(value); break;
+			SHGAMEPADAXIS03.read(value); break;
+		#endif
+		#if(GAMEPAD_AXIS_04_ENABLED == 1)
 		case 3:
 			//Serial.println("via 3");
-			SHGAMEPADAXIS03.read(value); break;
+			SHGAMEPADAXIS04.read(value); break;
+		#endif
+		#if(GAMEPAD_AXIS_05_ENABLED == 1)
 		case 4:
 			//Serial.println("via 0");
-			SHGAMEPADAXIS04.read(value); break;
+			SHGAMEPADAXIS05.read(value); break;
+		#endif
+		#if(GAMEPAD_AXIS_06_ENABLED == 1)
 		case 5:
 			//Serial.println("via 1");
 			//Serial.flush();
-			SHGAMEPADAXIS05.read(512); break;
+			SHGAMEPADAXIS06.read(512); break;
+		#endif
+		#if(GAMEPAD_AXIS_07_ENABLED == 1)
 		case 6:
 			//Serial.println("via 2");
-			SHGAMEPADAXIS06.read(value); break;
+			SHGAMEPADAXIS07.read(value); break;
+		#endif
+		#if(GAMEPAD_AXIS_08_ENABLED == 1)
 		case 7:
 			//Serial.println("via 3");
-			SHGAMEPADAXIS07.read(value); break;
+			SHGAMEPADAXIS08.read(value); break;
+		#endif
 		default:
 			break;
 		}
