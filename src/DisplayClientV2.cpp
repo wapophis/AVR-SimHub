@@ -733,6 +733,7 @@ SHDebouncer ButtonsDebouncer(10);
 #define ENCODER8_ENABLE_HALFSTEPS 0  //{"Name":"ENCODER8_ENABLE_HALFSTEPS","Title":"Encoder 8 steps mode","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=8","ListValues":"0,Full steps;1,Half steps"}
 #define ENCODER8_TYPE 0			 	 //{"Name":"ENCODER8_TYPE","Title":"Is virtual encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>7","ListValues":"0,Physically Connected;1,Serialized"}
 
+int ENCODER_TYPE[]={ENCODER1_TYPE,ENCODER2_TYPE,ENCODER3_TYPE,ENCODER4_TYPE,ENCODER5_TYPE,ENCODER6_TYPE,ENCODER7_TYPE,ENCODER8_TYPE};
 SHRotaryEncoder encoder1, encoder2, encoder3, encoder4, encoder5, encoder6, encoder7, encoder8;
 SHRotaryEncoder* SHRotaryEncoders[] = { &encoder1, &encoder2, &encoder3, &encoder4, &encoder5, &encoder6, &encoder7, &encoder8 };
 #endif
@@ -1070,7 +1071,9 @@ void idle(bool critical) {
 #endif
 #ifdef  INCLUDE_ENCODERS
 	for (int i = 0; i < ENABLED_ENCODERS_COUNT; i++) {
-		SHRotaryEncoders[i]->read();
+		if(ENCODER_TYPE[i]==0){
+			SHRotaryEncoders[i]->read();
+		}
 	}
 #endif
 
@@ -1129,7 +1132,7 @@ void idle(bool critical) {
 #ifdef  INCLUDE_ENCODERS
 void UpdateGamepadEncodersState(bool sendState);
 void EncoderPositionChanged(int encoderId, int position, byte direction) {
-#ifdef INCLUDE_GAMEPAD
+#ifdef INCLUDE_GAMEPAD && !I2C_BYPASS_MASTER && I2C_BYPASS_SLAVE
 	UpdateGamepadEncodersState(true);
 #else
 	if (direction < 2) {
@@ -1139,7 +1142,7 @@ void EncoderPositionChanged(int encoderId, int position, byte direction) {
 		arqserial.CustomPacketSendByte(position);
 		arqserial.CustomPacketEnd();
 	}
-	else {
+	else {											// BUTTON CLICK positionChangedCallback(id, counter, buttonState == HIGH ? 2 : 3);
 		arqserial.CustomPacketStart(0x02, 2);
 		arqserial.CustomPacketSendByte(encoderId);
 		arqserial.CustomPacketSendByte(direction - 2);
@@ -1463,14 +1466,14 @@ void setup()
 
 #ifdef  INCLUDE_ENCODERS
 void InitEncoders() {
-	if (ENABLED_ENCODERS_COUNT > 0) encoder1.begin(ENCODER1_CLK_PIN, ENCODER1_DT_PIN, ENCODER1_BUTTON_PIN, ENCODER1_REVERSE_DIRECTION, ENCODER1_ENABLE_PULLUP, 1, ENCODER1_ENABLE_HALFSTEPS, EncoderPositionChanged);
-	if (ENABLED_ENCODERS_COUNT > 1) encoder2.begin(ENCODER2_CLK_PIN, ENCODER2_DT_PIN, ENCODER2_BUTTON_PIN, ENCODER2_REVERSE_DIRECTION, ENCODER2_ENABLE_PULLUP, 2, ENCODER2_ENABLE_HALFSTEPS, EncoderPositionChanged);
-	if (ENABLED_ENCODERS_COUNT > 2) encoder3.begin(ENCODER3_CLK_PIN, ENCODER3_DT_PIN, ENCODER3_BUTTON_PIN, ENCODER3_REVERSE_DIRECTION, ENCODER3_ENABLE_PULLUP, 3, ENCODER3_ENABLE_HALFSTEPS, EncoderPositionChanged);
-	if (ENABLED_ENCODERS_COUNT > 3) encoder4.begin(ENCODER4_CLK_PIN, ENCODER4_DT_PIN, ENCODER4_BUTTON_PIN, ENCODER4_REVERSE_DIRECTION, ENCODER4_ENABLE_PULLUP, 4, ENCODER4_ENABLE_HALFSTEPS, EncoderPositionChanged);
-	if (ENABLED_ENCODERS_COUNT > 4) encoder5.begin(ENCODER5_CLK_PIN, ENCODER5_DT_PIN, ENCODER5_BUTTON_PIN, ENCODER5_REVERSE_DIRECTION, ENCODER5_ENABLE_PULLUP, 5, ENCODER5_ENABLE_HALFSTEPS, EncoderPositionChanged);
-	if (ENABLED_ENCODERS_COUNT > 5) encoder6.begin(ENCODER6_CLK_PIN, ENCODER6_DT_PIN, ENCODER6_BUTTON_PIN, ENCODER6_REVERSE_DIRECTION, ENCODER6_ENABLE_PULLUP, 6, ENCODER6_ENABLE_HALFSTEPS, EncoderPositionChanged);
-	if (ENABLED_ENCODERS_COUNT > 6) encoder7.begin(ENCODER7_CLK_PIN, ENCODER7_DT_PIN, ENCODER7_BUTTON_PIN, ENCODER7_REVERSE_DIRECTION, ENCODER7_ENABLE_PULLUP, 7, ENCODER7_ENABLE_HALFSTEPS, EncoderPositionChanged);
-	if (ENABLED_ENCODERS_COUNT > 7) encoder8.begin(ENCODER8_CLK_PIN, ENCODER8_DT_PIN, ENCODER8_BUTTON_PIN, ENCODER8_REVERSE_DIRECTION, ENCODER8_ENABLE_PULLUP, 8, ENCODER8_ENABLE_HALFSTEPS, EncoderPositionChanged);
+	if (ENABLED_ENCODERS_COUNT > 0 && ENCODER1_TYPE==0) encoder1.begin(ENCODER1_CLK_PIN, ENCODER1_DT_PIN, ENCODER1_BUTTON_PIN, ENCODER1_REVERSE_DIRECTION, ENCODER1_ENABLE_PULLUP, 1, ENCODER1_ENABLE_HALFSTEPS, EncoderPositionChanged);
+	if (ENABLED_ENCODERS_COUNT > 1 && ENCODER2_TYPE==0) encoder2.begin(ENCODER2_CLK_PIN, ENCODER2_DT_PIN, ENCODER2_BUTTON_PIN, ENCODER2_REVERSE_DIRECTION, ENCODER2_ENABLE_PULLUP, 2, ENCODER2_ENABLE_HALFSTEPS, EncoderPositionChanged);
+	if (ENABLED_ENCODERS_COUNT > 2 && ENCODER3_TYPE==0) encoder3.begin(ENCODER3_CLK_PIN, ENCODER3_DT_PIN, ENCODER3_BUTTON_PIN, ENCODER3_REVERSE_DIRECTION, ENCODER3_ENABLE_PULLUP, 3, ENCODER3_ENABLE_HALFSTEPS, EncoderPositionChanged);
+	if (ENABLED_ENCODERS_COUNT > 3 && ENCODER4_TYPE==0) encoder4.begin(ENCODER4_CLK_PIN, ENCODER4_DT_PIN, ENCODER4_BUTTON_PIN, ENCODER4_REVERSE_DIRECTION, ENCODER4_ENABLE_PULLUP, 4, ENCODER4_ENABLE_HALFSTEPS, EncoderPositionChanged);
+	if (ENABLED_ENCODERS_COUNT > 4 && ENCODER5_TYPE==0) encoder5.begin(ENCODER5_CLK_PIN, ENCODER5_DT_PIN, ENCODER5_BUTTON_PIN, ENCODER5_REVERSE_DIRECTION, ENCODER5_ENABLE_PULLUP, 5, ENCODER5_ENABLE_HALFSTEPS, EncoderPositionChanged);
+	if (ENABLED_ENCODERS_COUNT > 5 && ENCODER6_TYPE==0) encoder6.begin(ENCODER6_CLK_PIN, ENCODER6_DT_PIN, ENCODER6_BUTTON_PIN, ENCODER6_REVERSE_DIRECTION, ENCODER6_ENABLE_PULLUP, 6, ENCODER6_ENABLE_HALFSTEPS, EncoderPositionChanged);
+	if (ENABLED_ENCODERS_COUNT > 6 && ENCODER7_TYPE==0) encoder7.begin(ENCODER7_CLK_PIN, ENCODER7_DT_PIN, ENCODER7_BUTTON_PIN, ENCODER7_REVERSE_DIRECTION, ENCODER7_ENABLE_PULLUP, 7, ENCODER7_ENABLE_HALFSTEPS, EncoderPositionChanged);
+	if (ENABLED_ENCODERS_COUNT > 7 && ENCODER8_TYPE==0) encoder8.begin(ENCODER8_CLK_PIN, ENCODER8_DT_PIN, ENCODER8_BUTTON_PIN, ENCODER8_REVERSE_DIRECTION, ENCODER8_ENABLE_PULLUP, 8, ENCODER8_ENABLE_HALFSTEPS, EncoderPositionChanged);
 }
 #endif
 
@@ -1502,12 +1505,40 @@ void UpdateGamepadEncodersState(bool sendState) {
 	int btnidx = TM1638_ENABLEDMODULES * 8 + ENABLED_BUTTONS_COUNT + ENABLED_BUTTONMATRIX * (BMATRIX_COLS * BMATRIX_ROWS);
 	unsigned long refTime = millis();
 	for (int i = 0; i < ENABLED_ENCODERS_COUNT; i++) {
-		uint8_t dir = SHRotaryEncoders[i]->getDirection(MICRO_GAMEPAD_ENCODERPRESSTIME, refTime);
-		Joystick.setButton(btnidx, dir == 0);
-		Joystick.setButton(btnidx + 1, dir == 1);
-		Joystick.setButton(btnidx + 2, SHRotaryEncoders[i]->getPressed());
+		if(ENCODER_TYPE[i]==0){
+			uint8_t dir = SHRotaryEncoders[i]->getDirection(MICRO_GAMEPAD_ENCODERPRESSTIME, refTime);
+			// #if I2C_SERIAL_BYPASS && I2C_BYPASS_MASTER	// SEND DATA VIA I2C WITH CUSTOM PROTOCOL BECAUSE IT'S SEEMS NOT SUPPORTED VIA SERIAL
+					
+			// 		Serial.print("Serializing EncodersState via I2C ");
 
-		btnidx += 3;
+			// 		arqserial.CustomPacketStart(0x03, 2);
+			// 		arqserial.CustomPacketSendByte(btnidx );
+			// 		arqserial.CustomPacketSendByte(dir == 0);
+			// 		arqserial.CustomPacketEnd();
+			// 		StreamFlush();
+
+			// 		arqserial.CustomPacketStart(0x03, 2);
+			// 		arqserial.CustomPacketSendByte(btnidx + 1);
+			// 		arqserial.CustomPacketSendByte(dir == 1);
+			// 		arqserial.CustomPacketEnd();
+			// 		StreamFlush();
+
+			// 		arqserial.CustomPacketStart(0x03, 2);
+			// 		arqserial.CustomPacketSendByte(btnidx + 2);
+			// 		arqserial.CustomPacketSendByte(SHRotaryEncoders[i]->getPressed());
+			// 		arqserial.CustomPacketEnd();
+			// 		StreamFlush();
+				
+			// #else
+				
+				Joystick.setButton(btnidx, dir == 0);
+				Joystick.setButton(btnidx + 1, dir == 1);
+				Joystick.setButton(btnidx + 2, SHRotaryEncoders[i]->getPressed());
+				btnidx += 3;
+			// #endif
+			
+		}
+		
 	}
 
 	if (sendState)
