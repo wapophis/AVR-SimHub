@@ -1132,8 +1132,17 @@ void idle(bool critical) {
 #ifdef  INCLUDE_ENCODERS
 void UpdateGamepadEncodersState(bool sendState);
 void EncoderPositionChanged(int encoderId, int position, byte direction) {
-#ifdef INCLUDE_GAMEPAD && !I2C_BYPASS_MASTER && I2C_BYPASS_SLAVE
-	UpdateGamepadEncodersState(true);
+#ifdef INCLUDE_GAMEPAD || ( INCLUDE_GAMEPAD && !I2C_BYPASS_MASTER && I2C_BYPASS_SLAVE && I2C_SERIAL_BYPASS)
+	
+	if(ENCODER_TYPE[encoderId]==0){
+		UpdateGamepadEncodersState(true);
+	}
+	#if I2C_SERIAL_BYPASS && I2C_BYPASS_SLAVE
+		if(ENCODER_TYPE[encoderId]==1){
+			UpdateGamepadEncodersState(encoderId,position,direction,true);
+		}
+	#endif
+
 #else
 	if (direction < 2) {
 		arqserial.CustomPacketStart(0x01, 3);
@@ -1153,7 +1162,7 @@ void EncoderPositionChanged(int encoderId, int position, byte direction) {
 #endif
 
 void buttonStatusChanged(int buttonId, byte Status) {
-#ifdef INCLUDE_GAMEPAD && !I2C_BYPASS_MASTER
+#ifdef INCLUDE_GAMEPAD
 	Serial.print("Using Joystick Support");
 	Joystick.setButton(TM1638_ENABLEDMODULES * 8 + buttonId - 1, Status);
 	Joystick.sendState();
@@ -1258,9 +1267,9 @@ void setup()
 	Wire.onReceive(receiveSerialProtocolViaI2c);
  
 	// TODO: IN ENCODERS BRANCH
-	// #ifdef  INCLUDE_ENCODERS
-	// callbacker->setEncoderPositionChangedCallback(EncoderPositionChanged);
-	// #endif
+	 #ifdef  INCLUDE_ENCODERS
+	 callbacker->setEncoderPositionChangedCallback(EncoderPositionChanged);
+	 #endif
 
  #endif
 
@@ -1501,6 +1510,27 @@ void UpdateGamepadState() {
 }
 
 #ifdef INCLUDE_ENCODERS
+	#if I2C_SERIAL_BYPASS && I2C_BYPASS_SLAVE
+		void UpdateGamepadEncodersState(int encoderId, int position, byte direction,bool sendState){
+				int btnidx = TM1638_ENABLEDMODULES * 8 + ENABLED_BUTTONS_COUNT + ENABLED_BUTTONMATRIX * (BMATRIX_COLS * BMATRIX_ROWS);
+				unsigned long refTime = millis();
+				for (int i = 0; i < ENABLED_ENCODERS_COUNT; i++) {
+					if(ENCODER_TYPE[i]==1){
+						if(direction==0xD7){
+							Joystick.setButton(btnidx + 2, direction);
+						}
+						else{
+							Joystick.setButton(btnidx, direction == 0);
+							Joystick.setButton(btnidx + 1, direction == 1);
+						}
+						
+						btnidx += 3;
+					}
+				}
+		}
+		
+	#endif
+
 void UpdateGamepadEncodersState(bool sendState) {
 	int btnidx = TM1638_ENABLEDMODULES * 8 + ENABLED_BUTTONS_COUNT + ENABLED_BUTTONMATRIX * (BMATRIX_COLS * BMATRIX_ROWS);
 	unsigned long refTime = millis();

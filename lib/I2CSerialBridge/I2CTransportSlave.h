@@ -8,6 +8,10 @@
 #error WIRE must be settled to have a correct custom wire config in your SLAVE config.
 #endif
 
+#ifndef I2C_ADDRESS
+#error I2C_ADDRESS must be settled to have a correct custom wire config in your SLAVE config.
+#endif
+
 class I2CTransportSlave : public I2CTransport {
 	static Stream *outgoingStream;
     public:
@@ -35,7 +39,7 @@ class I2CTransportSlave : public I2CTransport {
 	};
 
 	 void ic2SetupSlave(){
-		WIRE.begin(IC2_ADDRESS);
+		WIRE.begin(I2C_ADDRESS);
 		/**
 		 * BECAUSE THERE IS NO JOYSTICK SUPPORT IN THE ESP IMPL DEFAULT IMPL FOR ESP IS THIS IMPL TO RESEND ALL THE FLOW
 		 * TO THE TRANSPORT STREAM WHICH IS CONFIGURED FOR THE DEVICE. 

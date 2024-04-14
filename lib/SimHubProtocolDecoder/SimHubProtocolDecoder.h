@@ -77,10 +77,10 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
 
         switch (packetType){
                 case 0x01:
-                   // callbacker->getEncoderPositionChangedCallback()(stream->read(),stream->read(),stream->read());
+                    callbacker->getEncoderPositionChangedCallback()(stream->read(),stream->read(),stream->read());
                     break;
                 case 0x02:
-                    //callbacker->getEncoderPositionChangedCallback()(stream->read(),stream->read(),stream->read());
+                    callbacker->getEncoderPositionChangedCallback()(stream->read(),stream->read(),0xD7); // 0XD7 Identify a button status changed 
                     break;
                 case 0x03:
                     int buttonId;

@@ -144,7 +144,7 @@ private:
 	}
 
 	void SendAcq(uint8_t packetId)
-	{
+	{				//Serial1.printf("\nread[data]: [%d]",res);
 		StreamWrite(0x03);
 		StreamWrite(packetId);
 		StreamFlush();
