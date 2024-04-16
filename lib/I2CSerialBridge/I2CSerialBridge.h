@@ -6,7 +6,7 @@
 #error WIRE must be settled to have a correct custom wire config in your MASTER config.
 #endif
 
-class I2CSerialBridge{
+class    I2CSerialBridge{
       FullLoopbackStream *outgoingStream;
       uint8_t address;
     public:
@@ -63,13 +63,21 @@ class I2CSerialBridge{
 
      /** SETUP SERIAL BYPASS I2C MASTER, USE WHEN THIS DEVICE COMMAND THE SENDING WORKFLOW*/
     void i2cSetupMaster(){
-	WIRE.begin();
-    Wire.setWireTimeout(300);
+        #if I2C_SERIAL_BYPASS_DEBUG
+            Serial.print("WIRE.BEGIN(), initializing....");
+        #endif
+        WIRE.begin();
+          #if I2C_SERIAL_BYPASS_DEBUG
+            Serial.print("WIRE CONFIGURING TIMEOUT 300 ms .... ");
+        #endif
+        WIRE.setWireTimeout(300);
 
-	while(!isSlaveAvailable()){
-			Serial.print("\n Slave device not available, retrying 1 sec later");
-			delay(1000);
-	};
+        while(!isSlaveAvailable()){
+                #if I2C_SERIAL_BYPASS_DEBUG
+                    Serial.print("\n Slave device not available, retrying 1 sec later");
+                #endif
+                delay(1000);
+        };
     }
 
     private:
