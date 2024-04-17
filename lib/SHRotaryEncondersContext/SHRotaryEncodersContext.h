@@ -1,0 +1,6 @@
+class SHRotaryEncoderContext {
+private:
+   
+
+public:
+};
