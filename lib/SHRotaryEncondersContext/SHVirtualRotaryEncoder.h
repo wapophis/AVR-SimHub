@@ -1,3 +1,4 @@
+#pragma once
 #ifndef __SHVIRTUALROTARYENCODER_H__
 #define __SHVIRTUALROTARYENCODER_H__
 
@@ -12,9 +13,9 @@ private:
 
 public:
 
-    SHVirtualRotaryEncoder(SHRotaryEncoderContext context){
-        this->context=&context;
-    }
+    // SHVirtualRotaryEncoder(SHRotaryEncoderContext context){
+    //     this->context=&context;
+    // }
 
     void begin(uint8_t outputAPin, uint8_t outputBPin, int buttonPin, bool reverse, bool enablePullup, byte encoderid, bool half, SHRotaryEncoderPositionChanged changedcallback) override{
         SHRotaryEncoder::begin(outputAPin,outputBPin,buttonPin,reverse,enablePullup,encoderid,half,changedcallback);

@@ -1295,7 +1295,10 @@ void setup()
 
 #if I2C_BYPASS_SLAVE 
 	Serial.println("MAIN - SETUP - I2C_SERIAL_BYPASS AS SLAVE");
+	#ifdef INCLUDE_BUTTONS
   	callbacker.setButtonCallBack(buttonStatusChanged);
+	#endif
+
 // 	callbacker.setAnalogAxisChangedEventCallback(analogAxisChangedEventCallback);
 	Wire.begin(I2C_BYPASS_SLAVE_ADRESS);                /* join i2c bus with address 8 */
 	Wire.setWireTimeout(1000);
@@ -1510,41 +1513,37 @@ void setup()
 }
 
 #ifdef  INCLUDE_ENCODERS
+#include <SHVirtualRotaryEncoder.h>
 void InitEncoders() {
 	for(int i=0;i<ENABLED_ENCODERS_COUNT;i++){
-		SHRotaryEncoders[i]=new SHRotaryEncoder();
+		if(ENCODER_TYPE[i]==0)
+			SHRotaryEncoders[i]=new SHRotaryEncoder();
+		if(ENCODER_TYPE[i]==1)
+			SHRotaryEncoders[i]=new SHVirtualRotaryEncoder();
 		switch (i)
 		{
-			case 0:
-				if(ENCODER_TYPE==0)
+			case 0:			
 					SHRotaryEncoders[0]->begin(ENCODER1_CLK_PIN, ENCODER1_DT_PIN, ENCODER1_BUTTON_PIN, ENCODER1_REVERSE_DIRECTION, ENCODER1_ENABLE_PULLUP, 1, ENCODER1_ENABLE_HALFSTEPS, EncoderPositionChanged);
 				break;
 			case 1:
-				if(ENCODER_TYPE==0)
 					SHRotaryEncoders[1]->begin(ENCODER2_CLK_PIN, ENCODER2_DT_PIN, ENCODER2_BUTTON_PIN, ENCODER2_REVERSE_DIRECTION, ENCODER2_ENABLE_PULLUP, 2, ENCODER2_ENABLE_HALFSTEPS, EncoderPositionChanged);
 				break;
 			case 2:
-				if(ENCODER_TYPE==0)
 					SHRotaryEncoders[2]->begin(ENCODER3_CLK_PIN, ENCODER3_DT_PIN, ENCODER3_BUTTON_PIN, ENCODER3_REVERSE_DIRECTION, ENCODER3_ENABLE_PULLUP, 3, ENCODER3_ENABLE_HALFSTEPS, EncoderPositionChanged);
 				break;
 			case 3:
-				if(ENCODER_TYPE==0)
 					SHRotaryEncoders[3]->begin(ENCODER4_CLK_PIN, ENCODER4_DT_PIN, ENCODER4_BUTTON_PIN, ENCODER4_REVERSE_DIRECTION, ENCODER4_ENABLE_PULLUP, 4, ENCODER4_ENABLE_HALFSTEPS, EncoderPositionChanged);
 				break;
 			case 4:
-				if(ENCODER_TYPE==0)
 					SHRotaryEncoders[4]->begin(ENCODER5_CLK_PIN, ENCODER5_DT_PIN, ENCODER5_BUTTON_PIN, ENCODER5_REVERSE_DIRECTION, ENCODER5_ENABLE_PULLUP, 5, ENCODER5_ENABLE_HALFSTEPS, EncoderPositionChanged);
 				break;
 			case 5:
-				if(ENCODER_TYPE==0)
 					SHRotaryEncoders[5]->begin(ENCODER6_CLK_PIN, ENCODER6_DT_PIN, ENCODER6_BUTTON_PIN, ENCODER6_REVERSE_DIRECTION, ENCODER6_ENABLE_PULLUP, 6, ENCODER6_ENABLE_HALFSTEPS, EncoderPositionChanged);
 				break;
 			case 6:
-				if(ENCODER_TYPE==0)
 					SHRotaryEncoders[6]->begin(ENCODER7_CLK_PIN, ENCODER7_DT_PIN, ENCODER7_BUTTON_PIN, ENCODER7_REVERSE_DIRECTION, ENCODER7_ENABLE_PULLUP, 7, ENCODER7_ENABLE_HALFSTEPS, EncoderPositionChanged);
 				break;
 			case 7:
-				if(ENCODER_TYPE==0)
 					SHRotaryEncoders[7]->begin(ENCODER8_CLK_PIN, ENCODER8_DT_PIN, ENCODER8_BUTTON_PIN, ENCODER8_REVERSE_DIRECTION, ENCODER8_ENABLE_PULLUP, 8, ENCODER8_ENABLE_HALFSTEPS, EncoderPositionChanged);
 				break;		
 
