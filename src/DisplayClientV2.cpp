@@ -50,7 +50,7 @@
 //#define INCLUDE_SHAKEITPWM                  //{"Name":"INCLUDE_SHAKEITPWM","Type":"autodefine","Condition":"[SHAKEITPWM_ENABLED_MOTORS]>0"}
 //#define INCLUDE_SHAKEITPWMFANS              //{"Name":"INCLUDE_SHAKEITPWMFANS","Type":"autodefine","Condition":"[SHAKEITPWMFANS_ENABLED_MOTORS]>0"}
 #if defined (__AVR_ATmega32U4__)
-#define INCLUDE_GAMEPAD                     //{"Name":"INCLUDE_GAMEPAD","Type":"autodefine","Condition":"[ENABLE_MICRO_GAMEPAD]>0"}
+#define INCLUDE_GAMEPAD   true                  //{"Name":"INCLUDE_GAMEPAD","Type":"autodefine","Condition":"[ENABLE_MICRO_GAMEPAD]>0"}
 #endif
 #define INCLUDE_GAMEPADAXIS                 //{"Name":"INCLUDE_GAMEPADAXIS","Type":"autodefine","Condition":"[GAMEPAD_AXIS_01_ENABLED]>0 || [GAMEPAD_AXIS_02_ENABLED]>0 || [GAMEPAD_AXIS_03_ENABLED]>0"}
 
@@ -62,10 +62,10 @@
 #if I2C_SERIAL_BYPASS
 	#define WIRE Wire
 	
-	#define I2C_BYPASS_SLAVE false
+	#define I2C_BYPASS_SLAVE true
 	#define I2C_ADDRESS 0x08
 	#define I2C_BYPASS_SLAVE_ADRESS 8
-	#define I2C_BYPASS_MASTER 	true
+	#define I2C_BYPASS_MASTER 	false
 	# define I2C_SERIAL_BYPASS_DEBUG true
 	
 	#include <LoopbackStream.h>
@@ -89,7 +89,7 @@
 #endif
 
 #define INCLUDE_ENCODERS                    //{"Name":"INCLUDE_ENCODERS","Type":"autodefine","Condition":"[ENABLED_ENCODERS_COUNT]>0","IsInput":true}
-//#define INCLUDE_BUTTONS                     //{"Name":"INCLUDE_BUTTONS","Type":"autodefine","Condition":"[ENABLED_BUTTONS_COUNT]>0","IsInput":true}
+#define INCLUDE_BUTTONS                     //{"Name":"INCLUDE_BUTTONS","Type":"autodefine","Condition":"[ENABLED_BUTTONS_COUNT]>0","IsInput":true}
 //#define INCLUDE_BUTTONMATRIX                //{"Name":"INCLUDE_BUTTONMATRIX","Type":"autodefine","Condition":"[ENABLED_BUTTONMATRIX]>0","IsInput":true}
 //#define INCLUDE_DM163_MATRIX                //{"Name":"INCLUDE_DM163_MATRIX","Type":"autodefine","Condition":"[DM163_MATRIX_ENABLED]>0"}
 //#define INCLUDE_SUNFOUNDERSH104P_MATRIX     //{"Name":"INCLUDE_SUNFOUNDERSH104P_MATRIX","Type":"autodefine","Condition":"[SUNFOUNDERSH104P_MATRIX_ENABLED]>0"}
@@ -532,19 +532,19 @@ SHGamepadAxis SHGAMEPADAXIS03(GAMEPAD_AXIS_03_PIN, 2, GAMEPAD_AXIS_03_MINVALUE, 
 // ----------------------- ADDITIONAL BUTTONS ---------------------------------------------------------------
 // https://github.com/zegreatclan/SimHub/wiki/Arduino-Press-Buttons
 // ----------------------------------------------------------------------------------------------------------
-#define ENABLED_BUTTONS_COUNT 0 //{"Group":"Additional Buttons","Name":"ENABLED_BUTTONS_COUNT","Title":"Additional buttons (directly connected to the arduino, 12 max) buttons count","DefaultValue":"0","Type":"int","Max":12}
+#define ENABLED_BUTTONS_COUNT 2 //{"Group":"Additional Buttons","Name":"ENABLED_BUTTONS_COUNT","Title":"Additional buttons (directly connected to the arduino, 12 max) buttons count","DefaultValue":"0","Type":"int","Max":12}
 #ifdef  INCLUDE_BUTTONS
 
 // PLACE BUTTONS IN MASTER DEVICE OVER THE 100 TO PREVENT CONFLICT WITH SLAVE PINS
-#define BUTTON_PIN_1 4       //{"Name":"BUTTON_PIN_1","Title":"1'st Additional button digital pin","DefaultValue":"3","Type":"pin;Button 1","Condition":"ENABLED_BUTTONS_COUNT>=1"}
+#define BUTTON_PIN_1 40       //{"Name":"BUTTON_PIN_1","Title":"1'st Additional button digital pin","DefaultValue":"3","Type":"pin;Button 1","Condition":"ENABLED_BUTTONS_COUNT>=1"}
 #define BUTTON_WIRINGMODE_1 0   //{"Name":"BUTTON_WIRINGMODE_1","Title":"1'st Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_1 0    //{"Name":"BUTTON_LOGICMODE_1","Title":"1'st Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_1 0			//{"Name":"BUTTON_TYPE_1","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_1 1			//{"Name":"BUTTON_TYPE_1","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_2 5          //{"Name":"BUTTON_PIN_2","Title":"2'nd Additional button digital pin","DefaultValue":"3","Type":"pin;Button 2","Condition":"ENABLED_BUTTONS_COUNT>=2"}
+#define BUTTON_PIN_2 46          //{"Name":"BUTTON_PIN_2","Title":"2'nd Additional button digital pin","DefaultValue":"3","Type":"pin;Button 2","Condition":"ENABLED_BUTTONS_COUNT>=2"}
 #define BUTTON_WIRINGMODE_2 0   //{"Name":"BUTTON_WIRINGMODE_2","Title":"2'nd Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=2","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_2 0    //{"Name":"BUTTON_LOGICMODE_2","Title":"2'nd Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=2","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_2 0			//{"Name":"BUTTON_TYPE_2","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=2","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_2 1			//{"Name":"BUTTON_TYPE_2","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=2","ListValues":"0,Physically Connected;1,Serialized"}
 
 #define BUTTON_PIN_3 6          //{"Name":"BUTTON_PIN_3","Title":"3'rd Additional button digital pin","DefaultValue":"3","Type":"pin;Button 3","Condition":"ENABLED_BUTTONS_COUNT>=3"}
 #define BUTTON_WIRINGMODE_3 0   //{"Name":"BUTTON_WIRINGMODE_3","Title":"3'rd Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=3","ListValues":"0,Pin to GND;1,VCC to pin"}
@@ -661,14 +661,14 @@ SHDebouncer ButtonsDebouncer(10);
 #ifdef  INCLUDE_ENCODERS
 #include "SHRotaryEncoder.h"
 
-#define ENCODER1_CLK_PIN 6           //{"Name":"ENCODER1_CLK_PIN","Title":"Encoder 1 output A (CLK) pin","DefaultValue":"7","Type":"pin;Encoder 1 CLK","Condition":"ENABLED_ENCODERS_COUNT>0"}
+#define ENCODER1_CLK_PIN 38           //{"Name":"ENCODER1_CLK_PIN","Title":"Encoder 1 output A (CLK) pin","DefaultValue":"7","Type":"pin;Encoder 1 CLK","Condition":"ENABLED_ENCODERS_COUNT>0"}
 #define ENCODER1_DT_PIN 9            //{"Name":"ENCODER1_DT_PIN","Title":"Encoder 1 output B (DT) pin","DefaultValue":"8","Type":"pin;Encoder 1 DT","Condition":"ENABLED_ENCODERS_COUNT>0"}
-#define ENCODER1_BUTTON_PIN 9        //{"Name":"ENCODER1_BUTTON_PIN","Title":"Encoder 1 button (SW) pin","DefaultValue":"9","Type":"pin;Encoder 1 SWITCH","Condition":"ENABLED_ENCODERS_COUNT>0","Min":-1}
+#define ENCODER1_BUTTON_PIN 5        //{"Name":"ENCODER1_BUTTON_PIN","Title":"Encoder 1 button (SW) pin","DefaultValue":"9","Type":"pin;Encoder 1 SWITCH","Condition":"ENABLED_ENCODERS_COUNT>0","Min":-1}
 #define ENCODER1_BUTTON_TYPE 0		 //{"Name":"ENCODER1_BUTTON_TYPE","Title":"Is virtual button encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>0","ListValues":"0,Physically Connected;1,Serialized"}
 #define ENCODER1_ENABLE_PULLUP 1     //{"Name":"ENCODER1_ENABLE_PULLUP","Title":"Encoder 1 enable pullup resistor","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>0"}
 #define ENCODER1_REVERSE_DIRECTION 0 //{"Name":"ENCODER1_REVERSE_DIRECTION","Title":"Encoder 1 reverse direction","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>0"}
 #define ENCODER1_ENABLE_HALFSTEPS 0  //{"Name":"ENCODER1_ENABLE_HALFSTEPS","Title":"Encoder 1 steps mode","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=1","ListValues":"0,Full steps;1,Half steps"}
-#define ENCODER1_TYPE 0			 	 //{"Name":"ENCODER1_TYPE","Title":"Is virtual encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>0","ListValues":"0,Physically Connected;1,Serialized"}
+#define ENCODER1_TYPE 1			 	 //{"Name":"ENCODER1_TYPE","Title":"Is virtual encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>0","ListValues":"0,Physically Connected;1,Serialized"}
 
 #define ENCODER2_CLK_PIN 11          //{"Name":"ENCODER2_CLK_PIN","Title":"Encoder 2 output A (CLK) pin","DefaultValue":"11","Type":"pin;Encoder 2 CLK","Condition":"ENABLED_ENCODERS_COUNT>1"}
 #define ENCODER2_DT_PIN 12           //{"Name":"ENCODER2_DT_PIN","Title":"Encoder 2 output B (DT) pin","DefaultValue":"12","Type":"pin;Encoder 2 DT","Condition":"ENABLED_ENCODERS_COUNT>1"}
@@ -734,6 +734,8 @@ SHDebouncer ButtonsDebouncer(10);
 #define ENCODER8_TYPE 0			 	 //{"Name":"ENCODER8_TYPE","Title":"Is virtual encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>7","ListValues":"0,Physically Connected;1,Serialized"}
 
 int ENCODER_TYPE[]={ENCODER1_TYPE,ENCODER2_TYPE,ENCODER3_TYPE,ENCODER4_TYPE,ENCODER5_TYPE,ENCODER6_TYPE,ENCODER7_TYPE,ENCODER8_TYPE};
+int ENCODER_VIRTUAL_LAST_READ[]={0,0,0,0,0,0,0,0};
+int ENCODER_VIRTUAL_LAST_POS[]={0,0,0,0,0,0,0,0};
 SHRotaryEncoder encoder1, encoder2, encoder3, encoder4, encoder5, encoder6, encoder7, encoder8;
 SHRotaryEncoder* SHRotaryEncoders[] = { &encoder1, &encoder2, &encoder3, &encoder4, &encoder5, &encoder6, &encoder7, &encoder8 };
 #endif
@@ -1057,6 +1059,10 @@ SHCustomProtocol shCustomProtocol;
 #include "SHCommands.h"
 #include "SHCommandsGlcd.h"
 unsigned long lastMatrixRefresh = 0;
+void EncoderPositionChanged(int encoderId, int position, byte direction);
+
+
+void UpdateGamepadVirtualEncodersState(int encoderId, int position, byte direction,bool sendState);
 
 void idle(bool critical) {
 
@@ -1073,7 +1079,24 @@ void idle(bool critical) {
 	for (int i = 0; i < ENABLED_ENCODERS_COUNT; i++) {
 		if(ENCODER_TYPE[i]==0){
 			SHRotaryEncoders[i]->read();
+			// CRAP FOR TESTING: TODO REMOVE THIS
+			//char buff[150];
+			//sprintf(buff,"Tirando del encoder: %d",i);
+			//Serial.print(buff);
+			//EncoderPositionChanged(0,7,1);
 		}
+
+		// TODO: REFACTOR THIS CLEANING ENCONDER STATE FUNCTION
+		if(ENCODER_TYPE[i]==1){
+
+			if(ENCODER_VIRTUAL_LAST_READ[i]>0 && millis()-ENCODER_VIRTUAL_LAST_READ[i]>50){
+				UpdateGamepadVirtualEncodersState(i+1,ENCODER_VIRTUAL_LAST_POS[i],255,true);
+				ENCODER_VIRTUAL_LAST_READ[i]=0;
+			}
+
+		}
+		
+
 	}
 #endif
 
@@ -1131,17 +1154,26 @@ void idle(bool critical) {
 
 #ifdef  INCLUDE_ENCODERS
 void UpdateGamepadEncodersState(bool sendState);
-void EncoderPositionChanged(int encoderId, int position, byte direction) {
-#ifdef INCLUDE_GAMEPAD || ( INCLUDE_GAMEPAD && !I2C_BYPASS_MASTER && I2C_BYPASS_SLAVE && I2C_SERIAL_BYPASS)
+
 	
-	if(ENCODER_TYPE[encoderId]==0){
+void EncoderPositionChanged(int encoderId, int position, byte direction) {
+	char sbuf[150];
+	sprintf(sbuf,"EncoderPositionChanged(%d,%d,%d);",encoderId,position,direction);
+	Serial.print(sbuf);
+#if INCLUDE_GAMEPAD || ( INCLUDE_GAMEPAD && !I2C_BYPASS_MASTER && I2C_BYPASS_SLAVE && I2C_SERIAL_BYPASS)
+
+	if(ENCODER_TYPE[encoderId-1]==0){
+		Serial.print("UpdateGamepadEncodersState(true)");
 		UpdateGamepadEncodersState(true);
 	}
-	#if I2C_SERIAL_BYPASS && I2C_BYPASS_SLAVE
-		if(ENCODER_TYPE[encoderId]==1){
-			UpdateGamepadEncodersState(encoderId,position,direction,true);
-		}
-	#endif
+
+	if(ENCODER_TYPE[encoderId-1]==1){
+		sprintf(sbuf,"UpdateGamepadVirtualEncodersState(%d,%d,%d,true);",encoderId,position,direction);
+		Serial.print(sbuf);
+		UpdateGamepadVirtualEncodersState(encoderId,position,direction,true);
+	}
+
+	
 
 #else
 	if (direction < 2) {
@@ -1150,6 +1182,7 @@ void EncoderPositionChanged(int encoderId, int position, byte direction) {
 		arqserial.CustomPacketSendByte(direction);
 		arqserial.CustomPacketSendByte(position);
 		arqserial.CustomPacketEnd();
+		
 	}
 	else {											// BUTTON CLICK positionChangedCallback(id, counter, buttonState == HIGH ? 2 : 3);
 		arqserial.CustomPacketStart(0x02, 2);
@@ -1157,6 +1190,7 @@ void EncoderPositionChanged(int encoderId, int position, byte direction) {
 		arqserial.CustomPacketSendByte(direction - 2);
 		arqserial.CustomPacketEnd();
 	}
+
 #endif
 }
 #endif
@@ -1261,14 +1295,14 @@ void setup()
 #if I2C_BYPASS_SLAVE 
 	Serial.println("MAIN - SETUP - I2C_SERIAL_BYPASS AS SLAVE");
   	callbacker.setButtonCallBack(buttonStatusChanged);
- 	callbacker.setAnalogAxisChangedEventCallback(analogAxisChangedEventCallback);
+// 	callbacker.setAnalogAxisChangedEventCallback(analogAxisChangedEventCallback);
 	Wire.begin(I2C_BYPASS_SLAVE_ADRESS);                /* join i2c bus with address 8 */
 	Wire.setWireTimeout(1000);
 	Wire.onReceive(receiveSerialProtocolViaI2c);
  
 	// TODO: IN ENCODERS BRANCH
 	 #ifdef  INCLUDE_ENCODERS
-	 callbacker->setEncoderPositionChangedCallback(EncoderPositionChanged);
+	 	callbacker.setEncoderPositionChangedCallback(EncoderPositionChanged);
 	 #endif
 
  #endif
@@ -1280,11 +1314,11 @@ void setup()
 	I2CTransportManager::setup(&outgoingStream);
 
 	/// TEST TRANSPORT
-	Serial.println("Lanzando prueba del canal I2C");
-	StreamWrite("t");
-	StreamWrite("e");
-	StreamWrite("s");
-	StreamWrite("t");
+	// Serial.println("Lanzando prueba del canal I2C");
+	// StreamWrite("t");
+	// StreamWrite("e");
+	// StreamWrite("s");
+	// StreamWrite("t");
 	//// 
 	//axis1.setCallBack(axisStatusChanged);
 #endif
@@ -1510,24 +1544,36 @@ void UpdateGamepadState() {
 	Joystick.sendState();
 }
 
+
+
+
 #ifdef INCLUDE_ENCODERS
 	#if I2C_SERIAL_BYPASS && I2C_BYPASS_SLAVE
-		void UpdateGamepadEncodersState(int encoderId, int position, byte direction,bool sendState){
+		void UpdateGamepadVirtualEncodersState(int encoderId, int position, byte direction,bool sendState){
+				char buff[50];
+				sprintf(buff,"\nvirtual encoder: %d %d %d %d",encoderId,position,direction,sendState);
+				Serial.print(buff);
+
 				int btnidx = TM1638_ENABLEDMODULES * 8 + ENABLED_BUTTONS_COUNT + ENABLED_BUTTONMATRIX * (BMATRIX_COLS * BMATRIX_ROWS);
 				unsigned long refTime = millis();
+				
+				ENCODER_VIRTUAL_LAST_READ[encoderId-1]=refTime;
+				ENCODER_VIRTUAL_LAST_POS[encoderId-1]=position;
+
+
 				for (int i = 0; i < ENABLED_ENCODERS_COUNT; i++) {
 					if(ENCODER_TYPE[i]==1){
+						
 						if(direction==0xD7){
 							Joystick.setButton(btnidx + 2, direction);
 						}
-						else{
 							Joystick.setButton(btnidx, direction == 0);
 							Joystick.setButton(btnidx + 1, direction == 1);
-						}
-
 						btnidx += 3;
 					}
 				}
+				if(sendState)
+					Joystick.sendState();
 		}
 		
 	#endif
@@ -1538,35 +1584,10 @@ void UpdateGamepadEncodersState(bool sendState) {
 	for (int i = 0; i < ENABLED_ENCODERS_COUNT; i++) {
 		if(ENCODER_TYPE[i]==0){
 			uint8_t dir = SHRotaryEncoders[i]->getDirection(MICRO_GAMEPAD_ENCODERPRESSTIME, refTime);
-			// #if I2C_SERIAL_BYPASS && I2C_BYPASS_MASTER	// SEND DATA VIA I2C WITH CUSTOM PROTOCOL BECAUSE IT'S SEEMS NOT SUPPORTED VIA SERIAL
-					
-			// 		Serial.print("Serializing EncodersState via I2C ");
-
-			// 		arqserial.CustomPacketStart(0x03, 2);
-			// 		arqserial.CustomPacketSendByte(btnidx );
-			// 		arqserial.CustomPacketSendByte(dir == 0);
-			// 		arqserial.CustomPacketEnd();
-			// 		StreamFlush();
-
-			// 		arqserial.CustomPacketStart(0x03, 2);
-			// 		arqserial.CustomPacketSendByte(btnidx + 1);
-			// 		arqserial.CustomPacketSendByte(dir == 1);
-			// 		arqserial.CustomPacketEnd();
-			// 		StreamFlush();
-
-			// 		arqserial.CustomPacketStart(0x03, 2);
-			// 		arqserial.CustomPacketSendByte(btnidx + 2);
-			// 		arqserial.CustomPacketSendByte(SHRotaryEncoders[i]->getPressed());
-			// 		arqserial.CustomPacketEnd();
-			// 		StreamFlush();
-				
-			// #else
-				
 				Joystick.setButton(btnidx, dir == 0);
 				Joystick.setButton(btnidx + 1, dir == 1);
 				Joystick.setButton(btnidx + 2, SHRotaryEncoders[i]->getPressed());
 				btnidx += 3;
-			// #endif
 			
 		}
 		

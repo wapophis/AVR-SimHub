@@ -51,8 +51,8 @@ class I2CTransportManager  {
 #if I2C_BYPASS_MASTER
 #define StreamRead outgoingStream.read
 #define StreamAvailable outgoingStream.available
-#define FlowSerialFlush outgoingStream.flush
-#define StreamFlush outgoingStream.flush
+#define FlowSerialFlush Serial.flush
+#define StreamFlush I2CTransportManager::flush
 #define StreamWrite outgoingStream.write
 //#define StreamWrite WIRE.write
 #define StreamPrint outgoingStream.print

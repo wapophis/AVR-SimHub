@@ -119,12 +119,14 @@ public:
 			positionChangedCallback(id, counter, 0);
 			positionLastChanged = millis();
 			directionLastChange = 0;
+			//Serial.print("DIR_CCW");
 		}
 		else if (direction == DIR_CW) {
 			counter--;
 			positionChangedCallback(id, counter, 1);
 			positionLastChanged = millis();
 			directionLastChange = 1;
+			//Serial.print("DIR_CW");
 		}
 
 		if (button.isValid()) {

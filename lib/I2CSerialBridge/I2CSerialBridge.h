@@ -51,6 +51,13 @@ class    I2CSerialBridge{
         WIRE.beginTransmission(address);
         size_t total = WIRE.write(sbuf, availableLength);
         WIRE.endTransmission();
+        //endWireTransmission(false);
+        // DEBUG OUTPUT STREAM
+        for (int i=0;i<availableLength;i++){
+            Serial.write(sbuf[i]);
+        }
+            Serial.flush();
+        /// END DEBUG OUTPUT STREAM
 
         #if I2C_SERIAL_BYPASS_DEBUG
  //           Serial.println("\n I2CSerialBridge - flush");
@@ -112,7 +119,7 @@ uint8_t endWireTransmission(bool stop){
 	if(error==5){
 		Serial.print("timeout");
 	}
-    Serial.print("\n Error code is");
+    Serial.print("\n Error code is ");
     Serial.print(error);
     Serial.println();
 	Serial.flush();

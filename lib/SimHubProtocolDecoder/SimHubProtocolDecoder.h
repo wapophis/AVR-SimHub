@@ -38,6 +38,12 @@ class EventCallBackManager{
 static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
     byte packetType=0x0;
     int size=-1;
+   //TODO: REMOVE IS FOR TESTING
+    // while(stream->available()){
+    //         Serial.write(stream->read());
+    //     }
+    // return;
+    #define IC2_SERIAL_BYPASS_DEBUG true
     #if IC2_SERIAL_BYPASS_DEBUG
         Serial.print("\n Disponible en buffer ");
         Serial.print(stream->available());
@@ -57,7 +63,6 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
     // CUSTOM PACKETS
     if(packetType==0x09){
         packetType=stream->read();
-
          #if IC2_SERIAL_BYPASS_DEBUG
         Serial.print("\n packetType ");
         Serial.print(packetType);
@@ -77,7 +82,10 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
 
         switch (packetType){
                 case 0x01:
-                    callbacker->getEncoderPositionChangedCallback()(stream->read(),stream->read(),stream->read());
+                    int encoderId=stream->read();
+                    byte direction=stream->read();
+                    int position=stream->read(); 
+                    callbacker->getEncoderPositionChangedCallback()(encoderId,position,direction);
                     break;
                 case 0x02:
                     callbacker->getEncoderPositionChangedCallback()(stream->read(),stream->read(),0xD7); // 0XD7 Identify a button status changed 
