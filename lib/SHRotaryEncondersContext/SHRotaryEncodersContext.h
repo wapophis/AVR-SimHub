@@ -7,6 +7,7 @@ private:
      byte direction[8];
      int  position[8];
      unsigned long positionLastChanged[8];
+     bool buttonPressed[8];
     
 
 public:
@@ -21,6 +22,9 @@ public:
         this->direction[encoderId-1]=dir;
         this->position[encoderId-1]=pos;
         this->positionLastChanged[encoderId-1]=millis();
+        if(dir==0xD7){
+            buttonPressed[encoderId-1]=true;
+	    }
 
         // sprintf(sbuf,"\nSHRotaryEncoderContext::updateContext::direction:%d",this->direction[encoderId-1]);
 	    // Serial.print(sbuf);
@@ -42,6 +46,10 @@ public:
 
     unsigned long getPositionLastChanged(int encoderId){
         return this->positionLastChanged[encoderId-1];
+    }
+
+    bool getButtonState(int encoderId){
+        return this->buttonPressed[encoderId-1];
     }
 
     void logDirection(){

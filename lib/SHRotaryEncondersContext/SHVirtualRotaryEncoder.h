@@ -20,7 +20,7 @@ public:
     void begin(uint8_t outputAPin, uint8_t outputBPin, int buttonPin, bool reverse, bool enablePullup, byte encoderid, bool half, SHRotaryEncoderPositionChanged changedcallback) override{
         this->id=encoderid;
         this->inputLastState = 0;
-		this->buttonLastState = enablePullup? LOW: HIGH;
+		this->buttonLastState = enablePullup? HIGH: LOW;
         this->halfSteps=half;
         this->positionChangedCallback=changedcallback;
         context->updateContext(id,0,255);
@@ -74,7 +74,7 @@ public:
 			directionLastChange = 1;
 		}
 
-        
+        this->buttonLastState=context->getButtonState(id);
 
        //SHRotaryEncoder::read();
     }

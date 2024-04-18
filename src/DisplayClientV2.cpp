@@ -1636,8 +1636,7 @@ void UpdateGamepadState() {
 void UpdateGamepadEncodersState(bool sendState) {
 	int btnidx = TM1638_ENABLEDMODULES * 8 + ENABLED_BUTTONS_COUNT + ENABLED_BUTTONMATRIX * (BMATRIX_COLS * BMATRIX_ROWS);
 	unsigned long refTime = millis();
-	// Serial.print(refTime);
-	// Serial.print(" ");
+
 
 	for (int i = 0; i < ENABLED_ENCODERS_COUNT; i++) {
 		//delay(300);
