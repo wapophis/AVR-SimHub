@@ -666,6 +666,7 @@ SHDebouncer ButtonsDebouncer(10);
 #if I2C_SERIAL_BYPASS && I2C_BYPASS_SLAVE
 	#include <SHRotaryEncodersContext.h>
 	SHRotaryEncoderContext virtualEncoderContext;
+	void VirtualEncoderPositionChanged(int encoderId,int position, byte direction);
 #endif
 
 #define ENCODER1_CLK_PIN 8           //{"Name":"ENCODER1_CLK_PIN","Title":"Encoder 1 output A (CLK) pin","DefaultValue":"7","Type":"pin;Encoder 1 CLK","Condition":"ENABLED_ENCODERS_COUNT>0"}
@@ -1086,7 +1087,8 @@ void idle(bool critical) {
 #ifdef  INCLUDE_ENCODERS
 	for (int i = 0; i < ENABLED_ENCODERS_COUNT; i++) {
 		//if(ENCODER_TYPE[i]==0){
-			virtualEncoderContext.updateContext(1,random(22),random(1));
+			// VirtualEncoderPositionChanged(1,random(22),(random() % 2));
+			// delay(40);
 			SHRotaryEncoders[i]->read();
 			// CRAP FOR TESTING: TODO REMOVE THIS
 			//char buff[150];
@@ -1537,7 +1539,7 @@ void InitEncoders() {
 		if(ENCODER_TYPE[i]==0)
 			SHRotaryEncoders[i]=new SHRotaryEncoder();
 		if(ENCODER_TYPE[i]==1)
-			SHRotaryEncoders[i]=new SHVirtualRotaryEncoder(virtualEncoderContext);
+			SHRotaryEncoders[i]=new SHVirtualRotaryEncoder(&virtualEncoderContext);
 		switch (i)
 		{
 			case 0:			
@@ -1591,7 +1593,7 @@ void UpdateGamepadState() {
 #endif
 
 #ifdef INCLUDE_ENCODERS
-	Serial.print("DisplayClientV2:UpdateGamepadState ->");
+//	Serial.print("DisplayClientV2:UpdateGamepadState ->");
 	UpdateGamepadEncodersState(false);
 #endif
 	Joystick.sendState();
@@ -1634,16 +1636,16 @@ void UpdateGamepadState() {
 void UpdateGamepadEncodersState(bool sendState) {
 	int btnidx = TM1638_ENABLEDMODULES * 8 + ENABLED_BUTTONS_COUNT + ENABLED_BUTTONMATRIX * (BMATRIX_COLS * BMATRIX_ROWS);
 	unsigned long refTime = millis();
-	Serial.print(refTime);
-	Serial.print(" ");
+	// Serial.print(refTime);
+	// Serial.print(" ");
 
 	for (int i = 0; i < ENABLED_ENCODERS_COUNT; i++) {
 		//delay(300);
-		Serial.print(" UpdateGamepadEncodersState :: ");
-		Serial.print(sendState);
-		Serial.print("::ENCODER - ");
-		Serial.print(i);
-		Serial.print(" -> ");
+		// Serial.print(" UpdateGamepadEncodersState :: ");
+		// Serial.print(sendState);
+		// Serial.print("::ENCODER - ");
+		// Serial.print(i);
+		// Serial.print(" -> ");
 		//Serial.print(SHRotaryEncoders[i]->getPressed());
 		//if(ENCODER_TYPE[i]==0){
 			uint8_t dir = SHRotaryEncoders[i]->getDirection(MICRO_GAMEPAD_ENCODERPRESSTIME, refTime);

@@ -13,8 +13,8 @@ private:
 
 public:
 
-     SHVirtualRotaryEncoder(SHRotaryEncoderContext context){
-         this->context=&context;
+     SHVirtualRotaryEncoder(SHRotaryEncoderContext* context){
+         this->context=context;
      }
 
     void begin(uint8_t outputAPin, uint8_t outputBPin, int buttonPin, bool reverse, bool enablePullup, byte encoderid, bool half, SHRotaryEncoderPositionChanged changedcallback) override{
@@ -27,18 +27,18 @@ public:
     }
 
     uint8_t getDirection(uint8_t delay, unsigned long referenceTime) override{
-        Serial.print(" DirecionLastCHange:");
-        Serial.print(this->context->getDirection(this->id));
-        Serial.print(" | ");
-        Serial.print(" ReferenceTime:");
-        Serial.print(referenceTime);
-        Serial.print(" | ");
-        Serial.print(" getPositionLastChanged:");
-        Serial.print(context->getPositionLastChanged(this->id));
-        Serial.print(" | ");
-        Serial.print(" Diff:");
-        Serial.print(referenceTime - context->getPositionLastChanged(this->id));
-        Serial.print(" | \n");
+        // Serial.print(" DirecionLastCHange:");
+        // Serial.print(this->context->getDirection(this->id));
+        // Serial.print(" | ");
+        // Serial.print(" ReferenceTime:");
+        // Serial.print(referenceTime);
+        // Serial.print(" | ");
+        // Serial.print(" getPositionLastChanged:");
+        // Serial.print(context->getPositionLastChanged(this->id));
+        // Serial.print(" | ");
+        // Serial.print(" Diff:");
+        // Serial.print(referenceTime - context->getPositionLastChanged(this->id));
+        // Serial.print(" | \n");
 
 		if (directionLastChange != 255 && (referenceTime - context->getPositionLastChanged(this->id)) < delay) {
 		   // this->context->updateContext(this->id,counter,directionLastChange);
@@ -57,9 +57,9 @@ public:
         this->direction=this->context->getDirection(this->id);
         this->counter=this->context->getPosition(this->id);
 
-        Serial.print(" SHVirtualRotaryEncoder::read:direction:");
-        Serial.print(this->direction);
-        Serial.print(" \n");
+        // Serial.print(" SHVirtualRotaryEncoder::read:direction:");
+        // Serial.print(this->context->getDirection(this->id));
+        // Serial.print(" \n");
 
         if (direction == 0) {
 			counter++;

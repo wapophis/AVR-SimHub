@@ -1,32 +1,34 @@
 #pragma once
 #include <Arduino.h>
+#include <SHRotaryEncoder.h>
 
 class SHRotaryEncoderContext {
 private:
      byte direction[8];
      int  position[8];
      unsigned long positionLastChanged[8];
+    
 
 public:
     void init(){
 
     }
 
-    void updateContext(int encoderId, int position, byte direction){
+    void updateContext(int encoderId, int pos, byte dir){
         char sbuf[150];
-	    sprintf(sbuf,"\nSHRotaryEncoderContext::updateContext(%d,%d,%d);\n",encoderId,position,direction);
+	    sprintf(sbuf,"\nSHRotaryEncoderContext::updateContext(%d,%d,%d);\n",encoderId,pos,dir);
 	    Serial.print(sbuf);
-        this->direction[encoderId-1]=direction;
-        this->position[encoderId-1]=position;
+        this->direction[encoderId-1]=dir;
+        this->position[encoderId-1]=pos;
         this->positionLastChanged[encoderId-1]=millis();
 
-        sprintf(sbuf,"\nSHRotaryEncoderContext::updateContext::direction:%d",this->direction[encoderId-1]);
-	    Serial.print(sbuf);
-        sprintf(sbuf,"\nSHRotaryEncoderContext::updateContext::position:%d",this->position[encoderId-1]);
-	    Serial.print(sbuf);
-        sprintf(sbuf,"\nSHRotaryEncoderContext::updateContext::positionLastChanged:%lu",this->positionLastChanged[encoderId-1]);
-	    Serial.print(sbuf);
-        Serial.println("");
+        // sprintf(sbuf,"\nSHRotaryEncoderContext::updateContext::direction:%d",this->direction[encoderId-1]);
+	    // Serial.print(sbuf);
+        // sprintf(sbuf,"\nSHRotaryEncoderContext::updateContext::position:%d",this->position[encoderId-1]);
+	    // Serial.print(sbuf);
+        // sprintf(sbuf,"\nSHRotaryEncoderContext::updateContext::positionLastChanged:%lu",this->positionLastChanged[encoderId-1]);
+	    // Serial.print(sbuf);
+        // Serial.println("");
         
     }
 
