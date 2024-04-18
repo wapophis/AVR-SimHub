@@ -1,8 +1,11 @@
 #pragma once
 #include <Arduino.h>
-#include <SHVirtualRotaryEncoder.h>
+
 class SHRotaryEncoderContext {
 private:
+     byte direction[8];
+     int  position[8];
+     unsigned long positionLastChanged[8];
 
 public:
     void init(){
@@ -10,6 +13,54 @@ public:
     }
 
     void updateContext(int encoderId, int position, byte direction){
+        char sbuf[150];
+	    sprintf(sbuf,"\nSHRotaryEncoderContext::updateContext(%d,%d,%d);\n",encoderId,position,direction);
+	    Serial.print(sbuf);
+        this->direction[encoderId-1]=direction;
+        this->position[encoderId-1]=position;
+        this->positionLastChanged[encoderId-1]=millis();
+
+        sprintf(sbuf,"\nSHRotaryEncoderContext::updateContext::direction:%d",this->direction[encoderId-1]);
+	    Serial.print(sbuf);
+        sprintf(sbuf,"\nSHRotaryEncoderContext::updateContext::position:%d",this->position[encoderId-1]);
+	    Serial.print(sbuf);
+        sprintf(sbuf,"\nSHRotaryEncoderContext::updateContext::positionLastChanged:%lu",this->positionLastChanged[encoderId-1]);
+	    Serial.print(sbuf);
+        Serial.println("");
+        
+    }
+
+    int getPosition(int encoderId){
+        return this->position[encoderId-1];
+    }
+
+    byte getDirection(int encoderId){
+        return this->direction[encoderId-1];
+    }
+
+    unsigned long getPositionLastChanged(int encoderId){
+        return this->positionLastChanged[encoderId-1];
+    }
+
+    void logDirection(){
+        char sbuf[150];
+        for(int i=0;i<8;i++){
+            sprintf(sbuf+strlen(sbuf)," %d,",this->direction[i]);
+        }
+      //  Serial.print("\nSHRotaryEncoderContext::direction: ");
+        Serial.print(sbuf);
+        Serial.println("");
 
     }
+
+    void logPosition(){
+          char sbuf[150];
+        for(int i=0;i<8;i++){
+            sprintf(sbuf+strlen(sbuf)," %d,",this->position[i]);
+        }
+     //   Serial.print("\nSHRotaryEncoderContext::position: ");
+        Serial.print(sbuf);
+        Serial.println("");
+    }
+
 };

@@ -50,7 +50,7 @@ static const unsigned char halfStepsTable[][4] =
 typedef void(*SHRotaryEncoderPositionChanged) (int, int, byte);
 
 class SHRotaryEncoder {
-private:
+protected:
 
 	FastDigitalPin outputA; // CLK
 	FastDigitalPin outputB; // DT
@@ -71,10 +71,6 @@ private:
 
 	byte id;
 	SHRotaryEncoderPositionChanged positionChangedCallback;
-
-	boolean isVirtualEncoder;
-	boolean isVirtualButton;
-	uint8_t pressed;
 
 public:
 
@@ -97,38 +93,7 @@ virtual void begin(uint8_t outputAPin, uint8_t outputBPin, int buttonPin, bool r
 		buttonLastState = button.digitalRead();
 		positionChangedCallback = changedcallback;
 	}
-
-	/** BEGIN WITH VIRTUAL ENCODER SUPPORT*/
-	void begin(boolean isVirtualEncoder,uint8_t outputAPin, uint8_t outputBPin, boolean isVirtualButton,int buttonPin, bool reverse, bool enablePullup, byte encoderid, bool half, SHRotaryEncoderPositionChanged changedcallback) {
-		this->isVirtualEncoder=isVirtualEncoder;
-		this->isVirtualButton=isVirtualButton;
-
-		halfSteps = half;
-		if(!isVirtualButton){
-			buttonDebouncer.begin(50);
-			button.begin(buttonPin);
-				
-			if (buttonPin > 0) {
-				pinMode(buttonPin, enablePullup ? INPUT_PULLUP : INPUT);
-			}
-
-			buttonLastState = button.digitalRead();
-		}
-
-		if(!isVirtualEncoder){
-			outputA.begin((!reverse) ? outputAPin : outputBPin);
-			outputB.begin((!reverse) ? outputBPin : outputAPin);
-
-			pinMode(outputAPin, enablePullup ? INPUT_PULLUP : INPUT);
-			pinMode(outputBPin, enablePullup ? INPUT_PULLUP : INPUT);
-
-		}
-		
-		id = encoderid;
-		inputLastState = 0;
-		positionChangedCallback = changedcallback;
-	}
-
+	
 virtual	uint8_t getDirection(uint8_t delay, unsigned long referenceTime) {
 		if (directionLastChange != 255 && (referenceTime - positionLastChanged) < delay) {
 			return directionLastChange;
@@ -138,51 +103,6 @@ virtual	uint8_t getDirection(uint8_t delay, unsigned long referenceTime) {
 
 virtual	uint8_t getPressed() {
 		return button.isValid() && !buttonLastState;
-	}
-
-	/**
-	 * SET PRESSED STATE FROM EXTERNAL SOURCE, USE WHEN ENCODER IS VIRTUAL
-	*/
-	void setPressed(uint8_t pressed){
-		if(this->isVirtualButton){
-			this->pressed==pressed;
-		}
-	}
-
-
-	void readSerialized(Stream *data) {
-		if (!halfSteps)
-			inputLastState = fullStepsTable[inputLastState & 0xf][(outputB.digitalRead() << 1) | outputA.digitalRead()];
-		else {
-			inputLastState = halfStepsTable[inputLastState & 0xf][(outputB.digitalRead() << 1) | outputA.digitalRead()];
-		}
-
-		direction = (inputLastState & 0x30);
-
-		if (direction == DIR_CCW) {
-			counter++;
-			positionChangedCallback(id, counter, 0);
-			positionLastChanged = millis();
-			directionLastChange = 0;
-			//Serial.print("DIR_CCW");
-		}
-		else if (direction == DIR_CW) {
-			counter--;
-			positionChangedCallback(id, counter, 1);
-			positionLastChanged = millis();
-			directionLastChange = 1;
-			//Serial.print("DIR_CW");
-		}
-
-		if (button.isValid()) {
-			buttonState = button.digitalRead();
-			if (buttonState != buttonLastState) {
-				if (buttonDebouncer.Debounce()) {
-					positionChangedCallback(id, counter, buttonState == HIGH ? 2 : 3);
-					buttonLastState = buttonState;
-				}
-			}
-		}
 	}
 
 virtual	void read() {

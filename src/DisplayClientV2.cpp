@@ -78,6 +78,8 @@
 		#undef INCLUDE_GAMEPAD
 		#undef INCLUDE_GAMEPADAXIS
 	#endif
+
+
 	
 #endif
 
@@ -661,7 +663,12 @@ SHDebouncer ButtonsDebouncer(10);
 #ifdef  INCLUDE_ENCODERS
 #include "SHRotaryEncoder.h"
 
-#define ENCODER1_CLK_PIN 38           //{"Name":"ENCODER1_CLK_PIN","Title":"Encoder 1 output A (CLK) pin","DefaultValue":"7","Type":"pin;Encoder 1 CLK","Condition":"ENABLED_ENCODERS_COUNT>0"}
+#if I2C_SERIAL_BYPASS && I2C_BYPASS_SLAVE
+	#include <SHRotaryEncodersContext.h>
+	SHRotaryEncoderContext virtualEncoderContext;
+#endif
+
+#define ENCODER1_CLK_PIN 8           //{"Name":"ENCODER1_CLK_PIN","Title":"Encoder 1 output A (CLK) pin","DefaultValue":"7","Type":"pin;Encoder 1 CLK","Condition":"ENABLED_ENCODERS_COUNT>0"}
 #define ENCODER1_DT_PIN 9            //{"Name":"ENCODER1_DT_PIN","Title":"Encoder 1 output B (DT) pin","DefaultValue":"8","Type":"pin;Encoder 1 DT","Condition":"ENABLED_ENCODERS_COUNT>0"}
 #define ENCODER1_BUTTON_PIN 5        //{"Name":"ENCODER1_BUTTON_PIN","Title":"Encoder 1 button (SW) pin","DefaultValue":"9","Type":"pin;Encoder 1 SWITCH","Condition":"ENABLED_ENCODERS_COUNT>0","Min":-1}
 #define ENCODER1_BUTTON_TYPE 0		 //{"Name":"ENCODER1_BUTTON_TYPE","Title":"Is virtual button encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>0","ListValues":"0,Physically Connected;1,Serialized"}
@@ -1078,27 +1085,27 @@ void idle(bool critical) {
 #endif
 #ifdef  INCLUDE_ENCODERS
 	for (int i = 0; i < ENABLED_ENCODERS_COUNT; i++) {
-		if(ENCODER_TYPE[i]==0){
+		//if(ENCODER_TYPE[i]==0){
+			virtualEncoderContext.updateContext(1,random(22),random(1));
 			SHRotaryEncoders[i]->read();
 			// CRAP FOR TESTING: TODO REMOVE THIS
 			//char buff[150];
 			//sprintf(buff,"Tirando del encoder: %d",i);
 			//Serial.print(buff);
 			//EncoderPositionChanged(0,7,1);
-		}
+		//}
 
 		// TODO: REFACTOR THIS CLEANING ENCONDER STATE FUNCTION
-		if(ENCODER_TYPE[i]==1){
+		// if(ENCODER_TYPE[i]==1){
 
-			if(ENCODER_VIRTUAL_LAST_READ[i]>0 && millis()-ENCODER_VIRTUAL_LAST_READ[i]>50){
-				UpdateGamepadVirtualEncodersState(i+1,ENCODER_VIRTUAL_LAST_POS[i],255,true);
-				ENCODER_VIRTUAL_LAST_READ[i]=0;
-			}
+		// 	if(ENCODER_VIRTUAL_LAST_READ[i]>0 && millis()-ENCODER_VIRTUAL_LAST_READ[i]>50){
+		// 		UpdateGamepadVirtualEncodersState(i+1,ENCODER_VIRTUAL_LAST_POS[i],255,true);
+		// 		ENCODER_VIRTUAL_LAST_READ[i]=0;
+		// 	}
 
-		}
-		
-
+		// }
 	}
+	
 #endif
 
 #ifdef  INCLUDE_BUTTONMATRIX
@@ -1156,14 +1163,24 @@ void idle(bool critical) {
 #ifdef  INCLUDE_ENCODERS
 void UpdateGamepadEncodersState(bool sendState);
 
-	
+#if I2C_SERIAL_BYPASS && I2C_BYPASS_SLAVE
+void VirtualEncoderPositionChanged(int encoderId,int position, byte direction)	{
+	virtualEncoderContext.updateContext(encoderId,position,direction);
+	//virtualEncoderContext.logDirection();
+	//virtualEncoderContext.logPosition();
+}
+#endif
+
+
 void EncoderPositionChanged(int encoderId, int position, byte direction) {
-	char sbuf[150];
-	sprintf(sbuf,"EncoderPositionChanged(%d,%d,%d);",encoderId,position,direction);
-	Serial.print(sbuf);
+	// char sbuf[150];
+	// sprintf(sbuf,"EncoderPositionChanged(%d,%d,%d);",encoderId,position,direction);
+	// Serial.print(sbuf);
 #if INCLUDE_GAMEPAD || ( INCLUDE_GAMEPAD && !I2C_BYPASS_MASTER && I2C_BYPASS_SLAVE && I2C_SERIAL_BYPASS)
 
-	if(ENCODER_TYPE[encoderId-1]==0){
+	UpdateGamepadEncodersState(true);
+
+/*	if(ENCODER_TYPE[encoderId-1]==0){
 		Serial.print("UpdateGamepadEncodersState(true)");
 		UpdateGamepadEncodersState(true);
 	}
@@ -1172,7 +1189,7 @@ void EncoderPositionChanged(int encoderId, int position, byte direction) {
 		sprintf(sbuf,"UpdateGamepadVirtualEncodersState(%d,%d,%d,true);",encoderId,position,direction);
 		Serial.print(sbuf);
 		UpdateGamepadVirtualEncodersState(encoderId,position,direction,true);
-	}
+	}*/
 
 	
 
@@ -1259,6 +1276,7 @@ void buttonMatrixStatusChanged(int buttonId, byte Status) {
  EventCallBackManager callbacker;
 
 
+
  void receiveSerialProtocolViaI2c(int howMany){
 	#if I2C_SERIAL_BYPASS_DEBUG
  		Serial.print("Received data via I2C with");
@@ -1306,7 +1324,7 @@ void setup()
  
 	// TODO: IN ENCODERS BRANCH
 	 #ifdef  INCLUDE_ENCODERS
-	 	callbacker.setEncoderPositionChangedCallback(EncoderPositionChanged);
+	 	callbacker.setEncoderPositionChangedCallback(VirtualEncoderPositionChanged);
 	 #endif
 
  #endif
@@ -1519,7 +1537,7 @@ void InitEncoders() {
 		if(ENCODER_TYPE[i]==0)
 			SHRotaryEncoders[i]=new SHRotaryEncoder();
 		if(ENCODER_TYPE[i]==1)
-			SHRotaryEncoders[i]=new SHVirtualRotaryEncoder();
+			SHRotaryEncoders[i]=new SHVirtualRotaryEncoder(virtualEncoderContext);
 		switch (i)
 		{
 			case 0:			
@@ -1573,9 +1591,9 @@ void UpdateGamepadState() {
 #endif
 
 #ifdef INCLUDE_ENCODERS
+	Serial.print("DisplayClientV2:UpdateGamepadState ->");
 	UpdateGamepadEncodersState(false);
 #endif
-
 	Joystick.sendState();
 }
 
@@ -1584,47 +1602,59 @@ void UpdateGamepadState() {
 
 #ifdef INCLUDE_ENCODERS
 	#if I2C_SERIAL_BYPASS && I2C_BYPASS_SLAVE
-		void UpdateGamepadVirtualEncodersState(int encoderId, int position, byte direction,bool sendState){
-				char buff[50];
-				sprintf(buff,"\nvirtual encoder: %d %d %d %d",encoderId,position,direction,sendState);
-				Serial.print(buff);
+		// void UpdateGamepadVirtualEncodersState(int encoderId, int position, byte direction,bool sendState){
+		// 		char buff[50];
+		// 		sprintf(buff,"\nvirtual encoder: %d %d %d %d",encoderId,position,direction,sendState);
+		// 		Serial.print(buff);
 
-				int btnidx = TM1638_ENABLEDMODULES * 8 + ENABLED_BUTTONS_COUNT + ENABLED_BUTTONMATRIX * (BMATRIX_COLS * BMATRIX_ROWS);
-				unsigned long refTime = millis();
+		// 		int btnidx = TM1638_ENABLEDMODULES * 8 + ENABLED_BUTTONS_COUNT + ENABLED_BUTTONMATRIX * (BMATRIX_COLS * BMATRIX_ROWS);
+		// 		unsigned long refTime = millis();
 				
-				ENCODER_VIRTUAL_LAST_READ[encoderId-1]=refTime;
-				ENCODER_VIRTUAL_LAST_POS[encoderId-1]=position;
+		// 		ENCODER_VIRTUAL_LAST_READ[encoderId-1]=refTime;
+		// 		ENCODER_VIRTUAL_LAST_POS[encoderId-1]=position;
 
 
-				for (int i = 0; i < ENABLED_ENCODERS_COUNT; i++) {
-					if(ENCODER_TYPE[i]==1){
+		// 		for (int i = 0; i < ENABLED_ENCODERS_COUNT; i++) {
+		// 			if(ENCODER_TYPE[i]==1){
 						
-						if(direction==0xD7){
-							Joystick.setButton(btnidx + 2, direction);
-						}
-							Joystick.setButton(btnidx, direction == 0);
-							Joystick.setButton(btnidx + 1, direction == 1);
-						btnidx += 3;
-					}
-				}
-				if(sendState)
-					Joystick.sendState();
-		}
+		// 				if(direction==0xD7){
+		// 					Joystick.setButton(btnidx + 2, direction);
+		// 				}
+		// 					Joystick.setButton(btnidx, direction == 0);
+		// 					Joystick.setButton(btnidx + 1, direction == 1);
+		// 				btnidx += 3;
+		// 			}
+		// 		}
+		// 		if(sendState)
+		// 			Joystick.sendState();
+		// }
 		
 	#endif
 
 void UpdateGamepadEncodersState(bool sendState) {
 	int btnidx = TM1638_ENABLEDMODULES * 8 + ENABLED_BUTTONS_COUNT + ENABLED_BUTTONMATRIX * (BMATRIX_COLS * BMATRIX_ROWS);
 	unsigned long refTime = millis();
+	Serial.print(refTime);
+	Serial.print(" ");
+
 	for (int i = 0; i < ENABLED_ENCODERS_COUNT; i++) {
-		if(ENCODER_TYPE[i]==0){
+		//delay(300);
+		Serial.print(" UpdateGamepadEncodersState :: ");
+		Serial.print(sendState);
+		Serial.print("::ENCODER - ");
+		Serial.print(i);
+		Serial.print(" -> ");
+		//Serial.print(SHRotaryEncoders[i]->getPressed());
+		//if(ENCODER_TYPE[i]==0){
 			uint8_t dir = SHRotaryEncoders[i]->getDirection(MICRO_GAMEPAD_ENCODERPRESSTIME, refTime);
+			// Serial.print(dir);
+			// Serial.print(",");
 				Joystick.setButton(btnidx, dir == 0);
 				Joystick.setButton(btnidx + 1, dir == 1);
 				Joystick.setButton(btnidx + 2, SHRotaryEncoders[i]->getPressed());
 				btnidx += 3;
 			
-		}
+		//}
 		
 	}
 
