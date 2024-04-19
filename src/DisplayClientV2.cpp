@@ -62,10 +62,10 @@
 #if I2C_SERIAL_BYPASS
 	#define WIRE Wire
 	
-	#define I2C_BYPASS_SLAVE true
+	#define I2C_BYPASS_SLAVE false
 	#define I2C_ADDRESS 0x08
 	#define I2C_BYPASS_SLAVE_ADRESS 8
-	#define I2C_BYPASS_MASTER 	false
+	#define I2C_BYPASS_MASTER 	true
 	# define I2C_SERIAL_BYPASS_DEBUG false
 	
 	#include <LoopbackStream.h>
@@ -90,7 +90,7 @@
 #endif // ! INCLUDE_GAMEPAD
 #endif
 
-#define INCLUDE_ENCODERS                    //{"Name":"INCLUDE_ENCODERS","Type":"autodefine","Condition":"[ENABLED_ENCODERS_COUNT]>0","IsInput":true}
+//#define INCLUDE_ENCODERS                    //{"Name":"INCLUDE_ENCODERS","Type":"autodefine","Condition":"[ENABLED_ENCODERS_COUNT]>0","IsInput":true}
 #define INCLUDE_BUTTONS                     //{"Name":"INCLUDE_BUTTONS","Type":"autodefine","Condition":"[ENABLED_BUTTONS_COUNT]>0","IsInput":true}
 //#define INCLUDE_BUTTONMATRIX                //{"Name":"INCLUDE_BUTTONMATRIX","Type":"autodefine","Condition":"[ENABLED_BUTTONMATRIX]>0","IsInput":true}
 //#define INCLUDE_DM163_MATRIX                //{"Name":"INCLUDE_DM163_MATRIX","Type":"autodefine","Condition":"[DM163_MATRIX_ENABLED]>0"}
@@ -109,8 +109,8 @@
 #include "SHButton.h"
 
 // ----------------------------------------------------- HW SETTINGS, PLEASE REVIEW ALL -------------------------------------------
-#define DEVICE_NAME "I2C_MASTER_BUTTONS" //{"Group":"General","Name":"DEVICE_NAME","Title":"Device name,\r\n make sure to use a unique name when using multiple arduinos","DefaultValue":"SimHub Dash","Type":"string","Template":"#define DEVICE_NAME \"{0}\""}
-#define DEVICE_UNIQUE_ID "e6661fb6-9cd3-4375-9ce0-fa296595e1b8" //{"UniqueId":"e6661fb6-9cd3-4375-9ce0-fa296595e1b8" //{"UniqueId":"dae20348-2fc7-437c-8434-145bc970682c","Name":"DEVICE_UNIQUE_ID","Type":"uniqueid"}
+#define DEVICE_NAME "RACEWINGS_MASTER" //{"Group":"General","Name":"DEVICE_NAME","Title":"Device name,\r\n make sure to use a unique name when using multiple arduinos","DefaultValue":"SimHub Dash","Type":"string","Template":"#define DEVICE_NAME \"{0}\""}
+#define DEVICE_UNIQUE_ID "e6661fb6-9cd3-4375-9ce0-fa296595e1b9" //{"UniqueId":"e6661fb6-9cd3-4375-9ce0-fa296595e1b8" //{"UniqueId":"dae20348-2fc7-437c-8434-145bc970682c","Name":"DEVICE_UNIQUE_ID","Type":"uniqueid"}
 
 #define ENABLE_MICRO_GAMEPAD 1           //{"Group":"GAMEPAD","Name":"ENABLE_MICRO_GAMEPAD","Title":"Enable arduino micro gamepad output for all the activated buttons/encoders","DefaultValue":"0","Type":"bool"}
 #define MICRO_GAMEPAD_ENCODERPRESSTIME 50 //{"Name":"MICRO_GAMEPAD_ENCODERPRESSTIME","Title":"Define how long (in milliseconds) the encoder related button will be hold after an encoder movement","DefaultValue":"50","Type":"int","Condition":"ENABLE_MICRO_GAMEPAD>0","Max":100}
@@ -534,19 +534,19 @@ SHGamepadAxis SHGAMEPADAXIS03(GAMEPAD_AXIS_03_PIN, 2, GAMEPAD_AXIS_03_MINVALUE, 
 // ----------------------- ADDITIONAL BUTTONS ---------------------------------------------------------------
 // https://github.com/zegreatclan/SimHub/wiki/Arduino-Press-Buttons
 // ----------------------------------------------------------------------------------------------------------
-#define ENABLED_BUTTONS_COUNT 2 //{"Group":"Additional Buttons","Name":"ENABLED_BUTTONS_COUNT","Title":"Additional buttons (directly connected to the arduino, 12 max) buttons count","DefaultValue":"0","Type":"int","Max":12}
+#define ENABLED_BUTTONS_COUNT 14 //{"Group":"Additional Buttons","Name":"ENABLED_BUTTONS_COUNT","Title":"Additional buttons (directly connected to the arduino, 12 max) buttons count","DefaultValue":"0","Type":"int","Max":12}
 #ifdef  INCLUDE_BUTTONS
 
 // PLACE BUTTONS IN MASTER DEVICE OVER THE 100 TO PREVENT CONFLICT WITH SLAVE PINS
-#define BUTTON_PIN_1 40       //{"Name":"BUTTON_PIN_1","Title":"1'st Additional button digital pin","DefaultValue":"3","Type":"pin;Button 1","Condition":"ENABLED_BUTTONS_COUNT>=1"}
+#define BUTTON_PIN_1 4       //{"Name":"BUTTON_PIN_1","Title":"1'st Additional button digital pin","DefaultValue":"3","Type":"pin;Button 1","Condition":"ENABLED_BUTTONS_COUNT>=1"}
 #define BUTTON_WIRINGMODE_1 0   //{"Name":"BUTTON_WIRINGMODE_1","Title":"1'st Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_1 0    //{"Name":"BUTTON_LOGICMODE_1","Title":"1'st Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_1 1		//{"Name":"BUTTON_TYPE_1","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_1 0		//{"Name":"BUTTON_TYPE_1","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_2 46          //{"Name":"BUTTON_PIN_2","Title":"2'nd Additional button digital pin","DefaultValue":"3","Type":"pin;Button 2","Condition":"ENABLED_BUTTONS_COUNT>=2"}
+#define BUTTON_PIN_2 5         //{"Name":"BUTTON_PIN_2","Title":"2'nd Additional button digital pin","DefaultValue":"3","Type":"pin;Button 2","Condition":"ENABLED_BUTTONS_COUNT>=2"}
 #define BUTTON_WIRINGMODE_2 0   //{"Name":"BUTTON_WIRINGMODE_2","Title":"2'nd Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=2","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_2 0    //{"Name":"BUTTON_LOGICMODE_2","Title":"2'nd Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=2","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_2 1			//{"Name":"BUTTON_TYPE_2","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=2","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_2 0			//{"Name":"BUTTON_TYPE_2","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=2","ListValues":"0,Physically Connected;1,Serialized"}
 
 #define BUTTON_PIN_3 6          //{"Name":"BUTTON_PIN_3","Title":"3'rd Additional button digital pin","DefaultValue":"3","Type":"pin;Button 3","Condition":"ENABLED_BUTTONS_COUNT>=3"}
 #define BUTTON_WIRINGMODE_3 0   //{"Name":"BUTTON_WIRINGMODE_3","Title":"3'rd Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=3","ListValues":"0,Pin to GND;1,VCC to pin"}
@@ -659,7 +659,7 @@ SHDebouncer ButtonsDebouncer(10);
 // https://www.dx.com/p/ky-040-rotary-encoder-module-brick-sensor-development-for-arduino-avr-pic-420429#.W9BCM0sza0Q
 // Rotary encoders with pull-up resistors on the 3 outputs
 // ----------------------------------------------------------------------------------------------------------
-#define ENABLED_ENCODERS_COUNT 1     //{"Group":"Rotary Encoders","Name":"ENABLED_ENCODERS_COUNT","Title":"Rotary encoders enabled","DefaultValue":"0","Type":"int","Max":8}
+#define ENABLED_ENCODERS_COUNT 0     //{"Group":"Rotary Encoders","Name":"ENABLED_ENCODERS_COUNT","Title":"Rotary encoders enabled","DefaultValue":"0","Type":"int","Max":8}
 #ifdef  INCLUDE_ENCODERS
 #include "SHRotaryEncoder.h"
 
@@ -1182,7 +1182,7 @@ void buttonStatusChanged(int buttonId, byte Status) {
 	Joystick.setButton(TM1638_ENABLEDMODULES * 8 + buttonId - 1, Status);
 	Joystick.sendState();
 #else
-	Serial.print("Sending custom packet using arqSerial BYPASS");
+	//Serial.print("Sending custom packet using arqSerial BYPASS");
 	arqserial.CustomPacketStart(0x03, 2);
 	arqserial.CustomPacketSendByte(buttonId);
 	arqserial.CustomPacketSendByte(Status);
@@ -1271,7 +1271,7 @@ void setup()
 #endif
 
 	FlowSerialBegin(19200);
-	while (!Serial1) ; // https://forum.arduino.cc/t/cant-view-serial-print-from-setup/167916
+	//while (!Serial1) ; // https://forum.arduino.cc/t/cant-view-serial-print-from-setup/167916
 	
 
 #if I2C_BYPASS_SLAVE 
