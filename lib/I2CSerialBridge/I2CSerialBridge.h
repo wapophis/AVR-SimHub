@@ -77,7 +77,7 @@ class    I2CSerialBridge{
           #if I2C_SERIAL_BYPASS_DEBUG
             Serial.print("WIRE CONFIGURING TIMEOUT 300 ms .... ");
         #endif
-        WIRE.setWireTimeout(300);
+        WIRE.setTimeout(300);
 
         while(!isSlaveAvailable()){
                 #if I2C_SERIAL_BYPASS_DEBUG
