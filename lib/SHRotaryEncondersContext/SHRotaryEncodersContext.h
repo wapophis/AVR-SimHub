@@ -19,12 +19,14 @@ public:
         char sbuf[150];
 	    sprintf(sbuf,"\nSHRotaryEncoderContext::updateContext(%d,%d,%d);\n",encoderId,pos,dir);
 	    Serial.print(sbuf);
+        if(dir==0xD7){
+            this->buttonPressed[encoderId-1]=pos == 1? 0 : 1;
+            Serial.print(this->buttonPressed[encoderId-1]);
+	    }else{
         this->direction[encoderId-1]=dir;
         this->position[encoderId-1]=pos;
         this->positionLastChanged[encoderId-1]=millis();
-        if(dir==0xD7){
-            buttonPressed[encoderId-1]=true;
-	    }
+        }
 
         // sprintf(sbuf,"\nSHRotaryEncoderContext::updateContext::direction:%d",this->direction[encoderId-1]);
 	    // Serial.print(sbuf);

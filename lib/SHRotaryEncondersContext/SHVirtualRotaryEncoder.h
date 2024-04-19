@@ -44,7 +44,7 @@ public:
 		   // this->context->updateContext(this->id,counter,directionLastChange);
 			return directionLastChange;
 		}
-		//this->context->updateContext(this->id,counter,255);
+	   // this->context->updateContext(this->id,counter,255);
 		return 255;
     }
 
