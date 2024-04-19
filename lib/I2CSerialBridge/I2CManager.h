@@ -15,7 +15,6 @@ class I2CTransportManager  {
     static void setup(FullLoopbackStream *outgoingStream){
         #if I2C_BYPASS_MASTER
             #if I2C_SERIAL_BYPASS_DEBUG
-                Serial.begin(115200);
                 Serial.print("\nSetup as Master\n");
                 Serial.flush();
             #endif
@@ -50,13 +49,15 @@ class I2CTransportManager  {
 };
 
 #if I2C_BYPASS_MASTER
-#define StreamAvailable WIRE.available
-#define FlowSerialFlush WIRE.flush
-#define StreamFlush WIRE.flush
+#define StreamRead outgoingStream.read
+#define StreamAvailable outgoingStream.available
+#define FlowSerialFlush Serial.flush
+#define StreamFlush I2CTransportManager::flush
 #define StreamWrite outgoingStream.write
-#define StreamPrint WIRE.print
+//#define StreamWrite WIRE.write
+#define StreamPrint outgoingStream.print
 /** SETUP SERIAL BYPASS I2C SLAVE, USE WHEN THIS DEVICE IS CONNECTED TO SIMHUB*/
-#define FlowSerialBegin [](unsigned long baud) { Serial.printf("Hola mundo");}
+#define FlowSerialBegin [](unsigned long baud) { Serial.print("Hola mundo");}
 #endif
  #if I2C_BYPASS_SLAVE
  #define StreamRead Serial.read

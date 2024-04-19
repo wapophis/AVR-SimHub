@@ -144,7 +144,7 @@ private:
 	}
 
 	void SendAcq(uint8_t packetId)
-	{
+	{				//Serial1.printf("\nread[data]: [%d]",res);
 		StreamWrite(0x03);
 		StreamWrite(packetId);
 		StreamFlush();
@@ -167,12 +167,13 @@ public:
 	}
 
 	void CustomPacketStart(byte packetType, uint8_t length) {
+		//Serial.println("\n\n\n\n\n\n\n\n");
 		StreamWrite(0x09);
 		StreamWrite(packetType);
 		StreamWrite(length);
-	//	Serial.write(0x09);
-	//	Serial.write(packetType);
-	//	Serial.write(length);
+		// char buff[150];
+		// sprintf(buff, "\nCustomPacketStart[start,packetType,length]: [0x09,%d,%d]",packetType,length);
+		// Serial.print(buff);
 		//Serial.printf("\nCustomPacketStart[start,packetType,length]: [0x09,%d,%d]",packetType,length);
 	}
 
@@ -184,9 +185,12 @@ public:
 	// }
 
 	void CustomPacketSendByte(byte data) {
+		//Serial.println("\n\n\n\n\n\n\n\n");
 		StreamWrite(data);
-		Serial.write(data);
-		//Serial.printf("\nCustomPacketSendByte[data]: [%d]",data);
+		// char buff[150];
+		// sprintf(buff, "\nCustomPacketSendByte[data]: [%d]",data);
+		// Serial.print(buff);
+		
 	}
 
 	// void I2CustomPacketSendByte(byte data) {
@@ -197,6 +201,7 @@ public:
 
 	void CustomPacketEnd() {
 		//Serial.write(0x00);
+		StreamFlush();
 	}
 	// void I2CustomPacketEnd() {
 	// 	//Serial.write(0x00);
@@ -232,9 +237,13 @@ public:
 	}
 
 	void Write(byte data) {
+		Serial.println("\n\n\n\n\n\n\n\n");
 		StreamWrite(0x08);
+		Serial.write(0x08);
 		StreamWrite(data);
+		Serial.write(data);
 		StreamFlush();
+		Serial.flush();
 		//Serial1.printf("\nWrite[start,data]: [0x08,%d]",data);
 	}
 

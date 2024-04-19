@@ -6,7 +6,7 @@
 #error WIRE must be settled to have a correct custom wire config in your MASTER config.
 #endif
 
-class I2CSerialBridge{
+class    I2CSerialBridge{
       FullLoopbackStream *outgoingStream;
       uint8_t address;
     public:
@@ -51,6 +51,13 @@ class I2CSerialBridge{
         WIRE.beginTransmission(address);
         size_t total = WIRE.write(sbuf, availableLength);
         WIRE.endTransmission();
+        //endWireTransmission(false);
+        // DEBUG OUTPUT STREAM
+        for (int i=0;i<availableLength;i++){
+            Serial.write(sbuf[i]);
+        }
+            Serial.flush();
+        /// END DEBUG OUTPUT STREAM
 
         #if I2C_SERIAL_BYPASS_DEBUG
  //           Serial.println("\n I2CSerialBridge - flush");
@@ -63,13 +70,21 @@ class I2CSerialBridge{
 
      /** SETUP SERIAL BYPASS I2C MASTER, USE WHEN THIS DEVICE COMMAND THE SENDING WORKFLOW*/
     void i2cSetupMaster(){
-	WIRE.begin();
-    Wire.setWireTimeout(300);
+        #if I2C_SERIAL_BYPASS_DEBUG
+            Serial.print("WIRE.BEGIN(), initializing....");
+        #endif
+        WIRE.begin();
+          #if I2C_SERIAL_BYPASS_DEBUG
+            Serial.print("WIRE CONFIGURING TIMEOUT 300 ms .... ");
+        #endif
+        WIRE.setWireTimeout(300);
 
-	while(!isSlaveAvailable()){
-			Serial.print("\n Slave device not available, retrying 1 sec later");
-			delay(1000);
-	};
+        while(!isSlaveAvailable()){
+                #if I2C_SERIAL_BYPASS_DEBUG
+                    Serial.print("\n Slave device not available, retrying 1 sec later");
+                #endif
+                delay(1000);
+        };
     }
 
     private:
@@ -104,7 +119,7 @@ uint8_t endWireTransmission(bool stop){
 	if(error==5){
 		Serial.print("timeout");
 	}
-    Serial.print("\n Error code is");
+    Serial.print("\n Error code is ");
     Serial.print(error);
     Serial.println();
 	Serial.flush();
