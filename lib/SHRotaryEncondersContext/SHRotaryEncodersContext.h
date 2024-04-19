@@ -16,9 +16,9 @@ public:
     }
 
     void updateContext(int encoderId, int pos, byte dir){
-        char sbuf[150];
-	    sprintf(sbuf,"\nSHRotaryEncoderContext::updateContext(%d,%d,%d);\n",encoderId,pos,dir);
-	    Serial.print(sbuf);
+        // char sbuf[150];
+	    // sprintf(sbuf,"\nSHRotaryEncoderContext::updateContext(%d,%d,%d);\n",encoderId,pos,dir);
+	    // Serial.print(sbuf);
         if(dir==0xD7){
             this->buttonPressed[encoderId-1]=pos == 1? 0 : 1;
             Serial.print(this->buttonPressed[encoderId-1]);

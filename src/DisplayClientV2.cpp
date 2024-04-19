@@ -66,7 +66,7 @@
 	#define I2C_ADDRESS 0x08
 	#define I2C_BYPASS_SLAVE_ADRESS 8
 	#define I2C_BYPASS_MASTER 	false
-	# define I2C_SERIAL_BYPASS_DEBUG true
+	# define I2C_SERIAL_BYPASS_DEBUG false
 	
 	#include <LoopbackStream.h>
 	#include <I2CManager.h>
@@ -1146,34 +1146,16 @@ void UpdateGamepadEncodersState(bool sendState);
 
 #if I2C_SERIAL_BYPASS && I2C_BYPASS_SLAVE
 void VirtualEncoderPositionChanged(int encoderId,int position, byte direction)	{
-	Serial.print("DisplayClientV2::VirtualEncoderPositionChanged");
 	virtualEncoderContext.updateContext(encoderId,position,direction);
 }
 #endif
 
 
 void EncoderPositionChanged(int encoderId, int position, byte direction) {
-	//  char sbuf[150];
-	//  sprintf(sbuf,"EncoderPositionChanged(%d,%d,%d);",encoderId,position,direction);
-	//  Serial.print(sbuf);
 
 #if INCLUDE_GAMEPAD || ( INCLUDE_GAMEPAD && !I2C_BYPASS_MASTER && I2C_BYPASS_SLAVE && I2C_SERIAL_BYPASS)
 
 	UpdateGamepadEncodersState(true);
-
-/*	if(ENCODER_TYPE[encoderId-1]==0){
-		Serial.print("UpdateGamepadEncodersState(true)");
-		UpdateGamepadEncodersState(true);
-	}
-
-	if(ENCODER_TYPE[encoderId-1]==1){
-		sprintf(sbuf,"UpdateGamepadVirtualEncodersState(%d,%d,%d,true);",encoderId,position,direction);
-		Serial.print(sbuf);
-		UpdateGamepadVirtualEncodersState(encoderId,position,direction,true);
-	}*/
-
-	
-
 #else
 	if (direction < 2) {
 		arqserial.CustomPacketStart(0x01, 3);
@@ -1289,7 +1271,7 @@ void setup()
 #endif
 
 	FlowSerialBegin(19200);
-	while (!Serial) ; // https://forum.arduino.cc/t/cant-view-serial-print-from-setup/167916
+	while (!Serial1) ; // https://forum.arduino.cc/t/cant-view-serial-print-from-setup/167916
 	
 
 #if I2C_BYPASS_SLAVE 
@@ -1656,13 +1638,14 @@ void loop() {
 
 	// Wait for data
 	if (FlowSerialAvailable() > 0) {
-		Serial.print(FlowSerialTimedRead());
 		
 		if (FlowSerialTimedRead() == MESSAGE_HEADER)
 		{
+
 			lastSerialActivity = millis();
 			// Read command
 			loop_opt = FlowSerialTimedRead();
+			
 
 			if (loop_opt == '1') Command_Hello();
 			else if (loop_opt == '8') Command_SetBaudrate();

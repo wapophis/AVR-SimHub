@@ -237,13 +237,13 @@ public:
 	}
 
 	void Write(byte data) {
-		Serial.println("\n\n\n\n\n\n\n\n");
+	//	Serial.println("\n\n\n\n\n\n\n\n");
 		StreamWrite(0x08);
-		Serial.write(0x08);
+	//	Serial.write(0x08);
 		StreamWrite(data);
-		Serial.write(data);
+	//	Serial.write(data);
 		StreamFlush();
-		Serial.flush();
+	//	Serial.flush();
 		//Serial1.printf("\nWrite[start,data]: [0x08,%d]",data);
 	}
 

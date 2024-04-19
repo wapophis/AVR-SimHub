@@ -43,7 +43,7 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
     //         Serial.write(stream->read());
     //     }
     // return;
-    #define IC2_SERIAL_BYPASS_DEBUG true
+    #define IC2_SERIAL_BYPASS_DEBUG false
     #if IC2_SERIAL_BYPASS_DEBUG
         Serial.print("\n Disponible en buffer ");
         Serial.print(stream->available());
@@ -80,7 +80,6 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
         #endif
 
         if(packetType==0x01){
-             Serial.print("CASO 1");
              int encoderId=stream->read();
              byte direction=stream->read();
              int position=stream->read(); 
@@ -88,77 +87,24 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
         }
 
         if(packetType==0x02){
-
-            Serial.print("CASO 2");
             int encoderId=stream->read();
             byte direction=stream->read();
-            Serial.print(" EncoderId:");
-            Serial.print(encoderId);
-            Serial.print(" Direction:");
-            Serial.print(direction);
-            
             callbacker->getEncoderPositionChangedCallback()(encoderId,direction,0xD7); // 0XD7 Identify a button status changed 
         }
 
         if(packetType==0x03){
-
-              Serial.print("CASO 3");
-                    int buttonId;
-                    buttonId=stream->read();
-                    byte status;
-                    status=stream->read();
-                    #if IC2_SERIAL_BYPASS_DEBUG
-                        Serial.print("\n BUtton state changed ");
-                        Serial.println(buttonId);
-                        Serial.println(status);
-                        Serial.flush();
-                    #endif
-                    callbacker->getButtonCallback()(buttonId,status);
-
+            int buttonId;
+            buttonId=stream->read();
+            byte status;
+            status=stream->read();
+            #if IC2_SERIAL_BYPASS_DEBUG
+                Serial.print("\n BUtton state changed ");
+                Serial.println(buttonId);
+                Serial.println(status);
+                Serial.flush();
+            #endif
+            callbacker->getButtonCallback()(buttonId,status);
         }
-
-        if(packetType==0x04){
-             Serial.print("CASO 4");
-                    // TODO: FIXME
-                    //callbacker->getButtonCallback()((stream->read())*8+stream->read(),stream->read());
-        }
-
-        // switch (packetType){
-        //         case 0x01:
-        //             Serial.print("CASO 1");
-        //             int encoderId=stream->read();
-        //             byte direction=stream->read();
-        //             int position=stream->read(); 
-        //             callbacker->getEncoderPositionChangedCallback()(encoderId,position,direction);
-        //             break;
-        //         case 0x02:
-        //             Serial.print("CASO 2");
-        //             callbacker->getEncoderPositionChangedCallback()(stream->read(),stream->read(),0xD7); // 0XD7 Identify a button status changed 
-        //             break;
-        //         case 0x03:
-        //             Serial.print("CASO 3");
-        //             int buttonId;
-        //             buttonId=stream->read();
-        //             byte status;
-        //             status=stream->read();
-        //             #if IC2_SERIAL_BYPASS_DEBUG
-        //                 Serial.print("\n BUtton state changed ");
-        //                 Serial.println(buttonId);
-        //                 Serial.println(status);
-        //                 Serial.flush();
-        //             #endif
-        //             callbacker->getButtonCallback()(buttonId,status);
-        //             break;
-        //         case 0x04:
-        //             Serial.print("CASO 4");
-        //             // TODO: FIXME
-        //             //callbacker->getButtonCallback()((stream->read())*8+stream->read(),stream->read());
-        //             break;
-        //         default:
-        //             Serial.print(" DEFAULT ");
-        //             break;
-        //     }
-
 
         while (0 <stream->available()){
             Serial.write(stream->read());
