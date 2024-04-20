@@ -37,4 +37,5 @@ class I2CTransportMaster : public I2CTransport {
 			#endif
 		
 	}
+};
 #endif
