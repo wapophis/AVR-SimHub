@@ -43,8 +43,8 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
     //         Serial.write(stream->read());
     //     }
     // return;
-    #define IC2_SERIAL_BYPASS_DEBUG false
-    #if IC2_SERIAL_BYPASS_DEBUG
+
+    #if I2C_SERIAL_BYPASS_DEBUG
         Serial.print("\n Disponible en buffer ");
         Serial.print(stream->available());
         Serial.print("\n");
@@ -52,7 +52,7 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
     #endif
     if(stream->available()){
        packetType=stream->read();
-        #if IC2_SERIAL_BYPASS_DEBUG
+        #if I2C_SERIAL_BYPASS_DEBUG
         Serial.print("\n Initial packetType  ");
         Serial.print(packetType);
         Serial.print("\n");
@@ -63,7 +63,7 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
     // CUSTOM PACKETS
     if(packetType==0x09){
         packetType=stream->read();
-         #if IC2_SERIAL_BYPASS_DEBUG
+         #if I2C_SERIAL_BYPASS_DEBUG
         Serial.print("\n Accepted packetType ");
         Serial.print(packetType);
         Serial.print("\n");
@@ -72,7 +72,7 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
 
         size=stream->read();
 
-        #if IC2_SERIAL_BYPASS_DEBUG
+        #if I2C_SERIAL_BYPASS_DEBUG
         Serial.print("\n Payload Size is ");
         Serial.print(size);
         Serial.print("\n");
@@ -97,7 +97,7 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
             buttonId=stream->read();
             byte status;
             status=stream->read();
-            #if IC2_SERIAL_BYPASS_DEBUG
+            #if I2C_SERIAL_BYPASS_DEBUG
                 Serial.print("\n BUtton state changed ");
                 Serial.println(buttonId);
                 Serial.println(status);
@@ -111,6 +111,19 @@ static void decodeBuffer(EventCallBackManager *callbacker,Stream  *stream){
          }
          stream->flush();
             
+    }else{
+        #if I2C_SERIAL_BYPASS_DEBUG
+            Serial.print("Unrecognized packet type ");
+            Serial.print(packetType);
+        #endif
+               
+        while (0 <stream->available()){
+            Serial.write(stream->read());
+         }
+         stream->flush();
+
     }
+
+    
 
 }
