@@ -66,7 +66,8 @@
 	#define I2C_ADDRESS 0x08
 	#define I2C_BYPASS_SLAVE_ADRESS 8
 	#define I2C_BYPASS_MASTER 	false
-	# define I2C_SERIAL_BYPASS_DEBUG false
+	
+	# define I2C_SERIAL_BYPASS_DEBUG true
 	
 	#include <LoopbackStream.h>
 	#include <I2CManager.h>
@@ -1242,7 +1243,7 @@ void buttonMatrixStatusChanged(int buttonId, byte Status) {
 
  void receiveSerialProtocolViaI2c(int howMany){
 	#if I2C_SERIAL_BYPASS_DEBUG
- 		Serial.print("Received data via I2C with");
+ 		Serial.print("Received data via I2C with ");
  		Serial.print(howMany);
  		Serial.print(" Bytes");
  		Serial.flush();
