@@ -494,15 +494,15 @@ SHPWMPin shCONSPIN(CONS_PIN, 40);
 
 #include "SHGamepadAxis.h"
 
-#define GAMEPAD_AXIS_01_ENABLED 0           //{"Group":"Gamepad analog axis","Name":"GAMEPAD_AXIS_01_ENABLED","Title":"Throttle axis enabled","DefaultValue":"0","Type":"bool"}
-#define GAMEPAD_AXIS_01_PIN 8               //{"Name":"GAMEPAD_AXIS_01_PIN","Title":"Throttle axis analog pin","DefaultValue":"0","Type":"pin;Throttle input","Condition":"GAMEPAD_AXIS_01_ENABLED>0"}
+#define GAMEPAD_AXIS_01_ENABLED 1           //{"Group":"Gamepad analog axis","Name":"GAMEPAD_AXIS_01_ENABLED","Title":"Throttle axis enabled","DefaultValue":"0","Type":"bool"}
+#define GAMEPAD_AXIS_01_PIN A0               //{"Name":"GAMEPAD_AXIS_01_PIN","Title":"Throttle axis analog pin","DefaultValue":"0","Type":"pin;Throttle input","Condition":"GAMEPAD_AXIS_01_ENABLED>0"}
 #define GAMEPAD_AXIS_01_MINVALUE 0          //{"Name":"GAMEPAD_AXIS_01_MINVALUE","Title":"Throttle axis analog minimum value","DefaultValue":"0","Type":"int","Condition":"GAMEPAD_AXIS_01_ENABLED>0"}
 #define GAMEPAD_AXIS_01_MAXVALUE 1024       //{"Name":"GAMEPAD_AXIS_01_MAXVALUE","Title":"Throttle axis analog maximum value","DefaultValue":"1024","Type":"int","Condition":"GAMEPAD_AXIS_01_ENABLED>0"}
 #define GAMEPAD_AXIS_01_SAMPLING 10         //{"Name":"GAMEPAD_AXIS_01_SAMPLING","Title":"Throttle axis analog sampling precision","DefaultValue":"10","Type":"list","Condition":"GAMEPAD_AXIS_01_ENABLED>0","ListValues":"10,10 bits(default 0->1024);11,11 bits oversampling (slower 0->2048)"}
 #define GAMEPAD_AXIS_01_EXPONENTIALFACTOR 1 //{"Name":"GAMEPAD_AXIS_01_EXPONENTIALFACTOR","Title":"Throttle axis exponential correction","DefaultValue":"1","Type":"double","Condition":"GAMEPAD_AXIS_01_ENABLED>0","dMin":0.1,"dMax":1.9}
 
-#define GAMEPAD_AXIS_02_ENABLED 0           //{"Name":"GAMEPAD_AXIS_02_ENABLED","Title":"Accelerator axis enabled","DefaultValue":"0","Type":"bool"}
-#define GAMEPAD_AXIS_02_PIN 9               //{"Name":"GAMEPAD_AXIS_02_PIN","Title":"Accelerator axis analog pin","DefaultValue":"0","Type":"pin;Accelerator input","Condition":"GAMEPAD_AXIS_02_ENABLED>0"}
+#define GAMEPAD_AXIS_02_ENABLED 1           //{"Name":"GAMEPAD_AXIS_02_ENABLED","Title":"Accelerator axis enabled","DefaultValue":"0","Type":"bool"}
+#define GAMEPAD_AXIS_02_PIN A1               //{"Name":"GAMEPAD_AXIS_02_PIN","Title":"Accelerator axis analog pin","DefaultValue":"0","Type":"pin;Accelerator input","Condition":"GAMEPAD_AXIS_02_ENABLED>0"}
 #define GAMEPAD_AXIS_02_MINVALUE 0          //{"Name":"GAMEPAD_AXIS_02_MINVALUE","Title":"Accelerator axis analog minimum value","DefaultValue":"0","Type":"int","Condition":"GAMEPAD_AXIS_02_ENABLED>0"}
 #define GAMEPAD_AXIS_02_MAXVALUE 1024       //{"Name":"GAMEPAD_AXIS_02_MAXVALUE","Title":"Accelerator axis analog maximum value","DefaultValue":"1024","Type":"int","Condition":"GAMEPAD_AXIS_02_ENABLED>0"}
 #define GAMEPAD_AXIS_02_SAMPLING 10         //{"Name":"GAMEPAD_AXIS_02_SAMPLING","Title":"Accelerator axis analog sampling precision","DefaultValue":"10","Type":"list","Condition":"GAMEPAD_AXIS_02_ENABLED>0","ListValues":"10,10 bits(default 0->1024);11,11 bits oversampling (slower 0->2048)"}
@@ -539,110 +539,110 @@ SHGamepadAxis SHGAMEPADAXIS03(GAMEPAD_AXIS_03_PIN, 2, GAMEPAD_AXIS_03_MINVALUE, 
 #ifdef  INCLUDE_BUTTONS
 
 // PLACE BUTTONS IN MASTER DEVICE OVER THE 100 TO PREVENT CONFLICT WITH SLAVE PINS
-#define BUTTON_PIN_1 34       //{"Name":"BUTTON_PIN_1","Title":"1'st Additional button digital pin","DefaultValue":"3","Type":"pin;Button 1","Condition":"ENABLED_BUTTONS_COUNT>=1"}
+#define BUTTON_PIN_1 7       //{"Name":"BUTTON_PIN_1","Title":"1'st Additional button digital pin","DefaultValue":"3","Type":"pin;Button 1","Condition":"ENABLED_BUTTONS_COUNT>=1"}
 #define BUTTON_WIRINGMODE_1 0   //{"Name":"BUTTON_WIRINGMODE_1","Title":"1'st Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_1 0    //{"Name":"BUTTON_LOGICMODE_1","Title":"1'st Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_1 1		//{"Name":"BUTTON_TYPE_1","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_1 0		//{"Name":"BUTTON_TYPE_1","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_2 35          //{"Name":"BUTTON_PIN_2","Title":"2'nd Additional button digital pin","DefaultValue":"3","Type":"pin;Button 2","Condition":"ENABLED_BUTTONS_COUNT>=2"}
+#define BUTTON_PIN_2 10          //{"Name":"BUTTON_PIN_2","Title":"2'nd Additional button digital pin","DefaultValue":"3","Type":"pin;Button 2","Condition":"ENABLED_BUTTONS_COUNT>=2"}
 #define BUTTON_WIRINGMODE_2 0   //{"Name":"BUTTON_WIRINGMODE_2","Title":"2'nd Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=2","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_2 0    //{"Name":"BUTTON_LOGICMODE_2","Title":"2'nd Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=2","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_2 1			//{"Name":"BUTTON_TYPE_2","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=2","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_2 0			//{"Name":"BUTTON_TYPE_2","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=2","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_3 36          //{"Name":"BUTTON_PIN_3","Title":"3'rd Additional button digital pin","DefaultValue":"3","Type":"pin;Button 3","Condition":"ENABLED_BUTTONS_COUNT>=3"}
+#define BUTTON_PIN_3 16          //{"Name":"BUTTON_PIN_3","Title":"3'rd Additional button digital pin","DefaultValue":"3","Type":"pin;Button 3","Condition":"ENABLED_BUTTONS_COUNT>=3"}
 #define BUTTON_WIRINGMODE_3 0   //{"Name":"BUTTON_WIRINGMODE_3","Title":"3'rd Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=3","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_3 0    //{"Name":"BUTTON_LOGICMODE_3","Title":"3'rd Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=3","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_3 1			//{"Name":"BUTTON_TYPE_3","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=3","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_3 0			//{"Name":"BUTTON_TYPE_3","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=3","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_4 37          //{"Name":"BUTTON_PIN_4","Title":"4'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 4","Condition":"ENABLED_BUTTONS_COUNT>=4"}
+#define BUTTON_PIN_4 14          //{"Name":"BUTTON_PIN_4","Title":"4'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 4","Condition":"ENABLED_BUTTONS_COUNT>=4"}
 #define BUTTON_WIRINGMODE_4 0   //{"Name":"BUTTON_WIRINGMODE_4","Title":"4'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=4","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_4 0    //{"Name":"BUTTON_LOGICMODE_4","Title":"4'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=4","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_4 1			//{"Name":"BUTTON_TYPE_4","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=4","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_4 0			//{"Name":"BUTTON_TYPE_4","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=4","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_5 38          //{"Name":"BUTTON_PIN_5","Title":"5'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 5","Condition":"ENABLED_BUTTONS_COUNT>=5"}
+#define BUTTON_PIN_5 15          //{"Name":"BUTTON_PIN_5","Title":"5'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 5","Condition":"ENABLED_BUTTONS_COUNT>=5"}
 #define BUTTON_WIRINGMODE_5 0   //{"Name":"BUTTON_WIRINGMODE_5","Title":"5'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=5","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_5 0    //{"Name":"BUTTON_LOGICMODE_5","Title":"5'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=5","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_5 1			//{"Name":"BUTTON_TYPE_5","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=5","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_5 0			//{"Name":"BUTTON_TYPE_5","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=5","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_6 39          //{"Name":"BUTTON_PIN_6","Title":"6'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 6","Condition":"ENABLED_BUTTONS_COUNT>=6"}
+#define BUTTON_PIN_6 A2          //{"Name":"BUTTON_PIN_6","Title":"6'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 6","Condition":"ENABLED_BUTTONS_COUNT>=6"}
 #define BUTTON_WIRINGMODE_6 0   //{"Name":"BUTTON_WIRINGMODE_6","Title":"6'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=6","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_6 0    //{"Name":"BUTTON_LOGICMODE_6","Title":"6'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=6","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_6 1			//{"Name":"BUTTON_TYPE_6","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=6","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_6 0			//{"Name":"BUTTON_TYPE_6","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=6","ListValues":"0,Physically Connected;1,Serialized"}
 
 #define BUTTON_PIN_7 40          //{"Name":"BUTTON_PIN_7","Title":"7'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 7","Condition":"ENABLED_BUTTONS_COUNT>=7"}
 #define BUTTON_WIRINGMODE_7 0   //{"Name":"BUTTON_WIRINGMODE_7","Title":"7'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=7","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_7 0    //{"Name":"BUTTON_LOGICMODE_7","Title":"7'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=7","ListValues":"0,Normal;1,Reversed"}
 #define BUTTON_TYPE_7 1			//{"Name":"BUTTON_TYPE_7","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=7","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_8 41          //{"Name":"BUTTON_PIN_8","Title":"8'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 8","Condition":"ENABLED_BUTTONS_COUNT>=8"}
+#define BUTTON_PIN_8 A3          //{"Name":"BUTTON_PIN_8","Title":"8'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 8","Condition":"ENABLED_BUTTONS_COUNT>=8"}
 #define BUTTON_WIRINGMODE_8 0   //{"Name":"BUTTON_WIRINGMODE_8","Title":"8'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=8","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_8 0    //{"Name":"BUTTON_LOGICMODE_8","Title":"8'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=8","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_8 1			//{"Name":"BUTTON_TYPE_8","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=8","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_8 0 			//{"Name":"BUTTON_TYPE_8","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=8","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_9 42          //{"Name":"BUTTON_PIN_9","Title":"9'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 9","Condition":"ENABLED_BUTTONS_COUNT>=9"}
+#define BUTTON_PIN_9 1          //{"Name":"BUTTON_PIN_9","Title":"9'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 9","Condition":"ENABLED_BUTTONS_COUNT>=9"}
 #define BUTTON_WIRINGMODE_9 0   //{"Name":"BUTTON_WIRINGMODE_9","Title":"9'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=9","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_9 0    //{"Name":"BUTTON_LOGICMODE_9","Title":"9'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=9","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_9 1			//{"Name":"BUTTON_TYPE_9","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=9","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_9 0			//{"Name":"BUTTON_TYPE_9","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=9","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_10 43         //{"Name":"BUTTON_PIN_10","Title":"10'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 10","Condition":"ENABLED_BUTTONS_COUNT>=10"}
+#define BUTTON_PIN_10 4         //{"Name":"BUTTON_PIN_10","Title":"10'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 10","Condition":"ENABLED_BUTTONS_COUNT>=10"}
 #define BUTTON_WIRINGMODE_10 0  //{"Name":"BUTTON_WIRINGMODE_10","Title":"10'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=10","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_10 0   //{"Name":"BUTTON_LOGICMODE_10","Title":"10'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=10","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_10 1		//{"Name":"BUTTON_TYPE_10","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=10","ListValues":"0,Physically Connected;1,Serialized"}
-
-#define BUTTON_PIN_11 A0         //{"Name":"BUTTON_PIN_11","Title":"11'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 11","Condition":"ENABLED_BUTTONS_COUNT>=11"}
+#define BUTTON_TYPE_10 0		//{"Name":"BUTTON_TYPE_10","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=10","ListValues":"0,Physically Connected;1,Serialized"}
+//
+#define BUTTON_PIN_11 33         //{"Name":"BUTTON_PIN_11","Title":"11'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 11","Condition":"ENABLED_BUTTONS_COUNT>=11"}
 #define BUTTON_WIRINGMODE_11 0  //{"Name":"BUTTON_WIRINGMODE_11","Title":"11'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=11","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_11 0   //{"Name":"BUTTON_LOGICMODE_11","Title":"11'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=11","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_11 0		//{"Name":"BUTTON_TYPE_11","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=11","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_11 1		//{"Name":"BUTTON_TYPE_11","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=11","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_12 A1         //{"Name":"BUTTON_PIN_12","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=12"}
+#define BUTTON_PIN_12 33         //{"Name":"BUTTON_PIN_12","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=12"}
 #define BUTTON_WIRINGMODE_12 0  //{"Name":"BUTTON_WIRINGMODE_12","Title":"12'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=12","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_12 0   //{"Name":"BUTTON_LOGICMODE_12","Title":"12'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=12","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_12 0		//{"Name":"BUTTON_TYPE_12","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=12","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_12 1		//{"Name":"BUTTON_TYPE_12","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=12","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_13 A2         //{"Name":"BUTTON_PIN_13","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=13"}
+#define BUTTON_PIN_13 33         //{"Name":"BUTTON_PIN_13","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=13"}
 #define BUTTON_WIRINGMODE_13 0  //{"Name":"BUTTON_WIRINGMODE_13","Title":"12'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=13","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_13 0   //{"Name":"BUTTON_LOGICMODE_13","Title":"12'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=13","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_13 0		//{"Name":"BUTTON_TYPE_13","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=13","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_13 1		//{"Name":"BUTTON_TYPE_13","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=13","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_14 A3         //{"Name":"BUTTON_PIN_14","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=14"}
+#define BUTTON_PIN_14 33         //{"Name":"BUTTON_PIN_14","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=14"}
 #define BUTTON_WIRINGMODE_14 0  //{"Name":"BUTTON_WIRINGMODE_14","Title":"12'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=14","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_14 0   //{"Name":"BUTTON_LOGICMODE_14","Title":"12'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=14","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_14 0		//{"Name":"BUTTON_TYPE_14","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=14","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_14 1		//{"Name":"BUTTON_TYPE_14","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=14","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_15 16         //{"Name":"BUTTON_PIN_15","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=15"}
+#define BUTTON_PIN_15 33         //{"Name":"BUTTON_PIN_15","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=15"}
 #define BUTTON_WIRINGMODE_15 0  //{"Name":"BUTTON_WIRINGMODE_15","Title":"12'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=15","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_15 0   //{"Name":"BUTTON_LOGICMODE_15","Title":"12'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=15","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_15 0		//{"Name":"BUTTON_TYPE_15","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=15","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_15 1		//{"Name":"BUTTON_TYPE_15","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=15","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_16 14         //{"Name":"BUTTON_PIN_16","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=16"}
+#define BUTTON_PIN_16 33         //{"Name":"BUTTON_PIN_16","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=16"}
 #define BUTTON_WIRINGMODE_16 0  //{"Name":"BUTTON_WIRINGMODE_16","Title":"12'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=16","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_16 0   //{"Name":"BUTTON_LOGICMODE_16","Title":"12'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=16","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_16 0		//{"Name":"BUTTON_TYPE_16","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=16","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_16 1		//{"Name":"BUTTON_TYPE_16","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=16","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_17 15         //{"Name":"BUTTON_PIN_17","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=17"}
+#define BUTTON_PIN_17 33         //{"Name":"BUTTON_PIN_17","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=17"}
 #define BUTTON_WIRINGMODE_17 0  //{"Name":"BUTTON_WIRINGMODE_17","Title":"12'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=17","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_17 0   //{"Name":"BUTTON_LOGICMODE_17","Title":"12'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=17","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_17 0		//{"Name":"BUTTON_TYPE_17","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=17","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_17 1		//{"Name":"BUTTON_TYPE_17","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=17","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_18 18         //{"Name":"BUTTON_PIN_18","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=18"}
+#define BUTTON_PIN_18 33         //{"Name":"BUTTON_PIN_18","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=18"}
 #define BUTTON_WIRINGMODE_18 0  //{"Name":"BUTTON_WIRINGMODE_18","Title":"12'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=18","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_18 0   //{"Name":"BUTTON_LOGICMODE_18","Title":"12'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=18","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_18 0		//{"Name":"BUTTON_TYPE_18","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=18","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_18 1		//{"Name":"BUTTON_TYPE_18","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=18","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_19 19        //{"Name":"BUTTON_PIN_19","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=19"}
+#define BUTTON_PIN_19 33        //{"Name":"BUTTON_PIN_19","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=19"}
 #define BUTTON_WIRINGMODE_19 0  //{"Name":"BUTTON_WIRINGMODE_19","Title":"12'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=19","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_19 0   //{"Name":"BUTTON_LOGICMODE_19","Title":"12'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=19","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_19 0		//{"Name":"BUTTON_TYPE_19","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=19","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_19 1		//{"Name":"BUTTON_TYPE_19","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=19","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_20 20        //{"Name":"BUTTON_PIN_20","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=14"}
+#define BUTTON_PIN_20 33        //{"Name":"BUTTON_PIN_20","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=14"}
 #define BUTTON_WIRINGMODE_20 0  //{"Name":"BUTTON_WIRINGMODE_20","Title":"12'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=14","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_20 0   //{"Name":"BUTTON_LOGICMODE_20","Title":"12'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=14","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_20 0		//{"Name":"BUTTON_TYPE_20","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=14","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_20 1		//{"Name":"BUTTON_TYPE_20","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=14","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_21 21        //{"Name":"BUTTON_PIN_21","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=21"}
+#define BUTTON_PIN_21 33        //{"Name":"BUTTON_PIN_21","Title":"12'th Additional button digital pin","DefaultValue":"3","Type":"pin;Button 12","Condition":"ENABLED_BUTTONS_COUNT>=21"}
 #define BUTTON_WIRINGMODE_21 0  //{"Name":"BUTTON_WIRINGMODE_21","Title":"12'th Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=21","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_21 0   //{"Name":"BUTTON_LOGICMODE_21","Title":"12'th Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=21","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_21 0		//{"Name":"BUTTON_TYPE_21","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=21","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_21 1		//{"Name":"BUTTON_TYPE_21","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=21","ListValues":"0,Physically Connected;1,Serialized"}
 
 
 int BUTTON_PINS[] = { BUTTON_PIN_1, BUTTON_PIN_2, BUTTON_PIN_3, BUTTON_PIN_4, BUTTON_PIN_5, BUTTON_PIN_6, BUTTON_PIN_7, BUTTON_PIN_8, BUTTON_PIN_9,BUTTON_PIN_10,BUTTON_PIN_11,BUTTON_PIN_12,BUTTON_PIN_13,BUTTON_PIN_14, BUTTON_PIN_15,BUTTON_PIN_16,BUTTON_PIN_17,BUTTON_PIN_18,BUTTON_PIN_19,BUTTON_PIN_20,BUTTON_PIN_21 };
@@ -686,7 +686,7 @@ SHDebouncer ButtonsDebouncer(10);
 #define ENCODER2_ENABLE_PULLUP 1     //{"Name":"ENCODER2_ENABLE_PULLUP","Title":"Encoder 2 enable pullup resistor","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>1"}
 #define ENCODER2_REVERSE_DIRECTION 0 //{"Name":"ENCODER2_REVERSE_DIRECTION","Title":"Encoder 2 reverse direction","DefaultValue":"0","Type":"bool","Condition":"ENABLED_ENCODERS_COUNT>1"}
 #define ENCODER2_ENABLE_HALFSTEPS 0  //{"Name":"ENCODER2_ENABLE_HALFSTEPS","Title":"Encoder 2 steps mode","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>=2","ListValues":"0,Full steps;1,Half steps"}
-#define ENCODER2_TYPE 0			 	 //{"Name":"ENCODER1_TYPE","Title":"Is virtual encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>1","ListValues":"0,Physically Connected;1,Serialized"}
+#define ENCODER2_TYPE 1			 	 //{"Name":"ENCODER1_TYPE","Title":"Is virtual encoder","DefaultValue":"0","Type":"list","Condition":"ENABLED_ENCODERS_COUNT>1","ListValues":"0,Physically Connected;1,Serialized"}
 
 #define ENCODER3_CLK_PIN 7           //{"Name":"ENCODER3_CLK_PIN","Title":"Encoder 3 output A (CLK) pin","DefaultValue":"7","Type":"pin;Encoder 3 CLK","Condition":"ENABLED_ENCODERS_COUNT>2"}
 #define ENCODER3_DT_PIN 8            //{"Name":"ENCODER3_DT_PIN","Title":"Encoder 3 output B (DT) pin","DefaultValue":"8","Type":"pin;Encoder 3 DT","Condition":"ENABLED_ENCODERS_COUNT>2"}
