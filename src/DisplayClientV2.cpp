@@ -55,33 +55,7 @@
 #define INCLUDE_GAMEPADAXIS                 //{"Name":"INCLUDE_GAMEPADAXIS","Type":"autodefine","Condition":"[GAMEPAD_AXIS_01_ENABLED]>0 || [GAMEPAD_AXIS_02_ENABLED]>0 || [GAMEPAD_AXIS_03_ENABLED]>0"}
 
 
-/* I2C ARDUINO SIMHUB EXTENSION, ACTING AS SLAVE*/
 
-#define I2C_SERIAL_BYPASS true
-
-#if I2C_SERIAL_BYPASS
-	#define WIRE Wire
-	
-	#define I2C_BYPASS_SLAVE true
-	#define I2C_ADDRESS 0x08
-	#define I2C_BYPASS_SLAVE_ADRESS 8
-	#define I2C_BYPASS_MASTER 	false
-	# define I2C_SERIAL_BYPASS_DEBUG false
-	
-	#include <LoopbackStream.h>
-	#include <I2CManager.h>
-	#include <AnalogAxis.h>
-
-	FullLoopbackStream outgoingStream;
-
-	#if I2C_BYPASS_MASTER && !I2C_BYPASS_SLAVE
-		#undef INCLUDE_GAMEPAD
-		#undef INCLUDE_GAMEPADAXIS
-	#endif
-
-
-	
-#endif
 
 
 #ifdef INCLUDE_GAMEPADAXIS
@@ -107,6 +81,37 @@
 #include "setPwmFrequency.h"
 #include "SHDebouncer.h"
 #include "SHButton.h"
+#include "SHButtonsMCP23017.h"
+
+#define INCLUDE_MCP23017_BUTTONS //{"Name":"INCLUDE_MCP23017_BUTTONS","Type":"autodefine","Condition":"[MCP23017_TOTAL_BUTTONS_COUNT]>0","IsInput":true}
+// -------------------- Adafruit MCP23017 Buttons -------------------------------------------------------
+#ifdef INCLUDE_MCP23017_BUTTONS
+#include <Adafruit_MCP23X17.h>
+#define MCP23017_CHIPS_COUNT 0     //{"Group":"MCP23017 Buttons","Name":"MCP23017_CHIPS_COUNT","Title":"Number of MCP23017 chips (1-8)","DefaultValue":"0","Type":"int","Min":1,"Max":8}
+#define MCP23017_TOTAL_BUTTONS_COUNT 0  //{"Group":"MCP23017 Buttons","Name":"MCP23017_TOTAL_BUTTONS_COUNT","Title":"Total number of buttons across all MCP23017","DefaultValue":"0","Type":"int","Max":128}
+
+// Direcciones I2C para cada MCP23017 activo (configurar solo los que se usan)
+#define MCP23017_I2C_ADDRESS_1 0x20 //{"Name":"MCP23017_I2C_ADDRESS_1","Title":"I2C address for MCP23017 #1","DefaultValue":"32","Type":"int","Min":32,"Max":39,"Condition":"MCP23017_CHIPS_COUNT>=1"}
+#define MCP23017_I2C_ADDRESS_2 0x21 //{"Name":"MCP23017_I2C_ADDRESS_2","Title":"I2C address for MCP23017 #2","DefaultValue":"33","Type":"int","Min":32,"Max":39,"Condition":"MCP23017_CHIPS_COUNT>=2"}
+#define MCP23017_I2C_ADDRESS_3 0x22 //{"Name":"MCP23017_I2C_ADDRESS_3","Title":"I2C address for MCP23017 #3","DefaultValue":"34","Type":"int","Min":32,"Max":39,"Condition":"MCP23017_CHIPS_COUNT>=3"}
+#define MCP23017_I2C_ADDRESS_4 0x23 //{"Name":"MCP23017_I2C_ADDRESS_4","Title":"I2C address for MCP23017 #4","DefaultValue":"35","Type":"int","Min":32,"Max":39,"Condition":"MCP23017_CHIPS_COUNT>=4"}
+#define MCP23017_I2C_ADDRESS_5 0x24 //{"Name":"MCP23017_I2C_ADDRESS_5","Title":"I2C address for MCP23017 #5","DefaultValue":"36","Type":"int","Min":32,"Max":39,"Condition":"MCP23017_CHIPS_COUNT>=5"}
+#define MCP23017_I2C_ADDRESS_6 0x25 //{"Name":"MCP23017_I2C_ADDRESS_6","Title":"I2C address for MCP23017 #6","DefaultValue":"37","Type":"int","Min":32,"Max":39,"Condition":"MCP23017_CHIPS_COUNT>=6"}
+#define MCP23017_I2C_ADDRESS_7 0x26 //{"Name":"MCP23017_I2C_ADDRESS_7","Title":"I2C address for MCP23017 #7","DefaultValue":"38","Type":"int","Min":32,"Max":39,"Condition":"MCP23017_CHIPS_COUNT>=7"}
+#define MCP23017_I2C_ADDRESS_8 0x27 //{"Name":"MCP23017_I2C_ADDRESS_8","Title":"I2C address for MCP23017 #8","DefaultValue":"39","Type":"int","Min":32,"Max":39,"Condition":"MCP23017_CHIPS_COUNT>=8"}
+
+// Array de direcciones para fácil acceso
+byte MCP23017_ADDRESSES[8] = {MCP23017_I2C_ADDRESS_1, MCP23017_I2C_ADDRESS_2, MCP23017_I2C_ADDRESS_3, MCP23017_I2C_ADDRESS_4,
+                              MCP23017_I2C_ADDRESS_5, MCP23017_I2C_ADDRESS_6, MCP23017_I2C_ADDRESS_7, MCP23017_I2C_ADDRESS_8};
+
+Adafruit_MCP23X17 mcp23017_chips[8];
+SHButtonsMCP23017 shMcpButtons;
+
+byte MCP_BUTTON_IDS[128];      // IDs para hasta 128 botones (8 chips * 16 pines)
+byte MCP_BUTTON_PINS[128];     // Pines globales (0-127: chip0:0-15, chip1:16-31, etc.)
+bool MCP_BUTTON_WIRINGS[128];  // Configuración de cableado
+int MCP_BUTTON_LOGICMODES[128]; // Modos de lógica
+#endif
 
 // ----------------------------------------------------- HW SETTINGS, PLEASE REVIEW ALL -------------------------------------------
 #define DEVICE_NAME "I2C_MASTER_BUTTONS" //{"Group":"General","Name":"DEVICE_NAME","Title":"Device name,\r\n make sure to use a unique name when using multiple arduinos","DefaultValue":"SimHub Dash","Type":"string","Template":"#define DEVICE_NAME \"{0}\""}
@@ -663,11 +668,7 @@ SHDebouncer ButtonsDebouncer(10);
 #ifdef  INCLUDE_ENCODERS
 #include "SHRotaryEncoder.h"
 
-#if I2C_SERIAL_BYPASS && I2C_BYPASS_SLAVE
-	#include <SHRotaryEncodersContext.h>
-	SHRotaryEncoderContext virtualEncoderContext;
-	void VirtualEncoderPositionChanged(int encoderId,int position, byte direction);
-#endif
+
 
 #define ENCODER1_CLK_PIN 8           //{"Name":"ENCODER1_CLK_PIN","Title":"Encoder 1 output A (CLK) pin","DefaultValue":"7","Type":"pin;Encoder 1 CLK","Condition":"ENABLED_ENCODERS_COUNT>0"}
 #define ENCODER1_DT_PIN 9            //{"Name":"ENCODER1_DT_PIN","Title":"Encoder 1 output B (DT) pin","DefaultValue":"8","Type":"pin;Encoder 1 DT","Condition":"ENABLED_ENCODERS_COUNT>0"}
@@ -1092,18 +1093,14 @@ void idle(bool critical) {
 #ifdef  INCLUDE_BUTTONMATRIX
 	shButtonMatrix.read();
 #endif
-
+#ifdef INCLUDE_MCP23017_BUTTONS
+	shMcpButtons.read();
+#endif
 	if (ButtonsDebouncer.Debounce()) {
 		bool changed = false;
 #ifdef INCLUDE_BUTTONS
 		for (int btnIdx = 0; btnIdx < ENABLED_BUTTONS_COUNT; btnIdx++) {
-			#if I2C_SERIAL_BYPASS
-				if(BUTTON_TYPE[btnIdx]==0){
-					BUTTONS[btnIdx]->read();
-				}
-			#else
-				BUTTONS[btnIdx]->read();
-			#endif
+			BUTTONS[btnIdx]->read();
 		}
 #endif
 #ifdef INCLUDE_TM1638
@@ -1144,16 +1141,12 @@ void idle(bool critical) {
 #ifdef  INCLUDE_ENCODERS
 void UpdateGamepadEncodersState(bool sendState);
 
-#if I2C_SERIAL_BYPASS && I2C_BYPASS_SLAVE
-void VirtualEncoderPositionChanged(int encoderId,int position, byte direction)	{
-	virtualEncoderContext.updateContext(encoderId,position,direction);
-}
-#endif
+
 
 
 void EncoderPositionChanged(int encoderId, int position, byte direction) {
 
-#if INCLUDE_GAMEPAD || ( INCLUDE_GAMEPAD && !I2C_BYPASS_MASTER && I2C_BYPASS_SLAVE && I2C_SERIAL_BYPASS)
+#if INCLUDE_GAMEPAD
 
 	UpdateGamepadEncodersState(true);
 #else
@@ -1182,7 +1175,6 @@ void buttonStatusChanged(int buttonId, byte Status) {
 	Joystick.setButton(TM1638_ENABLEDMODULES * 8 + buttonId - 1, Status);
 	Joystick.sendState();
 #else
-	Serial.print("Sending custom packet using arqSerial BYPASS");
 	arqserial.CustomPacketStart(0x03, 2);
 	arqserial.CustomPacketSendByte(buttonId);
 	arqserial.CustomPacketSendByte(Status);
@@ -1219,7 +1211,7 @@ void analogAxisChangedEventCallback(int axisId,int value){
 
 #ifdef  INCLUDE_BUTTONMATRIX
 void buttonMatrixStatusChanged(int buttonId, byte Status) {
-#ifdef INCLUDE_GAMEPAD && !I2C_BYPASS_MASTER
+#ifdef INCLUDE_GAMEPAD
 	Joystick.setButton(TM1638_ENABLEDMODULES * 8 + ENABLED_BUTTONS_COUNT + buttonId - 1, Status);
 	Joystick.sendState();
 #else
@@ -1232,28 +1224,53 @@ void buttonMatrixStatusChanged(int buttonId, byte Status) {
 #endif
 
 
- #if I2C_BYPASS_SLAVE
- #include "SimHubProtocolDecoder.h"
 
- /*** ATTACH BEHAVIOURS WHEN IS IN SLAVE MODE*/
- EventCallBackManager callbacker;
-
-
-
- void receiveSerialProtocolViaI2c(int howMany){
-	#if I2C_SERIAL_BYPASS_DEBUG
- 		Serial.print("Received data via I2C with");
- 		Serial.print(howMany);
- 		Serial.print(" Bytes");
- 		Serial.flush();
-	#endif
- 	decodeBuffer(&callbacker,&Wire);
- }
- 
- #endif
 
 
 void InitEncoders() ;
+
+// Función para validar direcciones MCP23017
+bool validateMCP23017Addresses() {
+#ifdef INCLUDE_MCP23017_BUTTONS
+	// Verificar que las direcciones estén en el rango válido (0x20-0x27)
+	for (int i = 0; i < MCP23017_CHIPS_COUNT; i++) {
+		if (MCP23017_ADDRESSES[i] < 0x20 || MCP23017_ADDRESSES[i] > 0x27) {
+			Serial.print("Error: MCP23017 #");
+			Serial.print(i + 1);
+			Serial.print(" address 0x");
+			Serial.print(MCP23017_ADDRESSES[i], HEX);
+			Serial.println(" is invalid. Must be between 0x20-0x27");
+			return false;
+		}
+	}
+ 
+	// Verificar que no haya direcciones duplicadas
+	for (int i = 0; i < MCP23017_CHIPS_COUNT; i++) {
+		for (int j = i + 1; j < MCP23017_CHIPS_COUNT; j++) {
+			if (MCP23017_ADDRESSES[i] == MCP23017_ADDRESSES[j]) {
+				Serial.print("Error: Duplicate MCP23017 address 0x");
+				Serial.print(MCP23017_ADDRESSES[i], HEX);
+				Serial.println(" found");
+				return false;
+			}
+		}
+	}
+	
+	Serial.print("MCP23017 configuration: ");
+	Serial.print(MCP23017_CHIPS_COUNT);
+	Serial.print(" chips, ");
+	Serial.print(MCP23017_TOTAL_BUTTONS_COUNT);
+	Serial.println(" total buttons");
+	
+	for (int i = 0; i < MCP23017_CHIPS_COUNT; i++) {
+		Serial.print("  Chip #");
+		Serial.print(i + 1);
+		Serial.print(": 0x");
+		Serial.println(MCP23017_ADDRESSES[i], HEX);
+	}
+#endif
+	return true;
+}
 
 void setup()
 {
@@ -1274,39 +1291,6 @@ void setup()
 	while (!Serial1) ; // https://forum.arduino.cc/t/cant-view-serial-print-from-setup/167916
 	
 
-#if I2C_BYPASS_SLAVE 
-	Serial.println("MAIN - SETUP - I2C_SERIAL_BYPASS AS SLAVE");
-	#ifdef INCLUDE_BUTTONS
-  	callbacker.setButtonCallBack(buttonStatusChanged);
-	#endif
-
-// 	callbacker.setAnalogAxisChangedEventCallback(analogAxisChangedEventCallback);
-	Wire.begin(I2C_BYPASS_SLAVE_ADRESS);                /* join i2c bus with address 8 */
-	Wire.setWireTimeout(1000);
-	Wire.onReceive(receiveSerialProtocolViaI2c);
- 
-	// TODO: IN ENCODERS BRANCH
-	 #ifdef  INCLUDE_ENCODERS
-	 	callbacker.setEncoderPositionChangedCallback(VirtualEncoderPositionChanged);
-	 #endif
-
- #endif
-
-#if I2C_BYPASS_MASTER
-	#if I2C_SERIAL_BYPASS_DEBUG
-	Serial.println("MAIN - SETUP - I2C_SERIAL_BYPASS");
-	#endif
-	I2CTransportManager::setup(&outgoingStream);
-
-	/// TEST TRANSPORT
-	// Serial.println("Lanzando prueba del canal I2C");
-	// StreamWrite("t");
-	// StreamWrite("e");
-	// StreamWrite("s");
-	// StreamWrite("t");
-	//// 
-	//axis1.setCallBack(axisStatusChanged);
-#endif
 
 
 #ifdef INCLUDE_GAMEPAD
@@ -1423,16 +1407,37 @@ void setup()
 	shNOKIA.Init();
 #endif
 
+#ifdef INCLUDE_MCP23017_BUTTONS
+	// Validar configuración MCP23017 antes de inicializar
+	if (!validateMCP23017Addresses()) {
+		Serial.println("MCP23017 configuration error. Halting initialization.");
+		return;
+	}
+	
+	// Inicializa solo los MCP23017 activos y mapea botones
+	Adafruit_MCP23X17* mcp_ptrs[8];
+	
+	// Inicializar solo los chips especificados por el usuario
+	for (int chip = 0; chip < MCP23017_CHIPS_COUNT && chip < 8; chip++) {
+		mcp23017_chips[chip].begin_I2C(MCP23017_ADDRESSES[chip]);
+		mcp_ptrs[chip] = &mcp23017_chips[chip];
+	}
+	
+	// Mapear botones globalmente (chip0: pines 0-15, chip1: pines 16-31, etc.)
+	for (int i = 0; i < MCP23017_TOTAL_BUTTONS_COUNT && i < 128; i++) {
+		MCP_BUTTON_IDS[i] = i + 1;
+		MCP_BUTTON_PINS[i] = i; // Pin global (0-127)
+		MCP_BUTTON_WIRINGS[i] = false; // por defecto a GND con pullup interna
+		MCP_BUTTON_LOGICMODES[i] = 0;
+	}
+	
+	shMcpButtons.begin(mcp_ptrs, MCP23017_CHIPS_COUNT, MCP23017_TOTAL_BUTTONS_COUNT, 
+	                   MCP_BUTTON_IDS, MCP_BUTTON_PINS, MCP_BUTTON_WIRINGS, MCP_BUTTON_LOGICMODES, buttonStatusChanged);
+#endif
 #ifdef INCLUDE_BUTTONS
 	// EXTERNAL BUTTONS INIT
 	for (int btnIdx = 0; btnIdx < ENABLED_BUTTONS_COUNT; btnIdx++) {
-		#if I2C_SERIAL_BYPASS
-		if(BUTTON_TYPE[btnIdx]==0){
-			BUTTONS[btnIdx]->begin(btnIdx + 1, BUTTON_PINS[btnIdx], buttonStatusChanged, BUTTON_WIRING_MODES[btnIdx], BUTTON_LOGIC_MODES[btnIdx]);
-		}
-		#else
-			BUTTONS[btnIdx]->begin(btnIdx + 1, BUTTON_PINS[btnIdx], buttonStatusChanged, BUTTON_WIRING_MODES[btnIdx], BUTTON_LOGIC_MODES[btnIdx]);
-		#endif
+		BUTTONS[btnIdx]->begin(btnIdx + 1, BUTTON_PINS[btnIdx], buttonStatusChanged, BUTTON_WIRING_MODES[btnIdx], BUTTON_LOGIC_MODES[btnIdx]);
 	}
 #endif
 
@@ -1499,10 +1504,7 @@ void InitEncoders() {
 	for(int i=0;i<ENABLED_ENCODERS_COUNT;i++){
 		if(ENCODER_TYPE[i]==0)
 			SHRotaryEncoders[i]=new SHRotaryEncoder();
-		#if I2C_SERIAL_BYPASS && I2C_BYPASS_SLAVE
-		if(ENCODER_TYPE[i]==1)
-			SHRotaryEncoders[i]=new SHVirtualRotaryEncoder(&virtualEncoderContext);
-		#endif
+
 		switch (i)
 		{
 			case 0:			
@@ -1605,9 +1607,7 @@ unsigned long lastSerialActivity = 0;
 
 void loop() {
 
-#if I2C_SERIAL_BYPASS
-	I2CTransportManager::loop();
-#endif
+
 
 #ifdef INCLUDE_SHAKEITL298N
 	shShakeitL298N.safetyCheck();
