@@ -1075,7 +1075,7 @@ void UpdateGamepadVirtualEncodersState(int encoderId, int position, byte directi
 void idle(bool critical) {
 
 #if(GAMEPAD_AXIS_01_ENABLED == 1)
-	SHGAMEPADAXIS01.read(random(1024));
+	SHGAMEPADAXIS01.read();
 #endif
 #if(GAMEPAD_AXIS_02_ENABLED == 1)
 	SHGAMEPADAXIS02.read();
@@ -1300,7 +1300,7 @@ void testI2CSetup() {
 void setup()
 {
 
-		testI2CSetup();
+	//	testI2CSetup();
 
 	  // initialize GDB stub
   
