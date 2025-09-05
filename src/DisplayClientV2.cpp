@@ -50,9 +50,9 @@
 //#define INCLUDE_SHAKEITPWM                  //{"Name":"INCLUDE_SHAKEITPWM","Type":"autodefine","Condition":"[SHAKEITPWM_ENABLED_MOTORS]>0"}
 //#define INCLUDE_SHAKEITPWMFANS              //{"Name":"INCLUDE_SHAKEITPWMFANS","Type":"autodefine","Condition":"[SHAKEITPWMFANS_ENABLED_MOTORS]>0"}
 #if defined (__AVR_ATmega32U4__)
-#define INCLUDE_GAMEPAD   true                  //{"Name":"INCLUDE_GAMEPAD","Type":"autodefine","Condition":"[ENABLE_MICRO_GAMEPAD]>0"}
+#define INCLUDE_GAMEPAD   1                  //{"Name":"INCLUDE_GAMEPAD","Type":"autodefine","Condition":"[ENABLE_MICRO_GAMEPAD]>0"}
 #endif
-#define INCLUDE_GAMEPADAXIS                 //{"Name":"INCLUDE_GAMEPADAXIS","Type":"autodefine","Condition":"[GAMEPAD_AXIS_01_ENABLED]>0 || [GAMEPAD_AXIS_02_ENABLED]>0 || [GAMEPAD_AXIS_03_ENABLED]>0"}
+// #define INCLUDE_GAMEPADAXIS                 //{"Name":"INCLUDE_GAMEPADAXIS","Type":"autodefine","Condition":"[GAMEPAD_AXIS_01_ENABLED]>0 || [GAMEPAD_AXIS_02_ENABLED]>0 || [GAMEPAD_AXIS_03_ENABLED]>0"}
 
 
 
@@ -64,7 +64,7 @@
 #endif // ! INCLUDE_GAMEPAD
 #endif
 
-#define INCLUDE_ENCODERS                    //{"Name":"INCLUDE_ENCODERS","Type":"autodefine","Condition":"[ENABLED_ENCODERS_COUNT]>0","IsInput":true}
+// #define INCLUDE_ENCODERS                    //{"Name":"INCLUDE_ENCODERS","Type":"autodefine","Condition":"[ENABLED_ENCODERS_COUNT]>0","IsInput":true}
 #define INCLUDE_BUTTONS                     //{"Name":"INCLUDE_BUTTONS","Type":"autodefine","Condition":"[ENABLED_BUTTONS_COUNT]>0","IsInput":true}
 //#define INCLUDE_BUTTONMATRIX                //{"Name":"INCLUDE_BUTTONMATRIX","Type":"autodefine","Condition":"[ENABLED_BUTTONMATRIX]>0","IsInput":true}
 //#define INCLUDE_DM163_MATRIX                //{"Name":"INCLUDE_DM163_MATRIX","Type":"autodefine","Condition":"[DM163_MATRIX_ENABLED]>0"}
@@ -87,8 +87,8 @@
 // -------------------- Adafruit MCP23017 Buttons -------------------------------------------------------
 #ifdef INCLUDE_MCP23017_BUTTONS
 #include <Adafruit_MCP23X17.h>
-#define MCP23017_CHIPS_COUNT 0     //{"Group":"MCP23017 Buttons","Name":"MCP23017_CHIPS_COUNT","Title":"Number of MCP23017 chips (1-8)","DefaultValue":"0","Type":"int","Min":1,"Max":8}
-#define MCP23017_TOTAL_BUTTONS_COUNT 0  //{"Group":"MCP23017 Buttons","Name":"MCP23017_TOTAL_BUTTONS_COUNT","Title":"Total number of buttons across all MCP23017","DefaultValue":"0","Type":"int","Max":128}
+#define MCP23017_CHIPS_COUNT 1     //{"Group":"MCP23017 Buttons","Name":"MCP23017_CHIPS_COUNT","Title":"Number of MCP23017 chips (1-8)","DefaultValue":"0","Type":"int","Min":1,"Max":8}
+#define MCP23017_TOTAL_BUTTONS_COUNT 16  //{"Group":"MCP23017 Buttons","Name":"MCP23017_TOTAL_BUTTONS_COUNT","Title":"Total number of buttons across all MCP23017","DefaultValue":"0","Type":"int","Max":128}
 
 // Direcciones I2C para cada MCP23017 activo (configurar solo los que se usan)
 #define MCP23017_I2C_ADDRESS_1 0x20 //{"Name":"MCP23017_I2C_ADDRESS_1","Title":"I2C address for MCP23017 #1","DefaultValue":"32","Type":"int","Min":32,"Max":39,"Condition":"MCP23017_CHIPS_COUNT>=1"}
@@ -543,15 +543,15 @@ SHGamepadAxis SHGAMEPADAXIS03(GAMEPAD_AXIS_03_PIN, 2, GAMEPAD_AXIS_03_MINVALUE, 
 #ifdef  INCLUDE_BUTTONS
 
 // PLACE BUTTONS IN MASTER DEVICE OVER THE 100 TO PREVENT CONFLICT WITH SLAVE PINS
-#define BUTTON_PIN_1 40       //{"Name":"BUTTON_PIN_1","Title":"1'st Additional button digital pin","DefaultValue":"3","Type":"pin;Button 1","Condition":"ENABLED_BUTTONS_COUNT>=1"}
+#define BUTTON_PIN_1 4       //{"Name":"BUTTON_PIN_1","Title":"1'st Additional button digital pin","DefaultValue":"3","Type":"pin;Button 1","Condition":"ENABLED_BUTTONS_COUNT>=1"}
 #define BUTTON_WIRINGMODE_1 0   //{"Name":"BUTTON_WIRINGMODE_1","Title":"1'st Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_1 0    //{"Name":"BUTTON_LOGICMODE_1","Title":"1'st Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_1 1		//{"Name":"BUTTON_TYPE_1","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_1 0		//{"Name":"BUTTON_TYPE_1","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=1","ListValues":"0,Physically Connected;1,Serialized"}
 
-#define BUTTON_PIN_2 46          //{"Name":"BUTTON_PIN_2","Title":"2'nd Additional button digital pin","DefaultValue":"3","Type":"pin;Button 2","Condition":"ENABLED_BUTTONS_COUNT>=2"}
+#define BUTTON_PIN_2 5          //{"Name":"BUTTON_PIN_2","Title":"2'nd Additional button digital pin","DefaultValue":"3","Type":"pin;Button 2","Condition":"ENABLED_BUTTONS_COUNT>=2"}
 #define BUTTON_WIRINGMODE_2 0   //{"Name":"BUTTON_WIRINGMODE_2","Title":"2'nd Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=2","ListValues":"0,Pin to GND;1,VCC to pin"}
 #define BUTTON_LOGICMODE_2 0    //{"Name":"BUTTON_LOGICMODE_2","Title":"2'nd Additional button logic","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=2","ListValues":"0,Normal;1,Reversed"}
-#define BUTTON_TYPE_2 1			//{"Name":"BUTTON_TYPE_2","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=2","ListValues":"0,Physically Connected;1,Serialized"}
+#define BUTTON_TYPE_2 0			//{"Name":"BUTTON_TYPE_2","Title":"Is virtual button","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=2","ListValues":"0,Physically Connected;1,Serialized"}
 
 #define BUTTON_PIN_3 6          //{"Name":"BUTTON_PIN_3","Title":"3'rd Additional button digital pin","DefaultValue":"3","Type":"pin;Button 3","Condition":"ENABLED_BUTTONS_COUNT>=3"}
 #define BUTTON_WIRINGMODE_3 0   //{"Name":"BUTTON_WIRINGMODE_3","Title":"3'rd Additional button wiring","DefaultValue":"0","Type":"list","Condition":"ENABLED_BUTTONS_COUNT>=3","ListValues":"0,Pin to GND;1,VCC to pin"}
@@ -664,7 +664,7 @@ SHDebouncer ButtonsDebouncer(10);
 // https://www.dx.com/p/ky-040-rotary-encoder-module-brick-sensor-development-for-arduino-avr-pic-420429#.W9BCM0sza0Q
 // Rotary encoders with pull-up resistors on the 3 outputs
 // ----------------------------------------------------------------------------------------------------------
-#define ENABLED_ENCODERS_COUNT 1     //{"Group":"Rotary Encoders","Name":"ENABLED_ENCODERS_COUNT","Title":"Rotary encoders enabled","DefaultValue":"0","Type":"int","Max":8}
+#define ENABLED_ENCODERS_COUNT 0     //{"Group":"Rotary Encoders","Name":"ENABLED_ENCODERS_COUNT","Title":"Rotary encoders enabled","DefaultValue":"0","Type":"int","Max":8}
 #ifdef  INCLUDE_ENCODERS
 #include "SHRotaryEncoder.h"
 
@@ -1272,8 +1272,35 @@ bool validateMCP23017Addresses() {
 	return true;
 }
 
+void testI2CSetup() {
+	delay(2000); // wait for serial to initialize
+    Serial.println("=== I2C Connection Test ===");
+    Wire.begin();
+    delay(100);
+    
+    for (int i = 0; i < MCP23017_CHIPS_COUNT; i++) {
+        byte address = MCP23017_ADDRESSES[i];
+        Wire.beginTransmission(address);
+        byte error = Wire.endTransmission();
+        
+        if (error == 0) {
+            Serial.print("✓ MCP23017 #");
+            Serial.print(i + 1);
+            Serial.print(" found at 0x");
+            Serial.println(address, HEX);
+        } else {
+            Serial.print("✗ MCP23017 #");
+            Serial.print(i + 1);
+            Serial.print(" NOT found at 0x");
+            Serial.println(address, HEX);
+        }
+    }
+    Serial.println("==========================");
+	}
 void setup()
 {
+
+		testI2CSetup();
 
 	  // initialize GDB stub
   
@@ -1409,6 +1436,9 @@ void setup()
 
 #ifdef INCLUDE_MCP23017_BUTTONS
 	// Validar configuración MCP23017 antes de inicializar
+	
+	// testI2CSetup();
+
 	if (!validateMCP23017Addresses()) {
 		Serial.println("MCP23017 configuration error. Halting initialization.");
 		return;
@@ -1606,7 +1636,6 @@ char loop_opt;
 unsigned long lastSerialActivity = 0;
 
 void loop() {
-
 
 
 #ifdef INCLUDE_SHAKEITL298N
