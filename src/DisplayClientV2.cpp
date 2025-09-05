@@ -1185,29 +1185,29 @@ void buttonStatusChanged(int buttonId, byte Status) {
 /// @brief / TESTING
 
 
-void analogAxisChangedEventCallback(int axisId,int value){
+// void analogAxisChangedEventCallback(int axisId,int value){
 
-		switch (axisId)
-		{
-		case 0:
-			Serial.println("via 0");
-			//SHGAMEPADAXIS01.read(value); break;
-		case 1:
-			Serial.println("via 1");
-			Serial.flush();
-			//SHGAMEPADAXIS01.read(512); break;
-		case 2:
-			Serial.println("via 2");
-			//SHGAMEPADAXIS01.read(value); break;
-		case 3:
-		Serial.println("via 3");
-			//SHGAMEPADAXIS01.read(value); break;
-		default:
-			break;
-		}
+// 		switch (axisId)
+// 		{
+// 		case 0:
+// 			Serial.println("via 0");
+// 			//SHGAMEPADAXIS01.read(value); break;
+// 		case 1:
+// 			Serial.println("via 1");
+// 			Serial.flush();
+// 			//SHGAMEPADAXIS01.read(512); break;
+// 		case 2:
+// 			Serial.println("via 2");
+// 			//SHGAMEPADAXIS01.read(value); break;
+// 		case 3:
+// 		Serial.println("via 3");
+// 			//SHGAMEPADAXIS01.read(value); break;
+// 		default:
+// 			break;
+// 		}
 
 
-}
+// }
 
 #ifdef  INCLUDE_BUTTONMATRIX
 void buttonMatrixStatusChanged(int buttonId, byte Status) {
