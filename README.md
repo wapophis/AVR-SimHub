@@ -489,7 +489,7 @@ if (error == 0) {
 #### Error: "MCP23017 not found"
 
 **Causas comunes:**
-1. **Pines I2C incorrectos**: Verificar que uses A4 (SDA) y A5 (SCL)
+1. **Pines I2C incorrectos**: Verificar que uses D2 (SDA) y D3 (SCL)
 2. **Alimentación insuficiente**: Usar VIN en lugar de 5V
 3. **Cables sueltos**: Verificar conexiones SDA/SCL/VCC/GND
 
@@ -529,7 +529,7 @@ void testI2CConnections() {
 #### Conflicto de Pines
 
 **Pines a evitar en Arduino Micro Pro:**
-- **A4 y A5**: Reservados para I2C
+- **D2 y D3**: Reservados para I2C
 - **A0-A3**: Usar con precaución (pueden ser analógicos)
 - **D0-D1**: Reservados para comunicación serial
 
