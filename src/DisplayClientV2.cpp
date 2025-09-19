@@ -1455,7 +1455,7 @@ void setup()
 	
 	// Mapear botones globalmente (chip0: pines 0-15, chip1: pines 16-31, etc.)
 	for (int i = 0; i < MCP23017_TOTAL_BUTTONS_COUNT && i < 128; i++) {
-		MCP_BUTTON_IDS[i] = i + 1;
+		MCP_BUTTON_IDS[i] = i + ENABLED_BUTTONS_COUNT+ 1;
 		MCP_BUTTON_PINS[i] = i; // Pin global (0-127)
 		MCP_BUTTON_WIRINGS[i] = false; // por defecto a GND con pullup interna
 		MCP_BUTTON_LOGICMODES[i] = 0;
