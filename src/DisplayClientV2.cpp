@@ -82,8 +82,10 @@
 #include "SHDebouncer.h"
 #include "SHButton.h"
 #include "SHButtonsMCP23017.h"
+#include "SHMCP23017RotaryEncoder.h"
 
 #define INCLUDE_MCP23017_BUTTONS //{"Name":"INCLUDE_MCP23017_BUTTONS","Type":"autodefine","Condition":"[MCP23017_TOTAL_BUTTONS_COUNT]>0","IsInput":true}
+#define INCLUDE_MCP23017_ENCODERS //{"Name":"INCLUDE_MCP23017_ENCODERS","Type":"autodefine","Condition":"[MCP23017_TOTAL_ENCODERS_COUNT]>0","IsInput":true}
 // -------------------- Adafruit MCP23017 Buttons -------------------------------------------------------
 #ifdef INCLUDE_MCP23017_BUTTONS
 #include <Adafruit_MCP23X17.h>
@@ -111,6 +113,46 @@ byte MCP_BUTTON_IDS[128];      // IDs para hasta 128 botones (8 chips * 16 pines
 byte MCP_BUTTON_PINS[128];     // Pines globales (0-127: chip0:0-15, chip1:16-31, etc.)
 bool MCP_BUTTON_WIRINGS[128];  // Configuración de cableado
 int MCP_BUTTON_LOGICMODES[128]; // Modos de lógica
+#endif
+
+// -------------------- MCP23017 Rotary Encoders -------------------------------------------------------
+#ifdef INCLUDE_MCP23017_ENCODERS
+#define MCP23017_TOTAL_ENCODERS_COUNT 0  //{"Group":"MCP23017 Encoders","Name":"MCP23017_TOTAL_ENCODERS_COUNT","Title":"Total number of encoders across all MCP23017","DefaultValue":"0","Type":"int","Max":64}
+
+// Configuración de encoders MCP23017 (hasta 8 encoders por chip, máximo 8 chips)
+#define MCP23017_ENCODER1_MCP_INDEX 0    //{"Name":"MCP23017_ENCODER1_MCP_INDEX","Title":"MCP23017 chip index for Encoder 1 (0-7)","DefaultValue":"0","Type":"int","Min":0,"Max":7,"Condition":"MCP23017_TOTAL_ENCODERS_COUNT>0"}
+#define MCP23017_ENCODER1_CLK_PIN 0      //{"Name":"MCP23017_ENCODER1_CLK_PIN","Title":"Encoder 1 CLK pin on MCP23017 (0-15)","DefaultValue":"0","Type":"int","Min":0,"Max":15,"Condition":"MCP23017_TOTAL_ENCODERS_COUNT>0"}
+#define MCP23017_ENCODER1_DT_PIN 1       //{"Name":"MCP23017_ENCODER1_DT_PIN","Title":"Encoder 1 DT pin on MCP23017 (0-15)","DefaultValue":"1","Type":"int","Min":0,"Max":15,"Condition":"MCP23017_TOTAL_ENCODERS_COUNT>0"}
+#define MCP23017_ENCODER1_BUTTON_PIN 2   //{"Name":"MCP23017_ENCODER1_BUTTON_PIN","Title":"Encoder 1 button pin on MCP23017 (0-15, -1 for no button)","DefaultValue":"2","Type":"int","Min":-1,"Max":15,"Condition":"MCP23017_TOTAL_ENCODERS_COUNT>0"}
+#define MCP23017_ENCODER1_REVERSE_DIRECTION 0 //{"Name":"MCP23017_ENCODER1_REVERSE_DIRECTION","Title":"Encoder 1 reverse direction","DefaultValue":"0","Type":"bool","Condition":"MCP23017_TOTAL_ENCODERS_COUNT>0"}
+#define MCP23017_ENCODER1_ENABLE_PULLUP 1     //{"Name":"MCP23017_ENCODER1_ENABLE_PULLUP","Title":"Encoder 1 enable pullup resistor","DefaultValue":"1","Type":"bool","Condition":"MCP23017_TOTAL_ENCODERS_COUNT>0"}
+#define MCP23017_ENCODER1_ENABLE_HALFSTEPS 0  //{"Name":"MCP23017_ENCODER1_ENABLE_HALFSTEPS","Title":"Encoder 1 steps mode","DefaultValue":"0","Type":"list","Condition":"MCP23017_TOTAL_ENCODERS_COUNT>0","ListValues":"0,Full steps;1,Half steps"}
+
+#define MCP23017_ENCODER2_MCP_INDEX 0    //{"Name":"MCP23017_ENCODER2_MCP_INDEX","Title":"MCP23017 chip index for Encoder 2 (0-7)","DefaultValue":"0","Type":"int","Min":0,"Max":7,"Condition":"MCP23017_TOTAL_ENCODERS_COUNT>1"}
+#define MCP23017_ENCODER2_CLK_PIN 3      //{"Name":"MCP23017_ENCODER2_CLK_PIN","Title":"Encoder 2 CLK pin on MCP23017 (0-15)","DefaultValue":"3","Type":"int","Min":0,"Max":15,"Condition":"MCP23017_TOTAL_ENCODERS_COUNT>1"}
+#define MCP23017_ENCODER2_DT_PIN 4       //{"Name":"MCP23017_ENCODER2_DT_PIN","Title":"Encoder 2 DT pin on MCP23017 (0-15)","DefaultValue":"4","Type":"int","Min":0,"Max":15,"Condition":"MCP23017_TOTAL_ENCODERS_COUNT>1"}
+#define MCP23017_ENCODER2_BUTTON_PIN 5   //{"Name":"MCP23017_ENCODER2_BUTTON_PIN","Title":"Encoder 2 button pin on MCP23017 (0-15, -1 for no button)","DefaultValue":"5","Type":"int","Min":-1,"Max":15,"Condition":"MCP23017_TOTAL_ENCODERS_COUNT>1"}
+#define MCP23017_ENCODER2_REVERSE_DIRECTION 0 //{"Name":"MCP23017_ENCODER2_REVERSE_DIRECTION","Title":"Encoder 2 reverse direction","DefaultValue":"0","Type":"bool","Condition":"MCP23017_TOTAL_ENCODERS_COUNT>1"}
+#define MCP23017_ENCODER2_ENABLE_PULLUP 1     //{"Name":"MCP23017_ENCODER2_ENABLE_PULLUP","Title":"Encoder 2 enable pullup resistor","DefaultValue":"1","Type":"bool","Condition":"MCP23017_TOTAL_ENCODERS_COUNT>1"}
+#define MCP23017_ENCODER2_ENABLE_HALFSTEPS 0  //{"Name":"MCP23017_ENCODER2_ENABLE_HALFSTEPS","Title":"Encoder 2 steps mode","DefaultValue":"0","Type":"list","Condition":"MCP23017_TOTAL_ENCODERS_COUNT>1","ListValues":"0,Full steps;1,Half steps"}
+
+#define MCP23017_ENCODER3_MCP_INDEX 0    //{"Name":"MCP23017_ENCODER3_MCP_INDEX","Title":"MCP23017 chip index for Encoder 3 (0-7)","DefaultValue":"0","Type":"int","Min":0,"Max":7,"Condition":"MCP23017_TOTAL_ENCODERS_COUNT>2"}
+#define MCP23017_ENCODER3_CLK_PIN 6      //{"Name":"MCP23017_ENCODER3_CLK_PIN","Title":"Encoder 3 CLK pin on MCP23017 (0-15)","DefaultValue":"6","Type":"int","Min":0,"Max":15,"Condition":"MCP23017_TOTAL_ENCODERS_COUNT>2"}
+#define MCP23017_ENCODER3_DT_PIN 7       //{"Name":"MCP23017_ENCODER3_DT_PIN","Title":"Encoder 3 DT pin on MCP23017 (0-15)","DefaultValue":"7","Type":"int","Min":0,"Max":15,"Condition":"MCP23017_TOTAL_ENCODERS_COUNT>2"}
+#define MCP23017_ENCODER3_BUTTON_PIN 8   //{"Name":"MCP23017_ENCODER3_BUTTON_PIN","Title":"Encoder 3 button pin on MCP23017 (0-15, -1 for no button)","DefaultValue":"8","Type":"int","Min":-1,"Max":15,"Condition":"MCP23017_TOTAL_ENCODERS_COUNT>2"}
+#define MCP23017_ENCODER3_REVERSE_DIRECTION 0 //{"Name":"MCP23017_ENCODER3_REVERSE_DIRECTION","Title":"Encoder 3 reverse direction","DefaultValue":"0","Type":"bool","Condition":"MCP23017_TOTAL_ENCODERS_COUNT>2"}
+#define MCP23017_ENCODER3_ENABLE_PULLUP 1     //{"Name":"MCP23017_ENCODER3_ENABLE_PULLUP","Title":"Encoder 3 enable pullup resistor","DefaultValue":"1","Type":"bool","Condition":"MCP23017_TOTAL_ENCODERS_COUNT>2"}
+#define MCP23017_ENCODER3_ENABLE_HALFSTEPS 0  //{"Name":"MCP23017_ENCODER3_ENABLE_HALFSTEPS","Title":"Encoder 3 steps mode","DefaultValue":"0","Type":"list","Condition":"MCP23017_TOTAL_ENCODERS_COUNT>2","ListValues":"0,Full steps;1,Half steps"}
+
+#define MCP23017_ENCODER4_MCP_INDEX 0    //{"Name":"MCP23017_ENCODER4_MCP_INDEX","Title":"MCP23017 chip index for Encoder 4 (0-7)","DefaultValue":"0","Type":"int","Min":0,"Max":7,"Condition":"MCP23017_TOTAL_ENCODERS_COUNT>3"}
+#define MCP23017_ENCODER4_CLK_PIN 9      //{"Name":"MCP23017_ENCODER4_CLK_PIN","Title":"Encoder 4 CLK pin on MCP23017 (0-15)","DefaultValue":"9","Type":"int","Min":0,"Max":15,"Condition":"MCP23017_TOTAL_ENCODERS_COUNT>3"}
+#define MCP23017_ENCODER4_DT_PIN 10      //{"Name":"MCP23017_ENCODER4_DT_PIN","Title":"Encoder 4 DT pin on MCP23017 (0-15)","DefaultValue":"10","Type":"int","Min":0,"Max":15,"Condition":"MCP23017_TOTAL_ENCODERS_COUNT>3"}
+#define MCP23017_ENCODER4_BUTTON_PIN 11  //{"Name":"MCP23017_ENCODER4_BUTTON_PIN","Title":"Encoder 4 button pin on MCP23017 (0-15, -1 for no button)","DefaultValue":"11","Type":"int","Min":-1,"Max":15,"Condition":"MCP23017_TOTAL_ENCODERS_COUNT>3"}
+#define MCP23017_ENCODER4_REVERSE_DIRECTION 0 //{"Name":"MCP23017_ENCODER4_REVERSE_DIRECTION","Title":"Encoder 4 reverse direction","DefaultValue":"0","Type":"bool","Condition":"MCP23017_TOTAL_ENCODERS_COUNT>3"}
+#define MCP23017_ENCODER4_ENABLE_PULLUP 1     //{"Name":"MCP23017_ENCODER4_ENABLE_PULLUP","Title":"Encoder 4 enable pullup resistor","DefaultValue":"1","Type":"bool","Condition":"MCP23017_TOTAL_ENCODERS_COUNT>3"}
+#define MCP23017_ENCODER4_ENABLE_HALFSTEPS 0  //{"Name":"MCP23017_ENCODER4_ENABLE_HALFSTEPS","Title":"Encoder 4 steps mode","DefaultValue":"0","Type":"list","Condition":"MCP23017_TOTAL_ENCODERS_COUNT>3","ListValues":"0,Full steps;1,Half steps"}
+
+SHMCP23017RotaryEncoder* mcp23017Encoders[64]; // Array para hasta 64 encoders MCP23017
 #endif
 
 // ----------------------------------------------------- HW SETTINGS, PLEASE REVIEW ALL -------------------------------------------
@@ -1090,6 +1132,15 @@ void idle(bool critical) {
 	
 #endif
 
+#ifdef INCLUDE_MCP23017_ENCODERS
+	// Leer encoders MCP23017
+	for (int i = 0; i < MCP23017_TOTAL_ENCODERS_COUNT && i < 64; i++) {
+		if (mcp23017Encoders[i] != nullptr) {
+			mcp23017Encoders[i]->read();
+		}
+	}
+#endif
+
 #ifdef  INCLUDE_BUTTONMATRIX
 	shButtonMatrix.read();
 #endif
@@ -1463,6 +1514,51 @@ void setup()
 	
 	shMcpButtons.begin(mcp_ptrs, MCP23017_CHIPS_COUNT, MCP23017_TOTAL_BUTTONS_COUNT, 
 	                   MCP_BUTTON_IDS, MCP_BUTTON_PINS, MCP_BUTTON_WIRINGS, MCP_BUTTON_LOGICMODES, buttonStatusChanged);
+#endif
+
+#ifdef INCLUDE_MCP23017_ENCODERS
+	// Inicializar encoders MCP23017
+	for (int i = 0; i < MCP23017_TOTAL_ENCODERS_COUNT && i < 64; i++) {
+		mcp23017Encoders[i] = new SHMCP23017RotaryEncoder();
+		
+		// Configurar cada encoder según su índice
+		switch (i) {
+			case 0:
+				mcp23017Encoders[0]->begin(&mcp23017_chips[MCP23017_ENCODER1_MCP_INDEX], 
+				                          MCP23017_ENCODER1_MCP_INDEX,
+				                          MCP23017_ENCODER1_CLK_PIN, MCP23017_ENCODER1_DT_PIN, 
+				                          MCP23017_ENCODER1_BUTTON_PIN == -1 ? 255 : MCP23017_ENCODER1_BUTTON_PIN,
+				                          MCP23017_ENCODER1_REVERSE_DIRECTION, MCP23017_ENCODER1_ENABLE_PULLUP, 
+				                          ENABLED_ENCODERS_COUNT + 1, MCP23017_ENCODER1_ENABLE_HALFSTEPS, EncoderPositionChanged);
+				break;
+			case 1:
+				mcp23017Encoders[1]->begin(&mcp23017_chips[MCP23017_ENCODER2_MCP_INDEX], 
+				                          MCP23017_ENCODER2_MCP_INDEX,
+				                          MCP23017_ENCODER2_CLK_PIN, MCP23017_ENCODER2_DT_PIN, 
+				                          MCP23017_ENCODER2_BUTTON_PIN == -1 ? 255 : MCP23017_ENCODER2_BUTTON_PIN,
+				                          MCP23017_ENCODER2_REVERSE_DIRECTION, MCP23017_ENCODER2_ENABLE_PULLUP, 
+				                          ENABLED_ENCODERS_COUNT + 2, MCP23017_ENCODER2_ENABLE_HALFSTEPS, EncoderPositionChanged);
+				break;
+			case 2:
+				mcp23017Encoders[2]->begin(&mcp23017_chips[MCP23017_ENCODER3_MCP_INDEX], 
+				                          MCP23017_ENCODER3_MCP_INDEX,
+				                          MCP23017_ENCODER3_CLK_PIN, MCP23017_ENCODER3_DT_PIN, 
+				                          MCP23017_ENCODER3_BUTTON_PIN == -1 ? 255 : MCP23017_ENCODER3_BUTTON_PIN,
+				                          MCP23017_ENCODER3_REVERSE_DIRECTION, MCP23017_ENCODER3_ENABLE_PULLUP, 
+				                          ENABLED_ENCODERS_COUNT + 3, MCP23017_ENCODER3_ENABLE_HALFSTEPS, EncoderPositionChanged);
+				break;
+			case 3:
+				mcp23017Encoders[3]->begin(&mcp23017_chips[MCP23017_ENCODER4_MCP_INDEX], 
+				                          MCP23017_ENCODER4_MCP_INDEX,
+				                          MCP23017_ENCODER4_CLK_PIN, MCP23017_ENCODER4_DT_PIN, 
+				                          MCP23017_ENCODER4_BUTTON_PIN == -1 ? 255 : MCP23017_ENCODER4_BUTTON_PIN,
+				                          MCP23017_ENCODER4_REVERSE_DIRECTION, MCP23017_ENCODER4_ENABLE_PULLUP, 
+				                          ENABLED_ENCODERS_COUNT + 4, MCP23017_ENCODER4_ENABLE_HALFSTEPS, EncoderPositionChanged);
+				break;
+			default:
+				break;
+		}
+	}
 #endif
 #ifdef INCLUDE_BUTTONS
 	// EXTERNAL BUTTONS INIT
